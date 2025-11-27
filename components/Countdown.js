@@ -37,33 +37,37 @@ export default function Countdown({ targetDate }) {
         <div className="countdown">
             {timeLeft.seconds < 10 && (
                 <>
-                    <div className="countdown-item">
-                        <span className="countdown-value">{timeLeft.seconds}</span>
-                        <span className="countdown-label">S</span>
-                    </div>
-                    <div className="countdown-item">
-                        <span className="countdown-value">{Math.floor((new Date(targetDate).getTime() - new Date().getTime()) / 100) % 10}</span>
-                        <span className="countdown-label">.</span>
+                    <div id = "rumpus-countdown">
+                        <div className="countdown-item">
+                            <span className="countdown-value">{timeLeft.seconds}</span>
+                            <span className="countdown-label">S</span>
+                        </div>
+                        <div className="countdown-item">
+                            <span className="countdown-value">{Math.floor((new Date(targetDate).getTime() - new Date().getTime()) / 100) % 10}</span>
+                            <span className="countdown-label"></span>
+                        </div>
                     </div>
                 </>
             )}
             {timeLeft.seconds >= 10 && (
                 <>
-                    <div className="countdown-item">
-                        <span className="countdown-value">{timeLeft.days}</span>
-                        <span className="countdown-label">D</span>
-                    </div>
-                    <div className="countdown-item">
-                        <span className="countdown-value">{timeLeft.hours}</span>
-                        <span className="countdown-label">H</span>
-                    </div>
-                    <div className="countdown-item">
-                        <span className="countdown-value">{timeLeft.minutes}</span>
-                        <span className="countdown-label">M</span>
-                    </div>
-                    <div className="countdown-item">
-                        <span className="countdown-value">{timeLeft.seconds}</span>
-                        <span className="countdown-label">S</span>
+                    <div id = "rumpus-countdown">
+                        <div className="countdown-item">
+                            <span className="countdown-value">{timeLeft.days}</span>
+                            <span className="countdown-label">D</span>
+                        </div>
+                        <div className="countdown-item">
+                            <span className="countdown-value">{timeLeft.hours}</span>
+                            <span className="countdown-label">H</span>
+                        </div>
+                        <div className="countdown-item">
+                            <span className="countdown-value">{timeLeft.minutes}</span>
+                            <span className="countdown-label">M</span>
+                        </div>
+                        <div className="countdown-item">
+                            <span className="countdown-value">{timeLeft.seconds}</span>
+                            <span className="countdown-label">S</span>
+                        </div>
                     </div>
                 </>
             )}
