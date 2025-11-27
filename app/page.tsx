@@ -14,7 +14,7 @@ export default function RumpusHomePage(){
     <p>the only news at Yale about things at Yale</p>
     </div>
     
-    /* The sidebar component */
+    {/* The sidebar component */}
     <Sidebar />
     
     {/* The main content area */}
@@ -22,7 +22,7 @@ export default function RumpusHomePage(){
     <div className="section" id="section1">
     <h2>COUNTDOWN TO LATEST ISSUE:</h2>
     <div className="rumpus-countdown-wrap">
-    <Countdown />
+    <Countdown targetDate={new Date('2025-12-31T23:59:59')} /> {/* Set your target date here */}
     </div>
     </div>
     
