@@ -68,22 +68,36 @@ h2 {
   color: black;
 }
 
-
-.rumpus-countdown-wrap {
+/* layout for the countdown container and items */
+.rumpus-countdown {
   display: flex;
+  gap: 0.6em;
   align-items: center;
   justify-content: center;
-  min-height: 200px;          /* adjust to your section height */
-  width: 100%;
+  white-space: nowrap; /* keep everything on one line */
 }
-.rumpus-countdown {
-  font-size: 8vw;             /* scales with viewport */
+
+.countdown-item,
+.countdown-item-final {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 0 10px;
+}
+
+.countdown-value {
+  font-size: inherit; /* inherits the large font on the container */
   line-height: 1;
-  color: #FFFFFF;
-  text-align: center;
-  font-weight: 800;
-  letter-spacing: .02em;
 }
+
+.countdown-label {
+  font-size: 0.28em;
+  font-weight: 700;
+  margin-top: 0.06em;
+  opacity: 0.95;
+}
+
 /* Optional: clamp font size for very large/small screens */
 @media (min-width: 1200px){ .rumpus-countdown { font-size: 96px; } }
 @media (max-width: 400px){ .rumpus-countdown { font-size: 14vw; } }
@@ -104,7 +118,7 @@ section h2 {
 }
 
 section:nth-of-type(odd) {
-  background-color: #f4f4f4;
+  background-color: #000000;
 }
 section:nth-of-type(even) {
   background-color: #e2e2e2;

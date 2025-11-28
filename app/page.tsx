@@ -9,59 +9,59 @@ export default function RumpusHomePage(){
   return (
     <>
     {/* The main header */}
-    <div className="header" id="top">
+<div className="header" id="top">
     <h1>R U M P U S!</h1>
     <p style={{ fontStyle: 'italic' }}>the only news at Yale about stuff at Yale</p>
-    </div>
-    
-    {/* The sidebar component */}
-    <Sidebar />
-    
-    {/* The main content area */}
-    <div id="content">
+</div>
+
+{/* The sidebar component */}
+<Sidebar />
+
+{/* The main content area */}
+<div id="content">
     <div className="section" id="section1">
-    <h2>COUNTDOWN TO LATEST ISSUE:</h2>
-    <div className="rumpus-countdown-wrap">
-    <Countdown targetDate={new Date('2025-12-31T23:59:59')} /> {/* Set your target date here */}
-    </div>
+        <h2>COUNTDOWN TO LATEST ISSUE:</h2>
+        <div className="rumpus-countdown-wrap">
+            <Countdown targetDate={new Date('2025-12-31T23:59:59')} /> {/* Set your target date here */}
+        </div>
     </div>
     
     <div className="section" id="section2"> 
-    <h2>LATEST ISSUE:</h2>
-    {/*
-      NOTE: Using an iframe is fine, but be mindful of performance and security.
-      In a real Next.js app, you might look into embedding or rendering the content directly.
-      */}
-      <iframe 
-      src="https://online.fliphtml5.com/sesvj/zjfg/#p=1" 
-      width="100%" 
-      height="600px" 
-      style={{ border: 'none' }} // Inline styles in React use camelCase objects
-      title="Latest Issue of RUMPUSTM"
-      ></iframe>
-      </div>
-      
-      <div className="section" id="section3">
-      <h2>PAST ISSUES:</h2>
-      {/* NOTE: Replace 'archive.html' with the Next.js Link component route for production */}
-      <a href="archive.html"> 
-      {/* Replace <img> with Next.js <Image> for optimization in a real app */}
-      <img 
-      src="../static/past_issues.png" 
-      alt="Link to Past Issues" 
-      width="300" 
-      height="400"
-      />
-      </a>
-      </div>
-      </div>
-      
-      {/* The fixed navigation bar */}
-      <div className="navbar">
-      <a href="#top">top of page</a>
-      <a href="#news">News</a>
-      <a href="#contact">Contact</a>
-      </div>
+        <h2>LATEST ISSUE:</h2>
+        {/*
+            NOTE: Using an iframe is fine, but be mindful of performance and security.
+            In a real Next.js app, you might look into embedding or rendering the content directly.
+            */}
+            <iframe 
+            src="https://online.fliphtml5.com/sesvj/zjfg/#p=1" 
+            width="100%" 
+            height="600px" 
+            style={{ border: 'none' }} // Inline styles in React use camelCase objects
+            title="Latest Issue of RUMPUSTM"
+            ></iframe>
+        </div>
+        
+        <div className="section" id="section3">
+            <h2>PAST ISSUES:</h2>
+            {/* NOTE: Replace 'archive.html' with the Next.js Link component route for production */}
+            <a href="archive.html"> 
+                {/* Replace <img> with Next.js <Image> for optimization in a real app */}
+                    <img 
+                    src="../static/past_issues.png" 
+                    alt="Link to Past Issues" 
+                    width="300" 
+                    height="400"
+                    />
+                </a>
+            </div>
+        </div>
+        
+        {/* The fixed navigation bar */}
+        <div className="navbar">
+            <a href="#top">top of page</a>
+            <a href="#news">News</a>
+            <a href="#contact">Contact</a>
+        </div>
       </>
     );
   }
