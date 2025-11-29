@@ -10,17 +10,34 @@ export default function RumpusHomePage(){
   return (
     <>
     {/* The main header */}
-    <div className="header" id="top" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
-        <Image
-        src="/rumpus-online-logo.png"
-        alt="the Yale Rumpus Logo"
-        width={541}
-        height={193}
-        />
-        <p style={{ fontStyle: 'italic', textAlign: 'center' }}>the only news at Yale about stuff at Yale</p>
-        
+    <div className="header" id="top" style={{ display: 'flex', justifyContent: 'center' }}>
+      <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'flex-start', gap: '24px', flexWrap: 'wrap', maxWidth: '1200px', width: '100%', padding: '16px' }}>
+        <div style={{ flex: '1 1 60%', minWidth: '280px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <Image
+            src="/rumpus-online-logo.png"
+            alt="the Yale Rumpus Logo"
+            width={541}
+            height={193}
+          />
+          <p style={{ fontStyle: 'italic', textAlign: 'center' }}>the only news at Yale about stuff at Yale</p>
+
+        </div>
+
+        <figure style={{ flex: '0 0 240px', display: 'flex', flexDirection: 'column', alignItems: 'center', margin: 0 }}>
+          <Image
+            src="/oldest-college-tab.png"
+            alt="Oldest College Tab"
+            width={150}
+            height={140}
+          />
+          <figcaption style={{ marginTop: '8px', textAlign: 'center', fontSize: '0.9rem', color: '#000000ff' }}>
+            now with GAMES
+          </figcaption>
+        </figure>
+
         {/* The sidebar component */}
-        <Sidebar />
+          <Sidebar />
+      </div>
     </div>
 
 
