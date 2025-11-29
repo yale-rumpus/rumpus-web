@@ -41,26 +41,29 @@ export default function RumpusHomePage(){
             <div style={{ display: 'flex', gap: '16px', alignItems: 'flex-start', flexWrap: 'wrap' }}>
                 {/* Left column: two stacked iframes */}
                 <div style={{ flex: '0 0 48%', display: 'flex', flexDirection: 'column', gap: '16px', marginRight: '16px', marginLeft: '16px' }}>
-                    <div>
-                        <div style={{ flex: '0 0 40%', padding: '12px' }}>
-                            <h3 style={{ margin: 0 }}>Issue Highlight</h3>
-                            <p style={{ marginTop: '8px' }}>
-                                Short blurb about this issue — featured article, theme, or notable photos.
-                                Keep it concise so it sits neatly beside the upright viewer.
-                            </p>
-                            <p style={{ marginTop: '8px' }}>
-                                <a href="https://online.fliphtml5.com/sesvj/zjfg/#p=16" target="_blank" rel="noopener noreferrer">
-                                    Read the full issue
-                                </a>
-                            </p>
-                        </div>
+                    <div style={{ display: 'flex', flexDirection: 'row', gap: '16px', alignItems: 'flex-start' }}>
+                      <div style={{ flex: '0 0 60%', padding: '12px' }}>
+                        <h3 style={{ margin: 0 }}>Issue Highlight</h3>
+                        <p style={{ marginTop: '8px' }}>
+                          Short blurb about this issue — featured article, theme, or notable photos.
+                          Keep it concise so it sits neatly beside the upright viewer.
+                        </p>
+                        <p style={{ marginTop: '8px' }}>
+                          <a href="https://online.fliphtml5.com/sesvj/zjfg/#p=16" target="_blank" rel="noopener noreferrer">
+                            Read the full issue
+                          </a>
+                        </p>
+                      </div>
+
+                      <div style={{ flex: '1 1 40%' }}>
                         <iframe
-                        src="https://online.fliphtml5.com/sesvj/zjfg/#p=16"
-                        width="100%"
-                        height="290"
-                        style={{ border: 'none' }}
-                        title="Latest Issue - top"
+                          src="https://online.fliphtml5.com/sesvj/zjfg/#p=16"
+                          width="100%"
+                          height="290"
+                          style={{ border: 'none' }}
+                          title="Latest Issue - top"
                         />
+                      </div>
                     </div>
                     
                     <iframe
