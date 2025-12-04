@@ -10,136 +10,167 @@ import Countdown from '../components/Countdown.js';
 // This is good practice for components that rely heavily on browser APIs (like requestAnimationFrame)
 import DynamicGameWrapper from '@/components/DynamicGameWrapper';
 
+
+// global variables for easy reference
+
+// current issue info
+const reference = {
+    issueurl: 'https://online.fliphtml5.com/sesvj/zjfg/',                   // link to current article viewer
+    pageref: [16, 1, 8],                                                    // page numbers for the three iframes
+    targetdate: '2025-12-31T15:13:30'                                       // target date for countdown timer
+}
+
+// queue up next issue info
+const referenceNext = {
+    issueurl: 'https://online.fliphtml5.com/sesvj/iljc/',                   // link to next issue article viewer
+    pageref: [12, 1, 5],                                                    // page numbers for the three iframes
+    targetdate:reference.targetdate,                                         // target date for countdown timer
+    // dateform: new Date(reference.targetdate)
+}
+
+const timeZero = <Countdown targetDate={new Date(reference.targetdate)} html={false} />              // check if target date has passed
+
+// final reference object to use in the page
+const endref = {
+    issueurl: timeZero ? referenceNext.issueurl : reference.issueurl,       // link to current article viewer
+    pageref: timeZero ? referenceNext.pageref : reference.pageref,          // page numbers for the three iframes
+    targetdate: reference.targetdate,                                        // target date for countdown timer
+}
+
+
+
 export default function RumpusHomePage(){
   return (
-<>
-{/* The main header */}
-<div className="header" id="top" style={{ display: 'flex', justifyContent: 'center' }}>
-    <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'flex-start', gap: '24px', flexWrap: 'wrap', maxWidth: '1200px', width: '100%', padding: '16px' }}>
-        <div style={{ flex: '1 1 60%', minWidth: '280px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-            <Image
-            src="/rumpus-online-logo.png"
-            alt="the Yale Rumpus Logo"
-            width={541}
-            height={193}
-            />
-            <p style={{ fontStyle: 'italic', textAlign: 'center', color: 'white'}}>the only news at Yale about stuff at Yale</p>
+    console.log(endref),
+    console.log(timeZero),
+    <>
+    {/* The main header */}
+    <div className="header" id="top" style={{ display: 'flex', justifyContent: 'center' }}>
+        <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'flex-start', gap: '24px', flexWrap: 'wrap', maxWidth: '1200px', width: '100%', padding: '16px' }}>
+            <div style={{ flex: '1 1 60%', minWidth: '280px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                <Image
+                src="/rumpus-online-logo.png"
+                alt="the Yale Rumpus Logo"
+                width={541}
+                height={193}
+                />
+                <p style={{ fontStyle: 'italic', textAlign: 'center', color: 'white'}}>the only news at Yale about stuff at Yale</p>
+                
+            </div>
             
+            <figure style={{ flex: '0 0 240px', display: 'flex', flexDirection: 'column', alignItems: 'center', margin: 0 }}>
+                <Image
+                src="/oldest-college-tab.png"
+                alt="Oldest College Tab"
+                width={150}
+                height={140}
+                />
+                <figcaption style={{ marginTop: '8px', textAlign: 'center', fontSize: '0.9rem', color: '#000000ff' }}>
+                    now with GAMES
+                </figcaption>
+            </figure>
+            
+            {/* The sidebar component */}
+            <Sidebar />
         </div>
-        
-        <figure style={{ flex: '0 0 240px', display: 'flex', flexDirection: 'column', alignItems: 'center', margin: 0 }}>
-            <Image
-            src="/oldest-college-tab.png"
-            alt="Oldest College Tab"
-            width={150}
-            height={140}
-            />
-            <figcaption style={{ marginTop: '8px', textAlign: 'center', fontSize: '0.9rem', color: '#000000ff' }}>
-                now with GAMES
-            </figcaption>
-        </figure>
-        
-        {/* The sidebar component */}
-        <Sidebar />
     </div>
-</div>
 
 
 
-{/* The main content area */}
-<div id="content">
-    <div className="section" id="section1">
-        <div className="overcast-css -effect" style={{backgroundImage: 'linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.58))', backgroundSize: 'cover', backgroundPosition: 'center'}}>
-            <h2 style= {{margin: 0 }}>COUNTDOWN TO LATEST ISSUE:</h2>
-            <div className="rumpus-countdown-wrap">
-                <Countdown targetDate={new Date('2025-12-31T16:13:30')} /> {/* Set your target date here */}
+    {/* The main content area */}
+    <div id="content">
+        <div className="section" id="section1">
+            <div className="overcast-css -effect" style={{backgroundImage: 'linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.58))', backgroundSize: 'cover', backgroundPosition: 'center'}}>
+                <h2 style= {{margin: 0 }}>COUNTDOWN TO LATEST ISSUE:</h2>
+                <div className="rumpus-countdown-wrap">
+                    <Countdown targetDate={new Date(endref.targetdate)} html={true} /> {/* Set your target date here */}
+                </div>
             </div>
         </div>
-    </div>
-    
-    <div className="section" id="section2" style={{backgroundImage: 'linear-gradient(to bottom, rgba(255, 255, 255, 0.58),rgba(255, 255, 255, 0))', backgroundSize: 'cover', backgroundPosition: 'center'}}> 
-        <h2>our top issues:</h2>
-        <div style={{ display: 'flex', gap: '16px', alignItems: 'flex-start', flexWrap: 'wrap' }}>
-            {/* Left column: two stacked iframes */}
-            <div style={{ flex: '0 0 48%', display: 'flex', flexDirection: 'column', gap: '16px', marginRight: '16px', marginLeft: '16px' }}>
-                <div style={{ display: 'flex', flexDirection: 'row', gap: '16px', alignItems: 'flex-start' }}>
-                    <div style={{ flex: '0 0 60%', padding: '12px' }}>
-                        <h3 style={{ margin: 0 }}>Issue Highlight</h3>
-                        <p style={{ marginTop: '8px' }}>
-                            Short blurb about this issue — featured article, theme, or notable photos.
-                            Keep it concise so it sits neatly beside the upright viewer.
-                        </p>
-                        <p style={{ marginTop: '8px' }}>
-                            <a href="https://online.fliphtml5.com/sesvj/zjfg/#p=16" target="_blank" rel="noopener noreferrer">
-                                Read the full issue
-                            </a>
-                        </p>
+        
+        <div className="section" id="section2" style={{backgroundImage: 'linear-gradient(to bottom, rgba(255, 255, 255, 0.58),rgba(255, 255, 255, 0))', backgroundSize: 'cover', backgroundPosition: 'center'}}> 
+            <h2>our top issues:</h2>
+            <div style={{ display: 'flex', gap: '16px', alignItems: 'flex-start', flexWrap: 'wrap' }}>
+                {/* Left column: two stacked iframes */}
+                <div style={{ flex: '0 0 48%', display: 'flex', flexDirection: 'column', gap: '16px', marginRight: '16px', marginLeft: '16px' }}>
+                    <div style={{ display: 'flex', flexDirection: 'row', gap: '16px', alignItems: 'flex-start' }}>
+                        <div style={{ flex: '0 0 60%', padding: '12px' }}>
+                            <h3 style={{ margin: 0 }}>Issue Highlight</h3>
+                            <p style={{ marginTop: '8px' }}>
+                                Short blurb about this issue — featured article, theme, or notable photos.
+                                Keep it concise so it sits neatly beside the upright viewer.
+                            </p>
+                            <p style={{ marginTop: '8px' }}>
+                                <a href={`${endref.issueurl}#p=${endref.pageref[0]}`} target="_blank" rel="noopener noreferrer">
+                                    Read the full issue
+                                </a>
+                            </p>
+                        </div>
+                        
+                        <div className="bevel-wrap" style={{ flex: '1 1 40%' }}>
+                            <iframe
+                            src={`${endref.issueurl}#p=${endref.pageref[0]}`}
+                            width="100%"
+                            height="290"
+                            style={{ border: 'none' }}
+                            title="Latest Issue - top"
+                            />
+                        </div>
                     </div>
                     
-                    <div className="bevel-wrap" style={{ flex: '1 1 40%' }}>
-                        <iframe
-                        src="https://online.fliphtml5.com/sesvj/zjfg/#p=16"
+                    <div className="bevel-wrap"> <iframe
+                        src={`${endref.issueurl}#p=${endref.pageref[2]}`}
                         width="100%"
                         height="290"
                         style={{ border: 'none' }}
-                        title="Latest Issue - top"
+                        title="Latest Issue - bottom"
+                        /></div>
+                    </div>
+                    
+                    {/* Right column: one large iframe */}
+                    <div className="bevel-wrap" style={{ flex: '0 0 48%' }}>
+                        <iframe
+                        src={`${endref.issueurl}#p=${endref.pageref[1]}`}
+                        width="100%"
+                        height="600"
+                        style={{ border: 'none' }}
+                        title="Latest Issue - large"
                         />
                     </div>
                 </div>
-                
-                <div className="bevel-wrap"> <iframe
-                    src="https://online.fliphtml5.com/sesvj/zjfg/#p=8"
-                    width="100%"
-                    height="290"
-                    style={{ border: 'none' }}
-                    title="Latest Issue - bottom"
-                    /></div>
-                </div>
-                
-                {/* Right column: one large iframe */}
-                <div className="bevel-wrap" style={{ flex: '0 0 48%' }}>
-                    <iframe
-                    src="https://online.fliphtml5.com/sesvj/zjfg/#p=1"
-                    width="100%"
-                    height="600"
-                    style={{ border: 'none' }}
-                    title="Latest Issue - large"
-                    />
-                </div>
-            </div>
-        </div>
-        
-        <div className="section" id="section3">
-            <h2>PAST ISSUES:</h2>
-            {/* NOTE: Replace 'archive.html' with the Next.js Link component route for production */}
-            <Link href="/past-issues">
-                {/* Replace <img> with Next.js <Image> for optimization in a real app */}
-                    <Image 
-                    src="/past_issues.png" 
-                    alt="Link to Past Issues" 
-                    width="300" 
-                    height="400"
-                    />
-                </Link>
             </div>
             
-            <div className="section" id="section4">
-                <h2>G A M E S</h2>
-                <main>
-                    <h1 style={{ textAlign: 'center' }}>Flappy Bird in Next.js/React</h1>
-                    {/* 3. Render the client wrapper component */}
-                    <DynamicGameWrapper />
-                </main>
+            <div className="section" id="section3">
+                <h2>PAST ISSUES:</h2>
+                {/* NOTE: Replace 'archive.html' with the Next.js Link component route for production */}
+                <Link href="/past-issues">
+                    {/* Replace <img> with Next.js <Image> for optimization in a real app */}
+                        <Image 
+                        src="/past_issues.png" 
+                        alt="Link to Past Issues" 
+                        width="300" 
+                        height="400"
+                        />
+                    </Link>
+                </div>
+                
+                <div className="section" id="section4">
+                    <h2>G A M E S</h2>
+                    <main>
+                        <h1 style={{ textAlign: 'center' }}>Flappy Bird in Next.js/React</h1>
+                        {/* 3. Render the client wrapper component */}
+                        <DynamicGameWrapper />
+                    </main>
+                </div>
             </div>
-        </div>
-        
-        {/* The fixed navigation bar
-            <div className="navbar">
-                <a href="#top">top of page</a>
-                <a href="#news">News</a>
-                <a href="#contact">Contact</a>
-            </div> */}
-            </>
+            
+            {/* The fixed navigation bar
+                <div className="navbar">
+                    <a href="#top">top of page</a>
+                    <a href="#news">News</a>
+                    <a href="#contact">Contact</a>
+                </div> */}
+                </>
             );
   }
   
