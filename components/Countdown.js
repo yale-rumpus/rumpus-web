@@ -52,12 +52,12 @@ export default function Countdown({ targetDate, html }) {
             return (
                 <>
                     <div className="rumpus-countdown">
-                        <a href="#section2" tarket="_blank" rel="noopener noreferrer"> {/*insert next issue link here*/}
+                        <a href="/" rel="noopener noreferrer"> 
                             <div className="countdown-item">
                                 <span className="countdown-value">
                                     <Image
                                         src="/freaky-joker.jpeg"
-                                        alt="click here..."
+                                        alt="click here to refresh..."
                                         width={500}
                                         height={500}
                                     />
