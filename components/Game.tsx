@@ -357,7 +357,7 @@ export default function PowerJumpGame() {
   };
 
   return (
-    <div className='min-h-screen flex items-center justify-center bg-gradient-to-b from-sky-200 to-sky-100 p-6'>
+    <div className='flex flex-col items-center justify-center p-4'>
       <div className='w-[820px] max-w-full'>
         <h1 className='text-2xl font-bold mb-3'>Power Jump — Next.js Game</h1>
         
