@@ -181,7 +181,7 @@ export default function PowerJumpGame() {
       }
 
       // --- Fade tint over time ---
-      s.blueTint = Math.max(0, s.blueTint - dt * 0.25); // <-- ADDED
+      s.blueTint = Math.max(0, s.blueTint - dt * 0.025); // <-- ADDED
 
       if (s.alive && s.pipes.length === 0) spawnPipe();
 
