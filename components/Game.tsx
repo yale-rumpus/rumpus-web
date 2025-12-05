@@ -12,6 +12,7 @@ export default function PowerJumpGame() {
   const birdX = 160;
   const birdRadius = 18;
   const pipeSpacing = 50;
+  const groundHeight = 80; // Define a fixed height for the ground
 
   const birdImgRef = useRef<HTMLImageElement | null>(null);
   const eyeImgRef = useRef<HTMLImageElement | null>(null);
@@ -20,13 +21,12 @@ export default function PowerJumpGame() {
 
   const [tick, setTick] = useState(0);
 
-  // Added duration and power to the interface to control spark visuals
-  interface Effect { 
-    x: number; 
-    y: number; 
-    timer: number; 
-    duration: number; 
-    power: number; 
+  interface Effect {
+    x: number;
+    y: number;
+    timer: number;
+    duration: number;
+    power: number;
   }
 
   const stateRef = useRef({
@@ -49,7 +49,7 @@ export default function PowerJumpGame() {
   });
 
   useEffect(() => {
-    // Ideally use real images here. For this demo, code handles missing images gracefully.
+    // Load images
     birdImgRef.current = new Image();
     birdImgRef.current.src = '/bird.png';
     eyeImgRef.current = new Image();
@@ -75,7 +75,7 @@ export default function PowerJumpGame() {
     s.prepTime = 0;
     s.eyeOffset = 0;
     s.preparingJump = false;
-    s.jumpEffects = []; // Clear effects on reset
+    s.jumpEffects = [];
     setTick(t => t + 1);
   }
 
@@ -110,19 +110,15 @@ export default function PowerJumpGame() {
           s.preparingJump = true;
           s.prepTime = 0;
 
-          // CALCULATE POWER IMMEDIATELY FOR VISUALS
-          // We calculate closeness (0 to 1) exactly as jumpWithPower does later
           const closeness = 1 - Math.min(1, Math.abs(s.powerPos - 0.5) * 2);
-          
-          // DURATION: Base 0.3s + up to 1.2s extra depending on power
           const effectDuration = 0.3 + (closeness * 1.2); 
 
           s.jumpEffects.push({ 
             x: birdX, 
             y: s.birdY + birdRadius, 
             timer: 0, 
-            duration: effectDuration, // Store calculated duration
-            power: closeness          // Store power for size scaling
+            duration: effectDuration, 
+            power: closeness         
           });
         } else if (!s.alive) {
             resetGame();
@@ -133,11 +129,7 @@ export default function PowerJumpGame() {
       if (e.code === 'Space') triggerAction();
     }
     
-    // Bind click to the canvas container specifically if you want, 
-    // but window is fine for this simple demo
     window.addEventListener('keydown', onKey);
-    // Move onClick handler logic to the canvas element or container 
-    // to avoid triggering when clicking UI buttons
     
     return () => {
       window.removeEventListener('keydown', onKey);
@@ -170,8 +162,8 @@ export default function PowerJumpGame() {
 
       const s = stateRef.current;
 
-      // --- Logic Updates ---
-
+      // --- Logic Updates (Unchanged) ---
+      // ... (Power bar, physics, collision, and pipe movement logic remains here) ...
       if (s.powerActive && !s.preparingJump) {
         const speedFactor = Math.sin(s.powerPos * Math.PI) * 1.2 + 0.1;
         s.powerPos += s.powerDir * dt * 0.8 * speedFactor;
@@ -212,35 +204,8 @@ export default function PowerJumpGame() {
           s.powerActive = true;
         }
       }
-
-      // --- Rendering ---
-
-      if (bgImgRef.current) ctx.drawImage(bgImgRef.current, 0, 0, width, height);
-
-      // Pipes
-      for (const pipe of s.pipes) {
-        const w = 56;
-        const h = pipe.height;
-        ctx.fillStyle = '#2f9e44';
-        ctx.fillRect(pipe.x, groundY - h, w, h);
-        ctx.fillStyle = '#1f6b2e';
-        ctx.fillRect(pipe.x + w - 14, groundY - h, 14, h);
-      }
-
-      // Bird
-      if (birdImgRef.current) ctx.drawImage(birdImgRef.current, birdX - 18, s.birdY - 18, 42, 42);
-      else {
-        // Fallback drawing if image loads fail
-        ctx.beginPath();
-        ctx.arc(birdX, s.birdY, birdRadius, 0, Math.PI*2);
-        ctx.fillStyle = 'yellow';
-        ctx.fill();
-        ctx.stroke();
-      }
-
-      if (eyeImgRef.current) ctx.drawImage(eyeImgRef.current, birdX + 2, s.birdY - 5 + s.eyeOffset, 36, 36);
-
-      // Collision Check
+      
+      // Collision Check (Kept before drawing pipes, which is fine, but needs to be drawn *after*)
       for (const pipe of s.pipes) {
         const w = 56;
         const h = pipe.height;
@@ -258,48 +223,34 @@ export default function PowerJumpGame() {
         }
       }
 
-      // UI Text
-      ctx.font = '28px Inter, system-ui, sans-serif';
-      ctx.fillStyle = '#fff';
-      ctx.fillText(`Score: ${s.score}`, 18, 34);
-      ctx.fillText(`High: ${s.highScore}`, 18, 64);
+      // --- 🎨 NEW DRAWING ORDER ---
 
-      if (s.powerActive) {
-        const barW = 200;
-        const barH = 18;
-        const bx = width - barW - 24;
-        const by = height - 60;
-        
-        // Bar Background
-        ctx.fillStyle = 'rgba(255,255,255,0.12)';
-        ctx.fillRect(bx, by, barW, barH);
-        
-        // Center Marker
-        ctx.fillStyle = 'rgba(255,255,255,0.08)';
-        ctx.fillRect(bx + barW / 2 - 1, by - 6, 2, barH + 12);
-        
-        // Moving Cursor
-        const cx = bx + s.powerPos * barW;
-        const cy = by + barH / 2;
-        ctx.beginPath();
-        ctx.arc(cx, cy, 10, 0, Math.PI * 2);
-        ctx.fillStyle = '#fff';
-        ctx.fill();
-        ctx.lineWidth = 2;
-        ctx.strokeStyle = '#222';
-        ctx.stroke();
+      // 1. Background (Farthest back)
+      if (bgImgRef.current) ctx.drawImage(bgImgRef.current, 0, 0, width, height);
 
-        ctx.font = '14px Inter, system-ui, sans-serif';
-        ctx.fillStyle = '#fff';
-        ctx.fillText('Click or Space to jump', bx - 2, by - 12);
+      // 2. Pipes
+      for (const pipe of s.pipes) {
+        const w = 56;
+        const h = pipe.height;
+        ctx.fillStyle = '#2f9e44';
+        ctx.fillRect(pipe.x, groundY - h, w, h);
+        ctx.fillStyle = '#1f6b2e';
+        ctx.fillRect(pipe.x + w - 14, groundY - h, 14, h);
       }
+      
+      // 3. Ground (Drawn over the background to ensure visibility)
+      ctx.fillStyle = '#654321'; // Brown color for ground
+      ctx.fillRect(0, groundY, width, groundHeight);
+      
+      // Optional: Ground Line for distinction
+      ctx.fillStyle = '#555555';
+      ctx.fillRect(0, groundY, width, 4);
 
-      // Draw Jump Effects (Sparks)
+      // 4. Draw Jump Effects (Sparks) - BEHIND bird
       for (let i = s.jumpEffects.length - 1; i >= 0; i--) {
         const e = s.jumpEffects[i];
         e.timer += dt;
         
-        // Use the calculated duration instead of hardcoded 0.5
         const alpha = 1 - e.timer / e.duration;
         
         if (alpha <= 0) {
@@ -307,8 +258,6 @@ export default function PowerJumpGame() {
           continue;
         }
 
-        // Scale size based on power (0.0 to 1.0)
-        // Base size 40, max size 100
         const size = 40 + (e.power * 60);
 
         if (sparkImgRef.current) {
@@ -327,6 +276,55 @@ export default function PowerJumpGame() {
         }
       }
 
+      // 5. Bird Body (Middle Layer)
+      if (birdImgRef.current) ctx.drawImage(birdImgRef.current, birdX - 18, s.birdY - 18, 42, 42);
+      else {
+        ctx.beginPath();
+        ctx.arc(birdX, s.birdY, birdRadius, 0, Math.PI*2);
+        ctx.fillStyle = 'yellow';
+        ctx.fill();
+        ctx.stroke();
+      }
+
+      // 6. Bird Eye (Closest to Viewer)
+      if (eyeImgRef.current) ctx.drawImage(eyeImgRef.current, birdX + 2, s.birdY - 5 + s.eyeOffset, 36, 36);
+
+      // 7. UI (Score, Power Bar - Closest to Viewer)
+      ctx.font = '28px Inter, system-ui, sans-serif';
+      ctx.fillStyle = '#fff';
+      ctx.fillText(`Score: ${s.score}`, 18, 34);
+      ctx.fillText(`High: ${s.highScore}`, 18, 64);
+
+      if (s.powerActive) {
+        const barW = 200;
+        const barH = 18;
+        const bx = width - barW - 24;
+        const by = height - 60;
+        
+        // Bar
+        ctx.fillStyle = 'rgba(255,255,255,0.12)';
+        ctx.fillRect(bx, by, barW, barH);
+        
+        // Center Marker
+        ctx.fillStyle = 'rgba(255,255,255,0.08)';
+        ctx.fillRect(bx + barW / 2 - 1, by - 6, 2, barH + 12);
+        
+        // Cursor
+        const cx = bx + s.powerPos * barW;
+        const cy = by + barH / 2;
+        ctx.beginPath();
+        ctx.arc(cx, cy, 10, 0, Math.PI * 2);
+        ctx.fillStyle = '#fff';
+        ctx.fill();
+        ctx.lineWidth = 2;
+        ctx.strokeStyle = '#222';
+        ctx.stroke();
+
+        ctx.font = '14px Inter, system-ui, sans-serif';
+        ctx.fillStyle = '#fff';
+        ctx.fillText('Click or Space to jump', bx - 2, by - 12);
+      }
+
       animRef.current = requestAnimationFrame(loop);
     }
 
@@ -339,7 +337,6 @@ export default function PowerJumpGame() {
   }, []);
 
   const handleContainerClick = () => {
-    // We handle click here to separate it from the fullscreen button
     const s = stateRef.current;
     if (s.powerActive) {
       s.preparingJump = true;
@@ -366,31 +363,25 @@ export default function PowerJumpGame() {
         
         <p className='text-sm mb-4 text-gray-700'>
           Click or press Space to lock the power. 
-          <br/>
         </p>
 
-        {/* Container that goes Fullscreen */}
         <div 
             ref={containerRef}
             className='relative rounded-lg shadow-lg overflow-hidden bg-white group'
         >
-          {/* Canvas */}
           <canvas 
             ref={canvasRef} 
             onClick={handleContainerClick}
             className="block w-full h-auto cursor-pointer object-contain bg-black"
             style={{ 
-                // Ensures that when fullscreen, it takes height but preserves aspect ratio logic via object-contain 
-                // Note: Canvas needs internal width/height matching attributes (handled in JS), CSS handles display size.
                 maxHeight: '100vh',
                 maxWidth: '100vw'
             }}
           />
 
-          {/* Fullscreen Button */}
           <button 
             onClick={(e) => {
-                e.stopPropagation(); // Don't trigger a jump
+                e.stopPropagation(); 
                 toggleFullscreen();
             }}
             className="absolute top-4 right-4 bg-black/50 hover:bg-black/70 text-white p-2 rounded text-xs backdrop-blur-sm transition-opacity opacity-0 group-hover:opacity-100"
