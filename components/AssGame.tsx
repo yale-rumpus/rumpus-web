@@ -6,6 +6,7 @@ export default function Game() {
   const [age, setAge] = useState(0);
   const ageRef = useRef(0);
   const [ageRank, setAgeRank] = useState("");
+  const [ageRankDesc, setAgeRankDesc] = useState("");
   const [gameOver, setGameOver] = useState(false);
 
   const xRef = useRef(150);
@@ -35,10 +36,25 @@ export default function Game() {
       else if (ageRef.current <= 19) rank = "sophomore 🧒";
       else if (ageRef.current <= 20) rank = "junior 🧒";
       else if (ageRef.current <= 21) rank = "senior 🧒";
-      else if (ageRef.current <= 25) rank = "grad student";
+      else if (ageRef.current <= 25) rank = "grad student🎓";
       else if (ageRef.current <= 55) rank = "prof 💀";
       else if (ageRef.current <= 65) rank = "senior prof 💀";
       else rank = "ultra tenured prof 💀💀💀";
+      return rank;
+    });
+    setAgeRankDesc(() => {
+      let rank = "none";
+      if (ageRef.current <= 5) rank = '"I\'m good with children" 💀💀💀';
+      else if (ageRef.current <= 12) rank = "💀💀💀";
+      else if (ageRef.current <= 16) rank = "... but Epstein would agree too 💀💀💀";
+      else if (ageRef.current <= 18) rank = "... right before the hormones kick in 💀";
+      else if (ageRef.current <= 19) rank = "maturity?";
+      else if (ageRef.current <= 20) rank = "almost adult?";
+      else if (ageRef.current <= 21) rank = "legally can get drunk 🍺";
+      else if (ageRef.current <= 25) rank = "ok this is getting weird";
+      else if (ageRef.current <= 55) rank = "slide me dat A+";
+      else if (ageRef.current <= 65) rank = "so how's the wife?";
+      else rank = "...I hope he loaded";
       return rank;
     });
   };
@@ -166,8 +182,11 @@ export default function Game() {
         ctx.fillText(`age: ${ageRef.current}`, 110, 200);
         ctx.fillText(ageRank, 110, 230);
 
+        ctx.font = "italic 15px sans-serif";
+        ctx.fillText(ageRankDesc, 110, 270);
+
         ctx.font = "20px sans-serif";
-        ctx.fillText("click to play again", 120, 260);
+        ctx.fillText("click to play again", 120, 450);
       }
 
       rafId = requestAnimationFrame(tick);
