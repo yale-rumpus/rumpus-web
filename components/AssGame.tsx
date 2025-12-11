@@ -70,6 +70,11 @@ export default function Game() {
     const bigRadius = (width - 2 * circleRadius) / 2;
     let rafId: number;
 
+    const leftImg = new Image();
+    leftImg.src = "/ass/assleft.webp";
+    const rightImg = new Image();
+    rightImg.src = "/ass/assright.webp";
+
     function reset() {
       xRef.current = 150;
       yRef.current = 60;
