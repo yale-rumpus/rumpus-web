@@ -197,7 +197,7 @@ export default function RumpusHomePage(){
 
             <div className="c-rumpus__item-info">
               <h1 className="c-rumpus__item-title">G A M E S</h1>
-
+              <p> brought to you with love from the Rumpus game department (we're hiring!) </p>
               <main style={{ margin: '0 auto' }}>
                 <DynamicGameWrapper />
               </main>

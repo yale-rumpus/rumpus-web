@@ -214,13 +214,18 @@ export default function Game() {
   }, [ageRank]);
 
   return (
-    <div className="flex justify-center mt-10">
-      <canvas
-        ref={canvasRef}
-        width={400}
-        height={500}
-        style={{ border: "1px solid #aaa", borderRadius: 8 }}
-      />
-    </div>
+    <>
+    <h1 className='text-2xl font-bold mb-3'>Age of Ass</h1>
+      <p className="text-lg">a game to find out how old the Yuzz is</p> 
+      <p className="text-lg">Click to start or reset the game</p>
+      <div className="flex justify-center mt-10">
+        <canvas
+          ref={canvasRef}
+          width={400}
+          height={500}
+          style={{ border: "1px solid #aaa", borderRadius: 8 }}
+        />
+      </div>
+    </>
   );
 }

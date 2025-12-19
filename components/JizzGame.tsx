@@ -354,7 +354,7 @@ export default function PowerJumpGame() {
   return (
     <div className='flex flex-col items-center justify-center p-4'>
       <div className='w-[820px] max-w-full'>
-        <h1 className='text-2xl font-bold mb-3'>Power Jump — Next.js Game</h1>
+        <h1 className='text-2xl font-bold mb-3'>Jizz Jump</h1>
 
         <p className='text-sm mb-4 text-gray-700'>
           Click or press Space to lock the power.
