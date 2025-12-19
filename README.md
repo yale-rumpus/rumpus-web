@@ -20,33 +20,32 @@ Note that rumpus isn't affiliated with Yale University the institution and that 
 
 This website was developed with nextjs with the intention of launching on vercel. To be specific:
 
-```md
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
-```
+> [!quote]
+> This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+
 
 ### hosting on vercel
 
 from the nextjs readme and documents:
 
-```md
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+> [!quote]
+>The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+>
+>Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details. 
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details. 
-```
 
 ### self-hosting and development
 
-```md
-an aside on requirements 
-### requirements
-- nodejs on your system. See [https://nodejs.org/en/download](https://nodejs.org/en/download)
-- Operating systems: macOS, Windows (including WSL), and Linux.
-- a supported browser: 
-    - Chrome 111+
-    - Edge 111+
-    - Firefox 111+
-    - Safari 16.4+
-```
+> [!note]
+> an aside on requirements 
+> - nodejs on your system. See [https://nodejs.org/en/download](https://nodejs.org/en/download)
+>- Operating systems: macOS, Windows (including WSL), and Linux.
+>- a supported browser: 
+>    - Chrome 111+
+>    - Edge 111+
+>    - Firefox 111+
+>    - Safari 16.4+
+
 
 to self-host on your own machine for development, run 
 
@@ -65,14 +64,14 @@ then open [http://localhost:3000](http://localhost:3000) with your browser to se
 
 again, a lot of this was taken from the README.md.old file, but you can read the documentation listed below:
 
-```md
-To learn more about Next.js, take a look at the following resources:
+> [!quote]
+>To learn more about Next.js, take a look at the following resources:
+>
+>- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+>- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+>
+>You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-```
 
 
 ## about the developers
