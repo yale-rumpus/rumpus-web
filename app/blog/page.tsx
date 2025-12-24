@@ -1,9 +1,14 @@
-import { fetchCommits } from "./actions";
+import { fetchCommits, fetchRepoDetails } from "./actions";
 import CommitList from "./CommitList"; // looks like an error but DON'T TOUCH IT it works fine. 
 import "./blogstyle.css";
+import RefreshButton from "./RefreshButton"; // Small client component for the button
 
 export default async function Page() {
   const initialCommits = await fetchCommits(1);
+  const repo = await fetchRepoDetails();
+
+  // Formatting the date for the card
+  const lastUpdated = repo ? new Date(repo.updated_at).toLocaleDateString() : "Recently";
 
   return (
     <main style={{ maxWidth: '800px', margin: '0 auto', padding: '20px'}}>
@@ -19,7 +24,7 @@ export default async function Page() {
         We are always working on new features and improvements, so be sure to follow us for the latest news and developments.
         </p>
 
-        {/* GitHub Preview Card */}
+        {/* GitHub Preview Card with Dynamic Stats */}
         <a 
           href="https://github.com/CrankyTitanO7/rumpus-web" 
           target="_blank" 
@@ -38,15 +43,21 @@ export default async function Page() {
           <img 
             src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" 
             alt="GitHub Logo" 
-            style={{ width: '40px', height: '40px', marginRight: '15px' }} 
+            style={{ width: '40px', height: '40px', marginRight: '15px', filter: 'invert(1)' }} 
           />
-          <div>
+          <div style={{ flexGrow: 1 }}>
             <div style={{ color: '#7283cfff', fontWeight: 'bold', fontSize: '16px' }}>CrankyTitanO7 / rumpus-web</div>
-            <div style={{ color: '#999999ff', fontSize: '13px' }}>View repository on GitHub</div>
+            <div style={{ color: '#999999ff', fontSize: '13px', marginTop: '4px' }}>
+              {repo ? `⭐ ${repo.stargazers_count} stars • Updated ${lastUpdated}` : 'View repository on GitHub'}
+            </div>
           </div>
         </a>
 
-      <h2 style={{ color: '#000000ff', fontSize: '24px', borderTop: '1px solid #d0d7de', margin: '20px 0' }}>Recent Commits</h2>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderTop: '1px solid #d0d7de', margin: '20px 0' }}>
+        <h2 style={{ color: '#000000ff', fontSize: '24px', margin: 0 }}>Recent Commits</h2>
+        <RefreshButton />
+      </div>
+
       <CommitList initialCommits={initialCommits} />
     </main>
   );
