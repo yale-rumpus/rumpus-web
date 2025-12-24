@@ -93,6 +93,9 @@ export default function Sidebar() {
             <li>
               <Link href="/about">About</Link>
             </li>
+            <li>
+              <Link href="/blog">Blog</Link>
+            </li>
           </ul>
         </nav>
 
@@ -113,7 +116,7 @@ export default function Sidebar() {
                 <a href="#top" onClick={(e) => handleNav(e, '#top')}>top of page</a>
               </li>
               <li>
-                <a href="#section1" onClick={(e) => handleNav(e, '#section1')}>Countdown</a>
+                <a href="#section1" onClick={(e) => handleNav(e, '#top')}>Countdown</a>
               </li>
               <li>
                 <a href="#section2" onClick={(e) => handleNav(e, '#section2')}>Latest Issue</a>
@@ -126,6 +129,9 @@ export default function Sidebar() {
               </li>
               <li>
                 <Link href="/about">About</Link>
+              </li>
+              <li>
+                <Link href="/blog">Blog</Link>
               </li>
             </ul>
           </aside>
