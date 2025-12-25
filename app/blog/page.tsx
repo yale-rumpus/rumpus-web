@@ -116,7 +116,43 @@ export default async function Page() {
                         </div>
                     </div>
                 </a>
-
+                <div
+                    style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                        borderTop: "1px solid #d0d7de",
+                        margin: "20px 0",
+                    }}
+                >
+                    <h2
+                        style={{
+                            color: "#000000ff",
+                            fontSize: "24px",
+                            margin: 0,
+                        }}
+                        className="blog"
+                    >
+                        Official Blog Notes
+                    </h2>
+                    
+                    <div className="blog-casing">
+                        <h3 className="blog-title">Blog 12/24/25</h3>
+                        <br />
+                        <p className="blog">
+                            Merry Christmas! We are excited to announce the
+                            launch of our new website for the Yale Rumpus. 
+                            Our team has been working hard to create a platform
+                            that showcases our passion and drive and dedication
+                            to the bit. we will keep working on this project and
+                            keep you updated with new features and content.
+                            Thank you for your support, and we look forward to
+                            sharing our journey with you!
+                            <br />
+                            - Jaden Lee, class of 2029
+                        </p>
+                    </div>
+                </div>
                 <div
                     style={{
                         display: "flex",
@@ -157,6 +193,9 @@ export default async function Page() {
                             </li>
                             <li>
                                 <a href="#git">GitHub Page</a>
+                            </li>
+                            <li>
+                                <a href="#blog">Official Blog Notes</a>
                             </li>
                             <li>
                                 <a href="#commits">Recent Commits</a>
