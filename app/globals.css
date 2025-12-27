@@ -19,13 +19,18 @@ html {
   margin: 0;
   background: #500a0a;
   background-image: url(../public/decal.png);
-  font-family: Arial, Helvetica, sans-serif;
+  /* font-family: Arial, Helvetica, sans-serif; */
   text-align: center;
   color: #000;
   scroll-behavior: smooth;
   background-attachment: fixed;
   background-position: center center;
   background-size: cover;
+
+  /* custom font things */
+font-family: Palatino;
+font-style: normal;
+font-weight: 400;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -197,7 +202,20 @@ section:nth-of-type(even) {
   border-radius: 12px;
 }
 
-.c-rumpus__item:not(:last-child) {
+
+/* first child animation */
+.c-rumpus__item:first-child {
+    view-timeline-name: --card;
+  view-timeline-axis: block;
+  animation-timeline: --card;
+
+  /* run BOTH animations */
+  animation-name: card-shrink, card-fade;
+  animation-range: entry 100% exit 120%;
+  animation-fill-mode: both;
+}
+
+.c-rumpus__item:not(:first-child):not(:last-child) {
   view-timeline-name: --card;
   view-timeline-axis: block;
   animation-timeline: --card;

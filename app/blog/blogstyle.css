@@ -1,5 +1,9 @@
 html {
   background-image: url("../../public/blog-bg.png");
+    /* custom font things */
+font-family: "Inter", monospace;
+font-style: normal;
+font-weight: 400;
 }
 
 aside {
