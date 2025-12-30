@@ -20,7 +20,7 @@ export default async function Page() {
             >
                 <h1
                     style={{
-                        color: "#000000ff",
+                        // color: "#ffffffff",
                         fontSize: "32px",
                         borderTop: "1px solid #d0d7de",
                     }}
@@ -51,7 +51,7 @@ export default async function Page() {
                 </p>
                 <h2
                     style={{
-                        color: "#000000ff",
+                        // color: "#ffffffff",
                         fontSize: "24px",
                         borderTop: "1px solid #d0d7de",
                         margin: "20px 0",
@@ -127,7 +127,7 @@ export default async function Page() {
                 >
                     <h2
                         style={{
-                            color: "#000000ff",
+                            color: "#rgba(173, 173, 173, 1)",
                             fontSize: "24px",
                             margin: 0,
                         }}
@@ -164,7 +164,7 @@ export default async function Page() {
                 >
                     <h2
                         style={{
-                            color: "#000000ff",
+                            // color: "#000000ff",
                             fontSize: "24px",
                             margin: 0,
                         }}
@@ -172,6 +172,7 @@ export default async function Page() {
                     >
                         Recent Commits
                     </h2>
+                    <span>note that sometimes its a little slow to load.</span>
                     <RefreshButton />
                 </div>
 

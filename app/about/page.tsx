@@ -28,10 +28,19 @@ export default function AboutPage() {
     return (
         <>
             <section className="w-full">
-                <h1>About and Contact</h1>
-                <p>All about the single best asses on campus</p>
+                <div id="head">
+                    <h1>About and Contact</h1>
+                    <p>All about the single best asses on campus</p>
+                </div>
 
-                <div className="flex flex-row items-start justify-center gap-12 mt-12">
+                <div id="head">
+                  <h2><a href="/">return Home</a></h2>
+                </div>
+
+                <div
+                    className="flex flex-row items-start justify-center gap-12 mt-12"
+                    id="about-authors"
+                >
                     {/* LEFT: IMAGE */}
                     <div className="shrink-0">
                         <Image
@@ -121,12 +130,14 @@ export default function AboutPage() {
                                 feel free to contact us (below)
                             </p>{" "}
                             <br />{" "}
-                            <a
-                                href="mailto:yalerumpus@gmail.com?subject=Name%20and%20Bug%20Report&body=Describe%20the%20issue%20here"
-                                type="email"
-                            >
-                                yalerumpus@gmail.com
-                            </a>
+                            <h2>
+                                <a
+                                    href="mailto:yalerumpus@gmail.com?subject=Name%20and%20Bug%20Report&body=Describe%20the%20issue%20here"
+                                    type="email"
+                                >
+                                    yalerumpus@gmail.com
+                                </a>
+                            </h2>
                         </div>
                     </div>
                 </div>
