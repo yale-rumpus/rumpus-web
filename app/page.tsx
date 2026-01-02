@@ -1,10 +1,9 @@
 import Image from "next/image";
 import "./globals.css";
-import Link from "next/link";
 
 // import Head from 'next/head';
-import Sidebar from "../components/Sidebar.js";
 import Countdown from "../components/Countdown.js";
+import Sidebar from "../components/Sidebar.js";
 import { reverseTimer } from "../lib/reverseTimer";
 
 // Use dynamic import to ensure the component is rendered only on the client
@@ -219,25 +218,25 @@ export default function RumpusHomePage() {
                             </div>
                         </article>
 
-                        {/* ----------------- CARD 3: PAST ISSUES ----------------- */}
+                        {/* ----------------- CARD 3: ongoing surveys ----------------- */}
                         {/* <article className="c-rumpus__item">
 
-            <div className="c-rumpus__item-figure c-rumpus__gradient-bottom"></div>
+                            <div className="c-rumpus__item-figure c-rumpus__gradient-bottom"></div>
 
-            <div className="c-rumpus__item-info">
-              <h2 className="c-rumpus__item-title">PAST ISSUES:</h2>
+                            <div className="c-rumpus__item-info">
+                                <h2 className="c-rumpus__item-title">Ongoing Surveys</h2>
 
-              <Link href="/past-issues" style={{ display: 'block', textAlign: 'center' }}>
-                <Image
-                  src="/past_issues.png"
-                  alt="Link to Past Issues"
-                  width={300}
-                  height={400}
-                  style={{ margin: '0 auto' }}
-                />
-              </Link>
-            </div>
-          </article> */}
+                                <Link href="" style={{ display: 'block', textAlign: 'center' }}>
+                                    <Image
+                                        src="/surveyQR.png"
+                                        alt="survey qr code and link"
+                                        width={300}
+                                        height={300}
+                                        style={{ margin: '0 auto' }}
+                                    />
+                                </Link>
+                            </div>
+                        </article> */}
 
                         {/* ----------------- CARD 4: GAMES ----------------- */}
                         <article className="c-rumpus__item" id="section4">
