@@ -14,15 +14,18 @@ import DynamicGameWrapper from "@/components/DynamicGameWrapper";
 
 // current issue info
 const reference = {
-    issueurl: "https://online.fliphtml5.com/sesvj/zjfg/", // link to current article viewer
-    pageref: [16, 1, 8], // page numbers for the three iframes
-    targetdate: "2025-12-31T15:13:30", // target date for countdown timer
-};
+    issueurl: "https://online.fliphtml5.com/sesvj/iljc/", // link to next issue article viewer
+    pageref: [12, 1, 5], // page numbers for the three iframes
+    targetdate: "2026-01-31T15:13:30", // target date for countdown timer
+}; 
+
+// IMPORTANT DEVELOPER NOTE: WHEN SPECIFYING TARGET DATE YOU MUST USE 2 DIGIT NUMBERS
+// ie "2024-09-05T09:07:00" NOT "2024-9-5T9:7:00"
 
 // queue up next issue info
 const referenceNext = {
-    issueurl: "https://online.fliphtml5.com/sesvj/iljc/", // link to next issue article viewer
-    pageref: [12, 1, 5], // page numbers for the three iframes
+    issueurl: "", // link to next issue article viewer
+    pageref: [0, 0, 0], // page numbers for the three iframes
     targetdate: reference.targetdate, // target date for countdown timer
     // dateform: new Date(reference.targetdate)
 };
