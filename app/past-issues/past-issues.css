@@ -1,0 +1,38 @@
+.past-issues-page {
+    min-height: 100vh;
+    padding: 60px 20px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.past-issues-page h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.past-issues-page h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    font-style: italic;
+}
+
+@media (max-width: 768px) {
+    .past-issues-page {
+        padding: 40px 16px;
+    }
+    
+    .past-issues-page h1 {
+        font-size: 2rem;
+    }
+    
+    .past-issues-page h2 {
+        font-size: 1.25rem;
+    }
+    
+    .past-issues-page p {
+        font-size: 16px;
+    }
+}

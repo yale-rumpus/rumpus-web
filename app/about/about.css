@@ -8,6 +8,74 @@
     .arrow-text.horizontal {
         flex-direction: row;
     }
+    
+    /* Mobile layout improvements */
+    #about-authors {
+        flex-direction: column !important;
+        align-items: center !important;
+        gap: 2rem !important;
+        padding: 1.5rem !important;
+        margin-top: 1.5rem !important;
+    }
+    
+    #about-authors .shrink-0 {
+        width: 100%;
+        max-width: 240px;
+    }
+    
+    #about-authors .flex-col {
+        max-width: 100% !important;
+        width: 100%;
+    }
+    
+    #head {
+        padding: 0.75rem !important;
+        margin-top: 0.5rem !important;
+    }
+    
+    #head h1 {
+        font-size: 1.75rem !important;
+    }
+    
+    #head h2 {
+        font-size: 1.25rem !important;
+    }
+    
+    .report-bug {
+        padding: 1.5rem !important;
+    }
+    
+    .contactForm {
+        max-width: 100% !important;
+    }
+    
+    /* Arrow adjustments for mobile */
+    .arrow {
+        width: 40px !important;
+        height: auto !important;
+    }
+    
+    .arrow-2 {
+        width: 40px !important;
+        height: 60px !important;
+    }
+    
+    /* Change first arrow to point up on mobile */
+    .arrow-container-1 {
+        flex-direction: column !important;
+        align-items: center !important;
+        gap: 12px !important;
+    }
+    
+    .arrow-container-1 .arrow-1 {
+        transform: rotate(-90deg);
+        width: 40px !important;
+        height: 60px !important;
+    }
+    
+    .arrow-container-1 span {
+        text-align: center;
+    }
 }
 
 html {

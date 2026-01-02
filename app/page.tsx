@@ -73,12 +73,15 @@ export default function RumpusHomePage() {
                                 flexDirection: "column",
                                 alignItems: "center",
                             }}
+                            className="header-logo"
                         >
                             <Image
                                 src="/rumpus-online-logo.png"
                                 alt="the Yale Rumpus Logo"
                                 width={541}
                                 height={193}
+                                style={{ maxWidth: "100%", height: "auto" }}
+                                priority
                             />
                             <p
                                 style={{
@@ -99,12 +102,14 @@ export default function RumpusHomePage() {
                                 alignItems: "center",
                                 margin: 0,
                             }}
+                            className="header-figure"
                         >
                             <Image
                                 src="/oldest-college-tab.png"
                                 alt="Oldest College Tab"
                                 width={150}
                                 height={140}
+                                style={{ maxWidth: "100%", height: "auto" }}
                             />
                             <figcaption
                                 style={{

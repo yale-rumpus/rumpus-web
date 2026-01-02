@@ -223,17 +223,42 @@ export default function Game() {
         };
     }, [ageRank]);
 
+    const [isMobile, setIsMobile] = useState(false);
+    const canvasWidth = isMobile ? Math.min(400, typeof window !== 'undefined' ? window.innerWidth - 32 : 400) : 400;
+    const canvasHeight = isMobile ? Math.floor(canvasWidth * 1.25) : 500;
+
+    useEffect(() => {
+        const checkMobile = () => {
+            setIsMobile(window.innerWidth <= 768);
+        };
+        checkMobile();
+        window.addEventListener('resize', checkMobile);
+        return () => window.removeEventListener('resize', checkMobile);
+    }, []);
+
+    useEffect(() => {
+        if (canvasRef.current) {
+            canvasRef.current.width = canvasWidth;
+            canvasRef.current.height = canvasHeight;
+        }
+    }, [canvasWidth, canvasHeight]);
+
     return (
         <>
             <h1 className="text-2xl font-bold mb-3">Age of Ass</h1>
             <p className="text-lg">a game to find out how old the Yuzz is</p>
             <p className="text-lg">Click to start or reset the game</p>
-            <div className="flex justify-center mt-10">
+            <div className="flex justify-center mt-10 game-container">
                 <canvas
                     ref={canvasRef}
-                    width={400}
-                    height={500}
-                    style={{ border: "1px solid #aaa", borderRadius: 8 }}
+                    width={canvasWidth}
+                    height={canvasHeight}
+                    style={{ 
+                        border: "1px solid #aaa", 
+                        borderRadius: 8,
+                        maxWidth: '100%',
+                        height: 'auto'
+                    }}
                 />
             </div>
             <div className="flex items-center justify-between mt-3 text-sm text-gray-600">

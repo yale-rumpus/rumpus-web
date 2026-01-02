@@ -87,6 +87,62 @@ a {
     }
 }
 
+/* Additional mobile improvements */
+@media (max-width: 768px) {
+    html {
+        background-size: cover;
+        background-attachment: scroll;
+    }
+    
+    /* Improve text readability on mobile */
+    body {
+        font-size: 16px;
+        line-height: 1.6;
+    }
+    
+    /* Better spacing for mobile */
+    .rumpus-countdown-wrap {
+        padding: 0 8px;
+    }
+    
+    /* Header mobile adjustments */
+    .header {
+        padding: 12px 8px !important;
+    }
+    
+    .header-logo {
+        flex: 1 1 100% !important;
+        min-width: 100% !important;
+        margin-bottom: 16px;
+    }
+    
+    .header-figure {
+        flex: 0 0 auto !important;
+        margin: 0 auto;
+    }
+    
+    /* Ensure images are responsive */
+    img {
+        max-width: 100%;
+        height: auto;
+    }
+    
+    /* Improve touch targets */
+    a, button {
+        min-height: 44px;
+        min-width: 44px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    /* Better text wrapping */
+    p, h1, h2, h3, h4, h5, h6 {
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+    }
+}
+
 /* ----------------------------------------
    TOP ISSUES LAYOUT  
 ----------------------------------------- */
@@ -99,6 +155,30 @@ a {
     gap: 20px;
     flex-wrap: wrap; /* responsive */
     width: 100%;
+}
+
+/* Mobile: stack columns vertically */
+@media (max-width: 768px) {
+    .rumpus-top-issues {
+        flex-direction: column;
+        gap: 16px;
+    }
+    
+    .rumpus-top-left,
+    .rumpus-top-right {
+        max-width: 100%;
+        flex: 1 1 100%;
+    }
+    
+    .rumpus-top-row {
+        flex-direction: column;
+        gap: 16px;
+    }
+    
+    .rumpus-top-blurb {
+        max-width: 100%;
+        text-align: center;
+    }
 }
 
 /* LEFT COLUMN — 2 small iframes + text block */
@@ -143,6 +223,15 @@ a {
     border-radius: 12px;
 }
 
+/* Mobile responsive iframe adjustments */
+@media (max-width: 768px) {
+    .rumpus-top-left iframe,
+    .rumpus-top-right iframe {
+        height: 250px !important;
+        min-height: 250px;
+    }
+}
+
 /* ----------------------------------------
    IFRAME BEVEL WRAP
 ----------------------------------------- */
@@ -166,6 +255,14 @@ section {
     padding: 60px 20px;
     min-height: 100vh;
     box-sizing: border-box;
+}
+
+/* Mobile responsive section padding */
+@media (max-width: 768px) {
+    section {
+        padding: 40px 16px;
+        min-height: auto;
+    }
 }
 
 section:nth-of-type(odd) {
@@ -294,6 +391,56 @@ section:nth-of-type(even) {
 .c-rumpus__item-title {
     font-size: 36px;
     margin-bottom: 20px;
+}
+
+/* Mobile responsive card adjustments */
+@media (max-width: 768px) {
+    .c-rumpus {
+        width: 100%;
+        margin: 0;
+        border-radius: 0;
+    }
+    
+    .c-rumpus__item {
+        position: relative !important;
+        top: 0 !important;
+        margin-bottom: 20px;
+        /* Disable animations on mobile */
+        animation: none !important;
+        view-timeline-name: none !important;
+        animation-timeline: none !important;
+    }
+    
+    .c-rumpus__item-info {
+        padding: 24px 16px;
+    }
+    
+    .c-rumpus__item-title {
+        font-size: 24px;
+        margin-bottom: 16px;
+    }
+    
+    .c-rumpus__list {
+        gap: 20px;
+    }
+    
+    /* Ensure games container is responsive */
+    .c-rumpus__item-info main {
+        width: 100%;
+        max-width: 100%;
+        overflow-x: auto;
+    }
+    
+    .game-container {
+        width: 100% !important;
+        max-width: 100% !important;
+        padding: 8px !important;
+    }
+    
+    .game-container canvas {
+        max-width: 100% !important;
+        height: auto !important;
+    }
 }
 
 /* Animation */

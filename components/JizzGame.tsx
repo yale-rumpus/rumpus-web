@@ -6,8 +6,11 @@ export default function PowerJumpGame() {
     const animRef = useRef<number | null>(null);
     const lastTimeRef = useRef<number | null>(null);
 
-    const width = 800;
-    const height = 500;
+    const [isMobile, setIsMobile] = useState(false);
+    const [dimensions, setDimensions] = useState({ width: 800, height: 500 });
+    
+    const width = dimensions.width;
+    const height = dimensions.height;
     const groundY = height - 80;
     const birdX = 160;
     const birdRadius = 18;
@@ -51,6 +54,21 @@ export default function PowerJumpGame() {
     });
 
     useEffect(() => {
+        // Check if mobile on mount and resize
+        const checkMobile = () => {
+            const mobile = window.innerWidth <= 768;
+            setIsMobile(mobile);
+            if (mobile) {
+                const newWidth = Math.min(800, window.innerWidth - 32);
+                const newHeight = Math.floor(newWidth * 0.625);
+                setDimensions({ width: newWidth, height: newHeight });
+            } else {
+                setDimensions({ width: 800, height: 500 });
+            }
+        };
+        checkMobile();
+        window.addEventListener('resize', checkMobile);
+        
         birdImgRef.current = new Image();
         birdImgRef.current.src = "/bird.png";
         eyeImgRef.current = new Image();
@@ -59,6 +77,8 @@ export default function PowerJumpGame() {
         bgImgRef.current.src = "/background.png";
         sparkImgRef.current = new Image();
         sparkImgRef.current.src = "/spark.png";
+        
+        return () => window.removeEventListener('resize', checkMobile);
     }, []);
 
     function resetGame() {
@@ -357,7 +377,7 @@ export default function PowerJumpGame() {
             if (animRef.current) cancelAnimationFrame(animRef.current);
             lastTimeRef.current = null;
         };
-    }, []);
+    }, [width, height]);
 
     const handleContainerClick = () => {
         const s = stateRef.current;
@@ -381,8 +401,8 @@ export default function PowerJumpGame() {
     };
 
     return (
-        <div className="flex flex-col items-center justify-center p-4">
-            <div className="w-[820px] max-w-full">
+        <div className="flex flex-col items-center justify-center p-4 game-container">
+            <div className="w-full max-w-full" style={{ maxWidth: isMobile ? '100%' : '820px' }}>
                 <h1 className="text-2xl font-bold mb-3">Jizz Jump</h1>
 
                 <p className="text-sm mb-4 text-gray-700">
@@ -392,12 +412,18 @@ export default function PowerJumpGame() {
                 <div
                     ref={containerRef}
                     className="relative rounded-lg shadow-lg overflow-hidden bg-white group"
+                    style={{ width: '100%', maxWidth: width }}
                 >
                     <canvas
                         ref={canvasRef}
                         onClick={handleContainerClick}
                         className="block w-full h-auto cursor-pointer object-contain bg-black"
-                        style={{ maxHeight: "100vh", maxWidth: "100vw" }}
+                        style={{ 
+                            maxHeight: "100vh", 
+                            maxWidth: "100%",
+                            width: `${width}px`,
+                            height: `${height}px`
+                        }}
                     />
 
                     <button

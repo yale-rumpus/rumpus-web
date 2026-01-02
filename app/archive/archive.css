@@ -1,0 +1,23 @@
+.archive-main {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+@media (max-width: 768px) {
+    .archive-main {
+        padding: 16px !important;
+        text-align: center;
+    }
+    
+    .archive-main h1 {
+        font-size: 28px;
+        margin-bottom: 16px;
+    }
+    
+    .archive-main p {
+        font-size: 14px;
+    }
+}

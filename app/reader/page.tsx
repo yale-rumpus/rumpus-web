@@ -1,5 +1,6 @@
 // large page viewer
 import "../globals.css";
+import "./reader.css";
 import { reverseTimer } from "@/lib/reverseTimer";
 
 // current issue info
@@ -33,13 +34,14 @@ const endref = {
 
 export default function reader() {
     return (
-        <div className="bevel-wrap">
-            <iframe
-                src={`${endref.issueurl}#p=${endref.pageref[0]}`}
-                height="1000px"
-                width="1000px"
-                style={{ border: "none" }}
-            />
+        <div className="reader-container">
+            <div className="bevel-wrap">
+                <iframe
+                    src={`${endref.issueurl}#p=${endref.pageref[0]}`}
+                    className="reader-iframe"
+                    style={{ border: "none" }}
+                />
+            </div>
         </div>
     );
 }

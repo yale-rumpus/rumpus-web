@@ -56,8 +56,8 @@ export default function AboutPage() {
 
                     {/* RIGHT: CONTENT */}
                     <div className="flex flex-col gap-10 max-w-md">
-                        {/* LEFT ARROW */}
-                        <div className="flex flex-row items-center gap-4">
+                        {/* LEFT ARROW (UP on mobile) */}
+                        <div className="flex flex-row items-center gap-4 arrow-container-1">
                             <svg
                                 className="arrow arrow-1"
                                 width="60"

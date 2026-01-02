@@ -38,6 +38,123 @@ aside:hover {
     -webkit-backdrop-filter: blur(0px);
 }
 
+/* Mobile: Hide sidebar by default, show as bottom sheet or menu */
+@media (max-width: 768px) {
+    aside {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        top: auto;
+        width: 100%;
+        height: auto;
+        max-height: 60vh;
+        border-radius: 16px 16px 0 0;
+        transform: translateY(100%);
+        transition: transform 0.3s ease-in-out;
+        padding: 16px 16px 32px 16px;
+        overflow-y: auto;
+        z-index: 1000;
+    }
+    
+    /* Show sidebar when it has mobile-open class */
+    aside.mobile-open {
+        transform: translateY(0);
+    }
+    
+    /* Adjust main content for mobile */
+    .blog-main {
+        padding-bottom: 80px !important;
+        padding-left: 16px !important;
+        padding-right: 16px !important;
+    }
+    
+    /* Improve mobile typography */
+    h1 {
+        font-size: 24px !important;
+    }
+    
+    h2 {
+        font-size: 20px !important;
+    }
+    
+    /* Make GitHub card responsive */
+    a[href*="github.com"] {
+        flex-direction: column !important;
+        text-align: center;
+    }
+    
+    a[href*="github.com"] img {
+        margin-right: 0 !important;
+        margin-bottom: 12px;
+    }
+    
+    /* Stack flex items on mobile */
+    div[style*="flex"][style*="space-between"] {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 12px;
+    }
+}
+
+/* BlogSidebar mobile styles */
+.blog-sidebar-toggle {
+    display: none;
+}
+
+.blog-sidebar-close {
+    display: none;
+}
+
+.blog-sidebar-overlay {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .blog-sidebar-toggle {
+        display: block;
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 1001;
+        padding: 12px 20px;
+        background: #070c18;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 16px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    .blog-sidebar-overlay {
+        display: block;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 999;
+    }
+
+    .blog-sidebar-close {
+        display: block;
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        background: transparent;
+        border: none;
+        color: white;
+        font-size: 32px;
+        cursor: pointer;
+        line-height: 1;
+        padding: 0;
+        width: 32px;
+        height: 32px;
+    }
+}
+
 a {
     color: #064ed3;
     text-decoration: underline;

@@ -2,6 +2,7 @@ import { fetchCommits, fetchRepoDetails } from "./actions";
 import "./blogstyle.css";
 import CommitList from "./CommitList"; // looks like an error but DON'T TOUCH IT it works fine.
 import RefreshButton from "./RefreshButton"; // Small client component for the button
+import BlogSidebar from "./BlogSidebar";
 
 export default async function Page() {
     const initialCommits = await fetchCommits(1);
@@ -16,7 +17,7 @@ export default async function Page() {
         <>
             <main
                 style={{ maxWidth: "800px", margin: "0 auto", padding: "20px" }}
-                className="top"
+                className="top blog-main"
             >
                 <h1
                     style={{
@@ -188,33 +189,7 @@ export default async function Page() {
 
                 <CommitList initialCommits={initialCommits} />
             </main>
-            <aside>
-                <ul>
-                    <li>
-                        <a href="/">Home</a>
-                    </li>
-                    <li>
-                        Blog:
-                        <ul>
-                            <li>
-                                <a href="/blog">All Posts</a>
-                            </li>
-                            <li>
-                                <a href="#top">Top</a>
-                            </li>
-                            <li>
-                                <a href="#git">GitHub Page</a>
-                            </li>
-                            <li>
-                                <a href="#blog">Official Blog Notes</a>
-                            </li>
-                            <li>
-                                <a href="#commits">Recent Commits</a>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-            </aside>
+            <BlogSidebar />
         </>
     );
 }
