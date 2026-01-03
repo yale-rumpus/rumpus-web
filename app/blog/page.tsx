@@ -1,8 +1,8 @@
 import { fetchCommits, fetchRepoDetails } from "./actions";
+import BlogSidebar from "./BlogSidebar";
 import "./blogstyle.css";
 import CommitList from "./CommitList"; // looks like an error but DON'T TOUCH IT it works fine.
 import RefreshButton from "./RefreshButton"; // Small client component for the button
-import BlogSidebar from "./BlogSidebar";
 
 export default async function Page() {
     const initialCommits = await fetchCommits(1);
@@ -38,7 +38,7 @@ export default async function Page() {
                 <p style={{ color: "#999999ff", fontSize: "15px" }}>
                     Feel free to leave your{" "}
                     <a
-                        href="/feedback"
+                        href="/about"
                         style={{
                             textDecoration: "underline",
                             color: "#7283cfff",
