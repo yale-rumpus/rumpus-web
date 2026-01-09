@@ -52,21 +52,53 @@ const WordleGame: React.FC = () => {
     const [letterStatuses, setLetterStatuses] = useState<Map<string, LetterStatus>>(new Map());
     const [revealingRow, setRevealingRow] = useState<number | null>(null);
     const [revealingIndex, setRevealingIndex] = useState(0);
+    const [lastGameDate, setLastGameDate] = useState<string>('');
 
-    useEffect(() => {
+    const resetGame = () => {
         const fetchYalie = async () => {
             try {
                 const yalie = await getRandomYalie();
                 setYalieData(yalie);
                 const target = getTargetWord(yalie);
                 setTargetWord(target);
+                localStorage.setItem('wordle-yalie-data', JSON.stringify(yalie));
             } catch (error) {
                 console.error('Failed to fetch Yalie:', error);
-                // Fallback to a static word
                 setTargetWord('JOHND24');
             }
         };
         fetchYalie();
+        setGuesses([]);
+        setCurrentGuess('');
+        setGameStatus('playing');
+        setMessage('');
+        setLetterStatuses(new Map());
+        setRevealingRow(null);
+        setRevealingIndex(0);
+        setLastGameDate(new Date().toDateString());
+        localStorage.setItem('wordle-last-game-date', new Date().toDateString());
+    };
+
+    useEffect(() => {
+        const storedDate = localStorage.getItem('wordle-last-game-date');
+        const today = new Date().toDateString();
+
+        if (storedDate !== today) {
+            // New day, reset game
+            resetGame();
+        } else {
+            // Same day, load existing yalie data
+            const storedYalie = localStorage.getItem('wordle-yalie-data');
+            if (storedYalie) {
+                const yalie = JSON.parse(storedYalie);
+                setYalieData(yalie);
+                const target = getTargetWord(yalie);
+                setTargetWord(target);
+            } else {
+                // Fallback if no stored data
+                resetGame();
+            }
+        }
     }, []);
 
     const checkGuess = (guess: string): Guess => {
@@ -232,27 +264,7 @@ const WordleGame: React.FC = () => {
         }
     };
 
-    const resetGame = () => {
-        const fetchYalie = async () => {
-            try {
-                const yalie = await getRandomYalie();
-                setYalieData(yalie);
-                const target = getTargetWord(yalie);
-                setTargetWord(target);
-            } catch (error) {
-                console.error('Failed to fetch Yalie:', error);
-                setTargetWord('JOHND24');
-            }
-        };
-        fetchYalie();
-        setGuesses([]);
-        setCurrentGuess('');
-        setGameStatus('playing');
-        setMessage('');
-        setLetterStatuses(new Map());
-        setRevealingRow(null);
-        setRevealingIndex(0);
-    };
+
 
     return (
         <div className="flex flex-col items-center p-4 max-w-md mx-auto">
@@ -307,17 +319,33 @@ const WordleGame: React.FC = () => {
                     >
                         Share
                     </button>
-                    <button
+                    {/* <button
                         onClick={resetGame}
                         className="px-4 py-2 bg-green-500 text-white hover:bg-green-600 rounded"
                     >
                         New Game
-                    </button>
+                    </button> */}
                 </div>
             )}
 
             {/* Virtual Keyboard */}
             <div className="mb-4">
+                <div className="flex justify-center mb-2">
+                    {'1234567890'.split('').map(digit => {
+                        const status = letterStatuses.get(digit) || '';
+                        const baseClass = getLetterClass(status);
+                        return (
+                            <button
+                                key={digit}
+                                onClick={() => handleKeyPress(digit)}
+                                className={`m-1 px-2 py-1 ${baseClass} rounded`}
+                                disabled={gameStatus !== 'playing'}
+                            >
+                                {digit}
+                            </button>
+                        );
+                    })}
+                </div>
                 <div className="flex justify-center mb-2">
                     {'QWERTYUIOP'.split('').map(letter => {
                         const status = letterStatuses.get(letter) || '';
@@ -346,22 +374,6 @@ const WordleGame: React.FC = () => {
                                 disabled={gameStatus !== 'playing'}
                             >
                                 {letter}
-                            </button>
-                        );
-                    })}
-                </div>
-                <div className="flex justify-center mb-2">
-                    {'1234567890'.split('').map(digit => {
-                        const status = letterStatuses.get(digit) || '';
-                        const baseClass = getLetterClass(status);
-                        return (
-                            <button
-                                key={digit}
-                                onClick={() => handleKeyPress(digit)}
-                                className={`m-1 px-2 py-1 ${baseClass} rounded`}
-                                disabled={gameStatus !== 'playing'}
-                            >
-                                {digit}
                             </button>
                         );
                     })}
