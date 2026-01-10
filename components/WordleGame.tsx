@@ -23,23 +23,25 @@ const collegeAbbreviations: { [key: string]: string } = {
     'Trumbull': 'TR',
 };
 
+//display these on success
 const encouragingMessages = [
-    "Nice work! 🎉",
-    "You're on fire! 🔥",
-    "Yurdle master! 🏆",
-    "Impressive! ⭐",
-    "You got it! 💪",
-    "Brilliant! 🧠",
-    "Fantastic! 🌟",
-    "Yale's brightest! 💡",
+    "Congrats, you did it! You know this isn't going on your resume... even this guy ->",
+    "You're almost as smart as",
+    "Somewhere a crossword editor feels threatened. Anyway, it was",
+    "nearly ivy league material, just like",
+    "congrats! look them up on instagram ->",
+    "ass-tute detective skills...",
+    "congrats! you're getting head tonight! haha jk. unless... ",
+    "excellent job, you alpha male. let out a howl for",
 ];
 
+// display these on failure
 const consolationMessages = [
-    "Better luck tomorrow! 🌙",
-    "So close! almost had it! 😮",
-    "Tomorrow is a new day! ✨",
-    "Keep trying! 💪",
-    "The yalie will be waiting! 🎯",
+    "oof. better hope this poor schmuck doesn't see ->",
+    "you didn't think of them? ->",
+    "Bill ('Bubba?') Clinton is displeased with your loss. So is",
+    "'nearly frat brother material,' said",
+    "oof. better not put that on your resume, especially if you're",
 ];
 
 interface YalieData {
@@ -203,14 +205,14 @@ const WordleGame: React.FC = () => {
                 if (currentGuess.toUpperCase() === targetWord) {
                     setGameStatus('won');
                     if (yalieData) {
-                        setMessage(`${getRandomMessage(encouragingMessages)} It was ${yalieData.fname} ${yalieData.lname} in ${yalieData.college}, class of ${yalieData.year}`);
+                        setMessage(`${getRandomMessage(encouragingMessages)} ${yalieData.fname} ${yalieData.lname} in ${yalieData.college}, class of ${yalieData.year}`);
                     } else {
                         setMessage(getRandomMessage(encouragingMessages));
                     }
                 } else if (newGuesses.length >= MAX_GUESSES) {
                     setGameStatus('lost');
                     if (yalieData) {
-                        setMessage(`${getRandomMessage(consolationMessages)} It was ${yalieData.fname} ${yalieData.lname} in ${yalieData.college}, class of ${yalieData.year}`);
+                        setMessage(`${getRandomMessage(consolationMessages)} ${yalieData.fname} ${yalieData.lname} in ${yalieData.college}, class of ${yalieData.year}`);
                     } else {
                         setMessage(getRandomMessage(consolationMessages));
                     }
