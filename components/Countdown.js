@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import Image from "next/image";
+import { useEffect, useState } from "react";
 
 export default function Countdown({ targetDate, html }) {
     const [timeLeft, setTimeLeft] = useState({
@@ -86,12 +86,14 @@ export default function Countdown({ targetDate, html }) {
             return (
                 <>
                     <div className="rumpus-countdown">
-                        <div className="countdown-item">
-                            <span className="countdown-value">
-                                {timeLeft.days}
-                            </span>
-                            <span className="countdown-label">Days</span>
-                        </div>
+                        {timeLeft.days > 0 && (
+                            <div className="countdown-item">
+                                <span className="countdown-value">
+                                    {timeLeft.days}
+                                </span>
+                                <span className="countdown-label">Days</span>
+                            </div>
+                        )}
                         <div className="countdown-item">
                             <span className="countdown-value">
                                 {timeLeft.hours}
