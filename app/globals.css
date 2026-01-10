@@ -334,46 +334,15 @@ section:nth-of-type(even) {
     border-radius: 12px;
 }
 
-/* Animation: timeline when supported, fallback otherwise */
-@supports (animation-timeline: --card) {
-
-    /* Safe defaults for timeline-supporting browsers */
-    .c-rumpus__item {
-        opacity: 1;
-    }
-
-    .c-rumpus__item:first-child {
-        view-timeline-name: --card;
-        view-timeline-axis: block;
-        animation-timeline: --card;
-
-        animation-name: card-fade;
-        animation-range: entry 100% exit 120%;
-        animation-fill-mode: both;
-    }
-
-    .c-rumpus__item:not(:first-child):not(:last-child) {
-        view-timeline-name: --card;
-        view-timeline-axis: block;
-        animation-timeline: --card;
-
-        animation-name: card-fade;
-        animation-range: entry 50% exit 120%;
-        animation-fill-mode: both;
-    }
-}
-
-/* Fallback for browsers without animation-timeline (e.g., Firefox)
-   We use a simple opacity/blur transition driven by JS (IntersectionObserver)
-   so the visual effect is similar without touching Chrome behavior. */
-.timeline-fallback .c-rumpus__item {
+/* Use JS-driven animation (same as Firefox) for all browsers */
+.c-rumpus__item {
     --fade: 0;
     opacity: calc(1 - var(--fade));
     filter: blur(calc(var(--fade) * 12px));
     transition: opacity 120ms linear, filter 120ms linear;
 }
 
-.timeline-fallback .c-rumpus__item.in-view {
+.c-rumpus__item.in-view {
     /* keep for semantics only — do not override visual properties so JS-driven --fade can work */
 }
 

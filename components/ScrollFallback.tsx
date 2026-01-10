@@ -4,15 +4,9 @@ import { useEffect } from 'react'
 
 export default function ScrollFallback() {
   useEffect(() => {
-    if (typeof window === 'undefined' || typeof CSS === 'undefined') return
+    if (typeof window === 'undefined') return
 
-    // If the browser supports animation-timeline, skip the fallback
-    const supportsTimeline = CSS.supports && CSS.supports('animation-timeline', '--card')
-    if (supportsTimeline) return
-
-    // Mark the document to activate CSS fallback rules (safer than @supports not)
-    document.documentElement.classList.add('timeline-fallback')
-    console.info('ScrollFallback: timeline not supported — using JS fallback')
+    console.info('ScrollFallback: using JS-driven animation')
 
     const observed = new WeakSet<HTMLElement>()
     const observer = new IntersectionObserver(
