@@ -1,5 +1,10 @@
 import { NextResponse } from 'next/server';
 
+// CACHE FIX: This tells Next.js to cache the result of this function 
+// for 3600 seconds (1 hour) or 86400 (24 hours). 
+// 3600 is usually safer to handle potential errors without locking them in all day.
+export const revalidate = 3600;
+
 // Simple seeded random number generator for consistent daily selection
 function seededRandom(seed: number): number {
     const x = Math.sin(seed) * 10000;
