@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
+import Countdown from "./Countdown";
 import { getRandomYalie } from "./getRandomYalie";
 
 const WORD_LENGTH = 7;
@@ -179,7 +180,11 @@ const WordleGame: React.FC = () => {
 
                 if (currentGuess.toUpperCase() === targetWord) {
                     setGameStatus('won');
-                    setMessage('Congratulations! You won!');
+                    if (yalieData) {
+                        setMessage(`Congratulations! You won! The person was ${yalieData.fname} ${yalieData.lname} ${yalieData.year}`);
+                    } else {
+                        setMessage('Congratulations! You won!');
+                    }
                 } else if (newGuesses.length >= MAX_GUESSES) {
                     setGameStatus('lost');
                     if (yalieData) {
@@ -268,7 +273,17 @@ const WordleGame: React.FC = () => {
 
     return (
         <div className="flex flex-col items-center p-4 max-w-md mx-auto">
-            <h1 className="text-3xl font-bold mb-4">Wordle</h1>
+            <h1 className="text-3xl font-bold mb-4">Yurdle</h1>
+            <p>Welcome to the Yurdle by Rumpus! each day we select one randomly selected student from the Yalies API (by Y/CS) and we have you all guess who it is. Good luck!</p>
+
+            {/* Column Descriptions */}
+            <div className="flex mb-2 text-sm font-semibold">
+                <div className="flex justify-center items-center" style={{ width: '13.5rem' }}>First Name</div>
+                <div className="w-4"></div>
+                <div className="flex justify-center items-center" style={{ width: '3rem' }}>Last Initial</div>
+                <div className="w-4"></div>
+                <div className="flex justify-center items-center" style={{ width: '6.5rem' }}>Year</div>
+            </div>
 
             {/* Game Grid */}
             <div className="flex flex-col gap-2 mb-4">
@@ -312,7 +327,7 @@ const WordleGame: React.FC = () => {
 
             {/* Share and Reset Buttons */}
             {gameStatus !== 'playing' && (
-                <div className="mb-4 flex gap-2">
+                <div className="mb-4 flex flex-col items-center gap-2">
                     <button
                         onClick={shareResult}
                         className="px-4 py-2 bg-blue-500 text-white hover:bg-blue-600 rounded"
@@ -325,90 +340,96 @@ const WordleGame: React.FC = () => {
                     >
                         New Game
                     </button> */}
+                    <div className="text-center">
+                        <h3 className="text-lg font-semibold mb-2">Next Puzzle</h3>
+                        <Countdown targetDate={new Date(new Date().setHours(24, 0, 0, 0)).toISOString()} html={true} />
+                    </div>
                 </div>
             )}
 
             {/* Virtual Keyboard */}
-            <div className="mb-4">
-                <div className="flex justify-center mb-2">
-                    {'1234567890'.split('').map(digit => {
-                        const status = letterStatuses.get(digit) || '';
-                        const baseClass = getLetterClass(status);
-                        return (
-                            <button
-                                key={digit}
-                                onClick={() => handleKeyPress(digit)}
-                                className={`m-1 px-2 py-1 ${baseClass} rounded`}
-                                disabled={gameStatus !== 'playing'}
-                            >
-                                {digit}
-                            </button>
-                        );
-                    })}
+            {gameStatus === 'playing' && (
+                <div className="mb-4">
+                    <div className="flex justify-center mb-2">
+                        {'1234567890'.split('').map(digit => {
+                            const status = letterStatuses.get(digit) || '';
+                            const baseClass = getLetterClass(status);
+                            return (
+                                <button
+                                    key={digit}
+                                    onClick={() => handleKeyPress(digit)}
+                                    className={`m-1 px-2 py-1 ${baseClass} rounded`}
+                                    disabled={gameStatus !== 'playing'}
+                                >
+                                    {digit}
+                                </button>
+                            );
+                        })}
+                    </div>
+                    <div className="flex justify-center mb-2">
+                        {'QWERTYUIOP'.split('').map(letter => {
+                            const status = letterStatuses.get(letter) || '';
+                            const baseClass = getLetterClass(status);
+                            return (
+                                <button
+                                    key={letter}
+                                    onClick={() => handleKeyPress(letter)}
+                                    className={`m-1 px-2 py-1 ${baseClass} rounded`}
+                                    disabled={gameStatus !== 'playing'}
+                                >
+                                    {letter}
+                                </button>
+                            );
+                        })}
+                    </div>
+                    <div className="flex justify-center mb-2">
+                        {'ASDFGHJKL'.split('').map(letter => {
+                            const status = letterStatuses.get(letter) || '';
+                            const baseClass = getLetterClass(status);
+                            return (
+                                <button
+                                    key={letter}
+                                    onClick={() => handleKeyPress(letter)}
+                                    className={`m-1 px-2 py-1 ${baseClass} rounded`}
+                                    disabled={gameStatus !== 'playing'}
+                                >
+                                    {letter}
+                                </button>
+                            );
+                        })}
+                    </div>
+                    <div className="flex justify-center">
+                        <button
+                            onClick={() => handleKeyPress('ENTER')}
+                            className="m-1 px-4 py-1 bg-green-500 text-white hover:bg-green-600 rounded"
+                            disabled={gameStatus !== 'playing'}
+                        >
+                            ENTER
+                        </button>
+                        {'ZXCVBNM'.split('').map(letter => {
+                            const status = letterStatuses.get(letter) || '';
+                            const baseClass = getLetterClass(status);
+                            return (
+                                <button
+                                    key={letter}
+                                    onClick={() => handleKeyPress(letter)}
+                                    className={`m-1 px-2 py-1 ${baseClass} rounded`}
+                                    disabled={gameStatus !== 'playing'}
+                                >
+                                    {letter}
+                                </button>
+                            );
+                        })}
+                        <button
+                            onClick={() => handleKeyPress('BACKSPACE')}
+                            className="m-1 px-2 py-1 bg-red-500 text-white hover:bg-red-600 rounded"
+                            disabled={gameStatus !== 'playing'}
+                        >
+                            ⌫
+                        </button>
+                    </div>
                 </div>
-                <div className="flex justify-center mb-2">
-                    {'QWERTYUIOP'.split('').map(letter => {
-                        const status = letterStatuses.get(letter) || '';
-                        const baseClass = getLetterClass(status);
-                        return (
-                            <button
-                                key={letter}
-                                onClick={() => handleKeyPress(letter)}
-                                className={`m-1 px-2 py-1 ${baseClass} rounded`}
-                                disabled={gameStatus !== 'playing'}
-                            >
-                                {letter}
-                            </button>
-                        );
-                    })}
-                </div>
-                <div className="flex justify-center mb-2">
-                    {'ASDFGHJKL'.split('').map(letter => {
-                        const status = letterStatuses.get(letter) || '';
-                        const baseClass = getLetterClass(status);
-                        return (
-                            <button
-                                key={letter}
-                                onClick={() => handleKeyPress(letter)}
-                                className={`m-1 px-2 py-1 ${baseClass} rounded`}
-                                disabled={gameStatus !== 'playing'}
-                            >
-                                {letter}
-                            </button>
-                        );
-                    })}
-                </div>
-                <div className="flex justify-center">
-                    <button
-                        onClick={() => handleKeyPress('ENTER')}
-                        className="m-1 px-4 py-1 bg-green-500 text-white hover:bg-green-600 rounded"
-                        disabled={gameStatus !== 'playing'}
-                    >
-                        ENTER
-                    </button>
-                    {'ZXCVBNM'.split('').map(letter => {
-                        const status = letterStatuses.get(letter) || '';
-                        const baseClass = getLetterClass(status);
-                        return (
-                            <button
-                                key={letter}
-                                onClick={() => handleKeyPress(letter)}
-                                className={`m-1 px-2 py-1 ${baseClass} rounded`}
-                                disabled={gameStatus !== 'playing'}
-                            >
-                                {letter}
-                            </button>
-                        );
-                    })}
-                    <button
-                        onClick={() => handleKeyPress('BACKSPACE')}
-                        className="m-1 px-2 py-1 bg-red-500 text-white hover:bg-red-600 rounded"
-                        disabled={gameStatus !== 'playing'}
-                    >
-                        ⌫
-                    </button>
-                </div>
-            </div>
+            )}
 
 
         </div>
