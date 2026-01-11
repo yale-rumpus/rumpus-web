@@ -425,7 +425,7 @@ const WordleGame: React.FC = () => {
                         })}
                         <button
                             onClick={() => handleKeyPress('BACKSPACE')}
-                            className="w-8 h-7 sm:w-10 sm:h-9 bg-red-500 text-white hover:bg-red-600 rounded text-xs sm:text-sm"
+                            className="w-8 h-7 sm:w-10 sm:h-9 bg-red-500 text-white hover:bg-red-600 rounded text-xs sm:text-xl"
                         >
                             ⌫
                         </button>
