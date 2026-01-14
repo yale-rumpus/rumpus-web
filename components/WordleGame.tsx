@@ -91,6 +91,7 @@ const WordleGame: React.FC = () => {
     const [lastGameDate, setLastGameDate] = useState<string>('');
     const [showEasterEgg, setShowEasterEgg] = useState(false);
     const [showPeachEgg, setShowPeachEgg] = useState(false);
+    const [peachCount, setPeachCount] = useState(0);
 
     const resetGame = () => {
         const fetchYalie = async () => {
@@ -116,6 +117,7 @@ const WordleGame: React.FC = () => {
         setRevealingIndex(0);
         setShowEasterEgg(false);
         setShowPeachEgg(false);
+        setPeachCount(0);
         const today = getTodayString();
         setLastGameDate(today);
         localStorage.setItem('yurdle-last-game', today);
@@ -139,6 +141,17 @@ const WordleGame: React.FC = () => {
             }
         }
     }, []);
+
+    useEffect(() => {
+        if (showPeachEgg) {
+            setPeachCount(0);
+            for (let i = 1; i <= 6; i++) {
+                setTimeout(() => setPeachCount(i), i * 300);
+            }
+        } else {
+            setPeachCount(0);
+        }
+    }, [showPeachEgg]);
 
     const checkGuess = (guess: string): Guess => {
         const result: Guess = { letters: [] };
@@ -463,7 +476,9 @@ const WordleGame: React.FC = () => {
             )}
             {showPeachEgg && (
                 <div className="text-center text-4xl mt-4">
-                    🍑🍑🍑🍑🍑🍑
+                    {Array.from({ length: peachCount }, (_, i) => (
+                        <span key={i} className="inline-block animate-bounce">🍑</span>
+                    ))}
                 </div>
             )}
         </div>
