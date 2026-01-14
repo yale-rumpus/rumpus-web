@@ -92,6 +92,7 @@ const WordleGame: React.FC = () => {
     const [showEasterEgg, setShowEasterEgg] = useState(false);
     const [showPeachEgg, setShowPeachEgg] = useState(false);
     const [peachCount, setPeachCount] = useState(0);
+    const [cookieCount, setCookieCount] = useState(0);
 
     const resetGame = () => {
         const fetchYalie = async () => {
@@ -118,6 +119,7 @@ const WordleGame: React.FC = () => {
         setShowEasterEgg(false);
         setShowPeachEgg(false);
         setPeachCount(0);
+        setCookieCount(0);
         const today = getTodayString();
         setLastGameDate(today);
         localStorage.setItem('yurdle-last-game', today);
@@ -152,6 +154,17 @@ const WordleGame: React.FC = () => {
             setPeachCount(0);
         }
     }, [showPeachEgg]);
+
+    useEffect(() => {
+        if (showEasterEgg) {
+            setCookieCount(0);
+            for (let i = 1; i <= 6; i++) {
+                setTimeout(() => setCookieCount(i), i * 300);
+            }
+        } else {
+            setCookieCount(0);
+        }
+    }, [showEasterEgg]);
 
     const checkGuess = (guess: string): Guess => {
         const result: Guess = { letters: [] };
@@ -470,8 +483,10 @@ const WordleGame: React.FC = () => {
                 </div>
             )}
             {showEasterEgg && (
-                <div className="text-center text-4xl mt-4 animate-bounce">
-                    🍪🖱️
+                <div className="text-center text-4xl mt-4">
+                    {Array.from({ length: cookieCount }, (_, i) => (
+                        <span key={i} className="inline-block animate-bounce">{i % 2 === 0 ? '🍪' : '🖱️'}</span>
+                    ))}
                 </div>
             )}
             {showPeachEgg && (
