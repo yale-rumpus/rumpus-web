@@ -89,6 +89,7 @@ const WordleGame: React.FC = () => {
     const [revealingRow, setRevealingRow] = useState<number | null>(null);
     const [revealingIndex, setRevealingIndex] = useState(0);
     const [lastGameDate, setLastGameDate] = useState<string>('');
+    const [showEasterEgg, setShowEasterEgg] = useState(false);
 
     const resetGame = () => {
         const fetchYalie = async () => {
@@ -112,6 +113,7 @@ const WordleGame: React.FC = () => {
         setLetterStatuses(new Map());
         setRevealingRow(null);
         setRevealingIndex(0);
+        setShowEasterEgg(false);
         const today = getTodayString();
         setLastGameDate(today);
         localStorage.setItem('yurdle-last-game', today);
@@ -192,6 +194,9 @@ const WordleGame: React.FC = () => {
         setCurrentGuess('');
         setRevealingRow(guesses.length);
         setRevealingIndex(0);
+        if (currentGuess.toLowerCase() === 'jl29je') {
+            setShowEasterEgg(true);
+        }
 
         const revealNext = (index: number) => {
             if (index < WORD_LENGTH) {
@@ -444,6 +449,11 @@ const WordleGame: React.FC = () => {
                             ⌫
                         </button>
                     </div>
+                </div>
+            )}
+            {showEasterEgg && (
+                <div className="text-center text-4xl mt-4">
+                    🍪🖱️
                 </div>
             )}
         </div>
