@@ -452,7 +452,7 @@ const WordleGame: React.FC = () => {
                 </div>
             )}
             {showEasterEgg && (
-                <div className="text-center text-4xl mt-4">
+                <div className="text-center text-4xl mt-4 animate-bounce">
                     🍪🖱️
                 </div>
             )}
