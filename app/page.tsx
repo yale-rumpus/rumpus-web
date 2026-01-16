@@ -24,7 +24,7 @@ const reference = {
 
 // queue up next issue info
 const referenceNext = {
-    issueurl: "https://online.fliphtml5.com/sesvj/Binder1/#p=1", // link to next issue article viewer
+    issueurl: "https://online.fliphtml5.com/sesvj/Binder1/", // link to next issue article viewer
     pageref: [2, 1, 14], // page numbers for the three iframes
     targetdate: reference.targetdate, // target date for countdown timer
     // dateform: new Date(reference.targetdate)

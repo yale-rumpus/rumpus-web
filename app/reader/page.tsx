@@ -1,18 +1,18 @@
 // large page viewer
+import { reverseTimer } from "@/lib/reverseTimer";
 import "../globals.css";
 import "./reader.css";
-import { reverseTimer } from "@/lib/reverseTimer";
 
 // current issue info
 const reference = {
-    issueurl: "https://online.fliphtml5.com/sesvj/zjfg/", // link to current article viewer
+    issueurl: "https://online.fliphtml5.com/sesvj/Binder1/", // link to current article viewer
     pageref: [3], // page numbers for the three iframes
-    targetdate: "2025-12-31T15:13:30", // target date for countdown timer
+    targetdate: "2025-12-15T15:13:30", // target date for countdown timer
 };
 
 // queue up next issue info
 const referenceNext = {
-    issueurl: "https://online.fliphtml5.com/sesvj/iljc/", // link to next issue article viewer
+    issueurl: "https://online.fliphtml5.com/sesvj/Binder1/", // link to next issue article viewer
     pageref: [3], // page numbers for the three iframes
     targetdate: reference.targetdate, // target date for countdown timer
     // dateform: new Date(reference.targetdate)
@@ -37,8 +37,8 @@ export default function reader() {
         <div className="reader-container">
             <div className="bevel-wrap">
                 <h2>
-                        <a href="/">return Home</a>
-                    </h2>
+                    <a href="/">return Home</a>
+                </h2>
                 <iframe
                     src={`${endref.issueurl}#p=${endref.pageref[0]}`}
                     className="reader-iframe"
