@@ -41,6 +41,7 @@ export default function YaliesRankingPage() {
   const [search, setSearch] = useState('');
   const [searchInput, setSearchInput] = useState('');
   const [loadingAll, setLoadingAll] = useState(false);
+  const [votedKey, setVotedKey] = useState('');
   const observerTarget = useRef<HTMLDivElement>(null);
 
   const fetchYalies = async (pageNum: number, query: string = '') => {
@@ -158,7 +159,24 @@ export default function YaliesRankingPage() {
     }
   }, [search]);
 
+  useEffect(() => {
+    const interval = setInterval(async () => {
+      try {
+        const newVotes = await fetchVotes();
+        if (JSON.stringify(newVotes) !== JSON.stringify(votes)) {
+          setVotes(newVotes);
+        }
+      } catch (error) {
+        console.error('Error fetching updated votes:', error);
+      }
+    }, 60000); // Poll every 1 minute
+
+    return () => clearInterval(interval);
+  }, [votes]);
+
   const handleVote = (key: string, delta: number) => {
+    setVotedKey(key);
+    setTimeout(() => setVotedKey(''), 1000);
     updateVote(key, delta);
   };
 
