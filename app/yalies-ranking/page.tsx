@@ -39,10 +39,12 @@ export default function YaliesRankingPage() {
   const [hasMore, setHasMore] = useState(true);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
+  const [searchInput, setSearchInput] = useState('');
+  const [loadingAll, setLoadingAll] = useState(false);
   const observerTarget = useRef<HTMLDivElement>(null);
 
-  const fetchYalies = async (pageNum: number) => {
-    const res = await fetch(`/api/yalies?page=${pageNum}&page_size=50`);
+  const fetchYalies = async (pageNum: number, query: string = '') => {
+    const res = await fetch(`/api/yalies?page=${pageNum}&page_size=50&query=${encodeURIComponent(query)}`);
     if (!res.ok) throw new Error('Failed to fetch Yalies');
     return await res.json();
   };
@@ -75,32 +77,17 @@ export default function YaliesRankingPage() {
     });
   };
 
-  useEffect(() => {
-    const loadInitial = async () => {
-      try {
-        const [initialYalies, initialVotes] = await Promise.all([
-          fetchYalies(1),
-          fetchVotes(),
-        ]);
-        setYalies(sortYalies(initialYalies, initialVotes));
-        setVotes(initialVotes);
-        setLoading(false);
-      } catch (error) {
-        console.error('Error loading initial data:', error);
-        setLoading(false);
-      }
-    };
-    loadInitial();
-  }, []);
+
 
   useEffect(() => {
+    if (search) return;
     const observer = new IntersectionObserver(
       async (entries) => {
-        if (entries[0].isIntersecting && hasMore && !loading) {
+        if (entries[0].isIntersecting && hasMore && !loading && !loadingAll) {
           setLoading(true);
           const nextPage = page + 1;
           try {
-            const newYalies = await fetchYalies(nextPage);
+            const newYalies = await fetchYalies(nextPage, '');
             if (newYalies.length === 0) {
               setHasMore(false);
             } else {
@@ -123,15 +110,53 @@ export default function YaliesRankingPage() {
     return () => observer.disconnect();
   }, [page, hasMore, loading, yalies, votes]);
 
-  const filteredYalies = useMemo(() => {
-    if (!search) return yalies;
-    const lowerSearch = search.toLowerCase();
-    return yalies.filter(yalie =>
-      `${yalie.fname || ''} ${yalie.lname || ''}`.toLowerCase().includes(lowerSearch) ||
-      (yalie.college || '').toLowerCase().includes(lowerSearch) ||
-      String(yalie.year || '').includes(lowerSearch)
-    );
-  }, [yalies, search]);
+  useEffect(() => {
+    const timer = setTimeout(() => setSearch(searchInput), 300);
+    return () => clearTimeout(timer);
+  }, [searchInput]);
+
+  useEffect(() => {
+    if (search && !loadingAll && !loading) {
+      setYalies([]);
+      setPage(1);
+      setLoadingAll(true);
+      const loadAll = async () => {
+        try {
+          const allYalies = await fetchYalies(1, search);
+          setYalies(sortYalies(allYalies, votes));
+          setHasMore(false);
+          setLoadingAll(false);
+        } catch (error) {
+          console.error('Error loading search results:', error);
+          setLoadingAll(false);
+        }
+      };
+      loadAll();
+    } else if (!search) {
+      // If search cleared, reset to initial
+      setYalies([]);
+      setPage(1);
+      setHasMore(true);
+      setLoadingAll(false);
+      // Trigger initial load
+      const loadInitial = async () => {
+        setLoading(true);
+        try {
+          const [initialYalies, initialVotes] = await Promise.all([
+            fetchYalies(1, ''),
+            fetchVotes(),
+          ]);
+          setYalies(sortYalies(initialYalies, initialVotes));
+          setVotes(initialVotes);
+          setLoading(false);
+        } catch (error) {
+          console.error('Error loading initial data:', error);
+          setLoading(false);
+        }
+      };
+      loadInitial();
+    }
+  }, [search]);
 
   const handleVote = (key: string, delta: number) => {
     updateVote(key, delta);
@@ -143,40 +168,39 @@ export default function YaliesRankingPage() {
       <input
         type="text"
         placeholder="Search by name, college, or year..."
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-        className="w-full p-2 mb-4 border rounded"
+        value={searchInput}
+        onChange={(e) => setSearchInput(e.target.value)}
+        className="w-full p-2 mb-4 border rounded backdrop-blur bg-white bg-opacity-20 focus:bg-blue-500 focus:bg-opacity-50 transition-colors"
       />
-      {loading ? (
-        <div className="text-center py-4">Loading rankings...</div>
+      {loading || loadingAll ? (
+        <div className="text-center py-4">
+          {loading ? 'Loading rankings...' : 'Loading all Yalies for search...'}
+        </div>
       ) : (
         <>
           <ul className="space-y-2">
-            {filteredYalies.map((yalie) => {
-              console.log('College:', yalie.college, 'Color:', collegeColors[yalie.college]);
-              return (
-                <li key={yalie.key} className={`flex items-center justify-between p-4 border rounded text-black ${collegeColors[yalie.college] || 'bg-gray-100'}`}>
-                  <div>
-                    <span className="font-semibold">{yalie.fname} {yalie.lname}</span> - {yalie.year}, {yalie.college}
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <span>Score: {votes[yalie.key] || 0}</span>
-                    <button
-                      onClick={() => handleVote(yalie.key, 1)}
-                      className="px-2 py-1 bg-green-500 text-white rounded hover:bg-green-600"
-                    >
-                      ↑
-                    </button>
-                    <button
-                      onClick={() => handleVote(yalie.key, -1)}
-                      className="px-2 py-1 bg-red-500 text-white rounded hover:bg-red-600"
-                    >
-                      ↓
-                    </button>
-                  </div>
-                </li>
-              );
-            })}
+            {yalies.map((yalie) => (
+              <li key={yalie.key} className={`flex items-center justify-between p-4 border rounded text-black ${collegeColors[yalie.college] || 'bg-gray-100'}`}>
+                <div>
+                  <span className="font-semibold">{yalie.fname} {yalie.lname}</span> - {yalie.year}, {yalie.college}
+                </div>
+                <div className="flex items-center space-x-2">
+                  <span>Score: {votes[yalie.key] || 0}</span>
+                  <button
+                    onClick={() => handleVote(yalie.key, 1)}
+                    className="px-2 py-1 bg-green-500 text-white rounded hover:bg-green-600"
+                  >
+                    ↑
+                  </button>
+                  <button
+                    onClick={() => handleVote(yalie.key, -1)}
+                    className="px-2 py-1 bg-red-500 text-white rounded hover:bg-red-600"
+                  >
+                    ↓
+                  </button>
+                </div>
+              </li>
+            ))}
           </ul>
           <div ref={observerTarget} className="text-center py-4">
             {loading && 'Loading more Yalies...'}

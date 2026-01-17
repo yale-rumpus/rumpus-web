@@ -4,6 +4,7 @@ export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const page = parseInt(searchParams.get('page') || '1', 10);
   const pageSize = parseInt(searchParams.get('page_size') || '50', 10);
+  const query = searchParams.get('query') || '';
 
   try {
     const res = await fetch("https://api.yalies.io/v2/people", {
@@ -12,12 +13,17 @@ export async function GET(request: Request) {
         "Content-Type": "application/json",
         Authorization: `Bearer ${process.env.YALIES_API_KEY}`,
       },
-      body: JSON.stringify({
-        query: "",
-        filters: {},
-        page,
-        page_size: pageSize,
-      }),
+      body: JSON.stringify(
+        query ? {
+          query,
+          filters: {},
+        } : {
+          query: "",
+          filters: {},
+          page,
+          page_size: pageSize,
+        }
+      ),
     });
 
     if (!res.ok) {
