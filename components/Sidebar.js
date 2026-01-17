@@ -43,6 +43,7 @@ export default function Sidebar() {
             {/* Top bar (visible when header is visible) */}
             <nav className="topbar">
                 {(() => {
+                    // headlines here!
                     const headlines = [
                         "what the FUCK is a CRIMSON?!?!?",
                         "suck my YICK",
