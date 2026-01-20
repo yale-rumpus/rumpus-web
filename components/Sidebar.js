@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import { useEffect, useRef, useState } from "react";
 
 export default function Sidebar() {
     const [open, setOpen] = useState(false);
@@ -124,6 +124,9 @@ export default function Sidebar() {
                     <li>
                         <Link href="/blog">Blog</Link>
                     </li>
+                    <li>
+                        <Link href="/yalies-ranking">the Yankings</Link>
+                    </li>
                 </ul>
             </nav>
 
@@ -184,6 +187,9 @@ export default function Sidebar() {
                             </li>
                             <li>
                                 <Link href="/blog">Blog</Link>
+                            </li>
+                            <li>
+                                <Link href="/yalies-ranking">the Yankings</Link>
                             </li>
                         </ul>
                     </aside>
