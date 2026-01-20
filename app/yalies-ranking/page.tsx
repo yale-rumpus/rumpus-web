@@ -59,19 +59,7 @@ export default function YaliesRankingPage() {
     return await res.json();
   };
 
-  const fetchAllYalies = async (query: string = '') => {
-    let all: Yalie[] = [];
-    let page = 1;
-    while (true) {
-      const res = await fetch(`/api/yalies?page=${page}&page_size=50&query=${encodeURIComponent(query)}`);
-      if (!res.ok) throw new Error('Failed to fetch Yalies');
-      const data = await res.json();
-      if (data.length === 0) break;
-      all.push(...data);
-      page++;
-    }
-    return all;
-  };
+
 
   const updateVote = async (key: string, delta: number) => {
     const newVotes = { ...votes };
@@ -159,39 +147,48 @@ export default function YaliesRankingPage() {
       setYalies([]);
       setPage(1);
       setLoadingAll(true);
-      const loadAll = async () => {
+      const loadSearch = async () => {
         try {
-          const allYalies = is50Most ? await fetchAllYalies(search) : await fetchYalies(1, search);
-          let filtered = allYalies;
+          let query = search;
           if (is50Most) {
-            filtered = filtered.filter(y => fiftyMostNames.includes(`${y.fname} ${y.lname}`));
+            query += ` ${fiftyMostNames.join(' OR ')}`;
+          }
+          const data = await fetchYalies(1, query);
+          let filtered = data;
+          if (is50Most) {
+            filtered = data.filter((y: Yalie) => fiftyMostNames.includes(`${y.fname} ${y.lname}`));
           }
           setYalies(sortYalies(filtered, votes, sortBy));
           setHasMore(false);
           setLoadingAll(false);
         } catch (error) {
           console.error('Error loading search results:', error);
+          if (is50Most) {
+            console.error('50 most search failed, disabling 50 most filter');
+            setIs50Most(false);
+          }
           setLoadingAll(false);
         }
       };
-      loadAll();
+      loadSearch();
     } else if (!search) {
       if (is50Most) {
         setYalies([]);
         setLoadingAll(true);
-        const loadAll = async () => {
+        const load50 = async () => {
           try {
-            const allYalies = await fetchAllYalies('');
-            const filtered = allYalies.filter(y => fiftyMostNames.includes(`${y.fname} ${y.lname}`));
+            const query = fiftyMostNames.join(' OR ');
+            const data = await fetchYalies(1, query);
+            const filtered = data.filter((y: Yalie) => fiftyMostNames.includes(`${y.fname} ${y.lname}`));
             setYalies(sortYalies(filtered, votes, sortBy));
             setHasMore(false);
             setLoadingAll(false);
           } catch (error) {
-            console.error('Error loading all Yalies:', error);
-            setLoadingAll(false);
+            console.error('Error loading 50 most:', error);
+            setIs50Most(false);
           }
         };
-        loadAll();
+        load50();
       } else {
         setYalies([]);
         setPage(1);
