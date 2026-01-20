@@ -243,12 +243,12 @@ export default function YaliesRankingPage() {
         >
           50 Most
         </button>
-        <div className="flex items-center">
-          <label className="mr-2 font-semibold">Sort by:</label>
+        <div className="flex items-center bg-white bg-opacity-20 backdrop-blur rounded-lg px-3 py-2">
+          <label className="mr-2 font-semibold text-black">Sort by:</label>
           <select
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value as 'score' | 'college' | 'year')}
-            className="px-3 py-2 border rounded backdrop-blur bg-white bg-opacity-20 text-black focus:bg-blue-500 focus:bg-opacity-50 focus:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
+            className="border rounded text-black focus:bg-blue-500 focus:bg-opacity-50 focus:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
           >
             <option value="score">Score</option>
             <option value="college">College</option>
