@@ -235,16 +235,26 @@ export default function YaliesRankingPage() {
     <div className="container mx-auto p-4">
       <h1 className="text-3xl font-bold mb-4">Yalies Ranking</h1>
       <button onClick={handleRefresh} className="mb-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Refresh Votes</button>
-      <div className="mb-4">
-        <label className="mr-4">
-          <input type="checkbox" checked={is50Most} onChange={(e) => setIs50Most(e.target.checked)} /> 50 Most
-        </label>
-        <label>Sort by:</label>
-        <select value={sortBy} onChange={(e) => setSortBy(e.target.value as 'score' | 'college' | 'year')} className="ml-2 p-1 border rounded">
-          <option value="score">Score</option>
-          <option value="college">College</option>
-          <option value="year">Year</option>
-        </select>
+      <div className="mb-4 flex flex-wrap gap-4">
+        <button
+          onClick={() => setIs50Most(!is50Most)}
+          className={`px-4 py-2 rounded-lg font-semibold transition-colors ${is50Most ? 'bg-yellow-500 text-white hover:bg-yellow-600' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+            }`}
+        >
+          50 Most
+        </button>
+        <div className="flex items-center">
+          <label className="mr-2 font-semibold">Sort by:</label>
+          <select
+            value={sortBy}
+            onChange={(e) => setSortBy(e.target.value as 'score' | 'college' | 'year')}
+            className="px-3 py-2 border rounded backdrop-blur bg-white bg-opacity-20 text-black focus:bg-blue-500 focus:bg-opacity-50 focus:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
+          >
+            <option value="score">Score</option>
+            <option value="college">College</option>
+            <option value="year">Year</option>
+          </select>
+        </div>
       </div>
       <input
         type="text"
