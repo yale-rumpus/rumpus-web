@@ -277,29 +277,33 @@ export default function YaliesRankingPage() {
       ) : (
         <>
           <ul className="space-y-2">
-            {yalies.map((yalie) => (
-              <li key={yalie.key} className={`flex items-center justify-between p-4 border rounded text-black ${collegeColors[yalie.college] || 'bg-gray-100'}`}>
-                <div>
-                  <span className="font-semibold">{yalie.fname} {yalie.lname}</span> {fiftyMostNames.some(name => name.toLowerCase() === `${yalie.fname} ${yalie.lname}`.toLowerCase()) && <span className="ml-2 px-2 py-1 bg-yellow-500 text-white text-xs rounded">50 Most</span>} - {yalie.year}, {yalie.college}
-                </div>
-                <div className="flex items-center space-x-2">
-                  <span>Score: {votes[yalie.key] || 0}</span>
-                  <button
-                    onClick={() => handleVote(yalie.key, 1)}
-                    className="px-2 py-1 bg-green-500 text-white rounded hover:bg-green-600"
-                  >
-                    ↑
-                  </button>
-                  <button
-                    onClick={() => handleVote(yalie.key, -1)}
-                    className="px-2 py-1 bg-red-500 text-white rounded hover:bg-red-600"
-                  >
-                    ↓
-                  </button>
-                </div>
-              </li>
-            ))}
-          </ul>
+            {yalies.map((yalie) => {
+              const fullName = `${yalie.fname} ${yalie.lname}`;
+              const isIn50Most = fiftyMostNames.some(name => name.toLowerCase() === fullName.toLowerCase());
+              const displayName = isIn50Most ? fullName : `${yalie.fname[0]}${yalie.lname[0]}`;
+              return (
+                <li key={yalie.key} className={`flex items-center justify-between p-4 border rounded text-black ${collegeColors[yalie.college] || 'bg-gray-100'}`}>
+                  <div>
+                    <span className="font-semibold">{displayName}</span> {isIn50Most && <span className="ml-2 px-2 py-1 bg-yellow-500 text-white text-xs rounded">50 Most</span>} - {yalie.year}, {yalie.college}
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <span>Score: {votes[yalie.key] || 0}</span>
+                    <button
+                      onClick={() => handleVote(yalie.key, 1)}
+                      className="px-2 py-1 bg-green-500 text-white rounded hover:bg-green-600"
+                    >
+                      ↑
+                    </button>
+                    <button
+                      onClick={() => handleVote(yalie.key, -1)}
+                      className="px-2 py-1 bg-red-500 text-white rounded hover:bg-red-600"
+                    >
+                      ↓
+                    </button>
+                  </div>
+                </li>
+              );
+            })}          </ul>
           <div ref={observerTarget} className="text-center py-4">
             {loading && 'Loading more Yalies...'}
             {!hasMore && 'No more Yalies to load.'}
