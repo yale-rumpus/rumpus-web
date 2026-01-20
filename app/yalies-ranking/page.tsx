@@ -31,6 +31,7 @@ export default function YaliesRankingPage() {
   const [hasMore, setHasMore] = useState(true);
   const [loading, setLoading] = useState(false);
   const [isProcessing50, setIsProcessing50] = useState(false);
+  const [processedCount, setProcessedCount] = useState(0);
 
   const [searchInput, setSearchInput] = useState('');
   const [fiftyMostNames, setFiftyMostNames] = useState<string[]>([]);
@@ -40,7 +41,6 @@ export default function YaliesRankingPage() {
   const observerTarget = useRef<HTMLDivElement>(null);
   const abortControllerRef = useRef<AbortController | null>(null);
 
-  // Helper to remove accents/diacritics and lowercase for comparison
   const normalize = (str: string) =>
     str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim();
 
@@ -82,20 +82,31 @@ export default function YaliesRankingPage() {
     return () => abortControllerRef.current?.abort();
   }, [is50Most, fiftyMostNames]);
 
+  // Log missing names when processing finishes
+  useEffect(() => {
+    if (!isProcessing50 && fiftyMostNames.length > 0 && is50Most) {
+      const foundNames = yalies.map(y => normalize(`${y.fname} ${y.lname}`));
+      const missing = fiftyMostNames.filter(name => !foundNames.includes(normalize(name)));
+      if (missing.length > 0) {
+        console.log("⚠️ The following names from 50most.json were not found in the database:", missing);
+      } else {
+        console.log("✅ All names from 50most.json found!");
+      }
+    }
+  }, [isProcessing50]);
+
   const loadAll50Mosters = async () => {
     setIsProcessing50(true);
     setYalies([]);
+    setProcessedCount(0);
     const foundKeys = new Set<string>();
 
-    for (const name of fiftyMostNames) {
+    await Promise.all(fiftyMostNames.map(async (name) => {
       try {
-        await new Promise(resolve => setTimeout(resolve, 100));
-
         const res = await fetch(`/api/yalies?page=1&page_size=10&query=${encodeURIComponent(name)}`);
-        if (!res.ok) continue;
+        if (!res.ok) return;
         const data: Yalie[] = await res.json();
 
-        // Updated with normalize helper
         const match = data.find(y =>
           normalize(`${y.fname} ${y.lname}`) === normalize(name)
         );
@@ -106,8 +117,11 @@ export default function YaliesRankingPage() {
         }
       } catch (e) {
         console.error(`Error finding ${name}`, e);
+      } finally {
+        setProcessedCount(prev => prev + 1);
       }
-    }
+    }));
+
     setIsProcessing50(false);
   };
 
@@ -157,10 +171,13 @@ export default function YaliesRankingPage() {
     });
   };
 
-  // Updated search filter with normalize helper
   const displayedYalies = yalies.filter(y =>
     normalize(`${y.fname} ${y.lname} ${y.college}`).includes(normalize(searchInput))
   );
+
+  const progressPercent = fiftyMostNames.length > 0
+    ? (processedCount / fiftyMostNames.length) * 100
+    : 0;
 
   return (
     <div className="container mx-auto p-4">
@@ -207,15 +224,23 @@ export default function YaliesRankingPage() {
       />
 
       {isProcessing50 && (
-        <div className="text-blue-600 font-bold mb-4 animate-pulse text-center p-2 bg-blue-50 rounded border border-blue-200">
-          🔍 Scanning Database... ({yalies.length} / {fiftyMostNames.length} identified)
+        <div className="mb-6">
+          <div className="text-blue-600 font-bold mb-2 text-center p-2">
+            🔍 Scanning Database... ({yalies.length} found)
+          </div>
+          {/* LOADING BAR */}
+          <div className="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700 overflow-hidden">
+            <div
+              className="bg-blue-600 h-2.5 transition-all duration-300 ease-out"
+              style={{ width: `${progressPercent}%` }}
+            ></div>
+          </div>
         </div>
       )}
 
       <ul className="space-y-2">
         {displayedYalies.map((yalie) => {
           const fullName = `${yalie.fname} ${yalie.lname}`;
-          // Updated matching logic for the badge
           const isIn50Most = fiftyMostNames.some(name => normalize(name) === normalize(fullName));
           const displayName = isIn50Most ? fullName : `${yalie.fname[0]}${yalie.lname[0]}`;
 
