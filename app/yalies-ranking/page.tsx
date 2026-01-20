@@ -156,7 +156,7 @@ export default function YaliesRankingPage() {
           const data = await fetchYalies(1, query);
           let filtered = data;
           if (is50Most) {
-            filtered = data.filter((y: Yalie) => fiftyMostNames.includes(`${y.fname} ${y.lname}`));
+            filtered = data.filter((y: Yalie) => fiftyMostNames.some(name => name.toLowerCase() === `${y.fname} ${y.lname}`.toLowerCase()));
           }
           setYalies(sortYalies(filtered, votes, sortBy));
           setHasMore(false);
@@ -179,7 +179,7 @@ export default function YaliesRankingPage() {
           try {
             const query = fiftyMostNames.join(' OR ');
             const data = await fetchYalies(1, query);
-            const filtered = data.filter((y: Yalie) => fiftyMostNames.includes(`${y.fname} ${y.lname}`));
+            const filtered = data.filter((y: Yalie) => fiftyMostNames.some(name => name.toLowerCase() === `${y.fname} ${y.lname}`.toLowerCase()));
             setYalies(sortYalies(filtered, votes, sortBy));
             setHasMore(false);
             setLoadingAll(false);
@@ -263,7 +263,7 @@ export default function YaliesRankingPage() {
             {yalies.map((yalie) => (
               <li key={yalie.key} className={`flex items-center justify-between p-4 border rounded text-black ${collegeColors[yalie.college] || 'bg-gray-100'}`}>
                 <div>
-                  <span className="font-semibold">{yalie.fname} {yalie.lname}</span> - {yalie.year}, {yalie.college}
+                  <span className="font-semibold">{yalie.fname} {yalie.lname}</span> {fiftyMostNames.some(name => name.toLowerCase() === `${yalie.fname} ${yalie.lname}`.toLowerCase()) && <span className="ml-2 px-2 py-1 bg-yellow-500 text-white text-xs rounded">50 Most</span>} - {yalie.year}, {yalie.college}
                 </div>
                 <div className="flex items-center space-x-2">
                   <span>Score: {votes[yalie.key] || 0}</span>
