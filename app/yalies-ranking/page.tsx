@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef, useMemo } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 interface Yalie {
   fname: string;
@@ -42,6 +42,9 @@ export default function YaliesRankingPage() {
   const [searchInput, setSearchInput] = useState('');
   const [loadingAll, setLoadingAll] = useState(false);
   const [votedKey, setVotedKey] = useState('');
+  const [fiftyMostNames, setFiftyMostNames] = useState<string[]>([]);
+  const [is50Most, setIs50Most] = useState(false);
+  const [sortBy, setSortBy] = useState<'score' | 'college' | 'year'>('score');
   const observerTarget = useRef<HTMLDivElement>(null);
 
   const fetchYalies = async (pageNum: number, query: string = '') => {
@@ -56,6 +59,20 @@ export default function YaliesRankingPage() {
     return await res.json();
   };
 
+  const fetchAllYalies = async (query: string = '') => {
+    let all: Yalie[] = [];
+    let page = 1;
+    while (true) {
+      const res = await fetch(`/api/yalies?page=${page}&page_size=50&query=${encodeURIComponent(query)}`);
+      if (!res.ok) throw new Error('Failed to fetch Yalies');
+      const data = await res.json();
+      if (data.length === 0) break;
+      all.push(...data);
+      page++;
+    }
+    return all;
+  };
+
   const updateVote = async (key: string, delta: number) => {
     const newVotes = { ...votes };
     newVotes[key] = (newVotes[key] || 0) + delta;
@@ -67,21 +84,35 @@ export default function YaliesRankingPage() {
     });
   };
 
-  const sortYalies = (ylist: Yalie[], v: Votes) => {
+  const sortYalies = (ylist: Yalie[], v: Votes, sort: 'score' | 'college' | 'year' = 'score') => {
     return ylist.sort((a, b) => {
-      const scoreA = v[a.key] || 0;
-      const scoreB = v[b.key] || 0;
-      if (scoreA !== scoreB) return scoreB - scoreA;
-      const nameA = `${a.fname} ${a.lname}`.toLowerCase();
-      const nameB = `${b.fname} ${b.lname}`.toLowerCase();
-      return nameA.localeCompare(nameB);
+      if (sort === 'college') {
+        const collegeA = a.college.toLowerCase();
+        const collegeB = b.college.toLowerCase();
+        const comp = collegeA.localeCompare(collegeB);
+        if (comp !== 0) return comp;
+        return `${a.fname} ${a.lname}`.toLowerCase().localeCompare(`${b.fname} ${b.lname}`.toLowerCase());
+      } else if (sort === 'year') {
+        const yearA = parseInt(String(a.year));
+        const yearB = parseInt(String(b.year));
+        const comp = yearA - yearB;
+        if (comp !== 0) return comp;
+        return `${a.fname} ${a.lname}`.toLowerCase().localeCompare(`${b.fname} ${b.lname}`.toLowerCase());
+      } else { // score
+        const scoreA = v[a.key] || 0;
+        const scoreB = v[b.key] || 0;
+        if (scoreA !== scoreB) return scoreB - scoreA;
+        const nameA = `${a.fname} ${a.lname}`.toLowerCase();
+        const nameB = `${b.fname} ${b.lname}`.toLowerCase();
+        return nameA.localeCompare(nameB);
+      }
     });
   };
 
 
 
   useEffect(() => {
-    if (search) return;
+    if (search || is50Most) return;
     const observer = new IntersectionObserver(
       async (entries) => {
         if (entries[0].isIntersecting && hasMore && !loading && !loadingAll) {
@@ -92,7 +123,7 @@ export default function YaliesRankingPage() {
             if (newYalies.length === 0) {
               setHasMore(false);
             } else {
-              const updatedYalies = sortYalies([...yalies, ...newYalies], votes);
+              const updatedYalies = sortYalies([...yalies, ...newYalies], votes, sortBy);
               setYalies(updatedYalies);
               setPage(nextPage);
             }
@@ -109,7 +140,14 @@ export default function YaliesRankingPage() {
 
     if (observerTarget.current) observer.observe(observerTarget.current);
     return () => observer.disconnect();
-  }, [page, hasMore, loading, yalies, votes]);
+  }, [page, hasMore, loading, yalies, votes, sortBy]);
+
+  useEffect(() => {
+    fetch('/50most.json')
+      .then(res => res.json())
+      .then(setFiftyMostNames)
+      .catch(console.error);
+  }, []);
 
   useEffect(() => {
     const timer = setTimeout(() => setSearch(searchInput), 300);
@@ -123,8 +161,12 @@ export default function YaliesRankingPage() {
       setLoadingAll(true);
       const loadAll = async () => {
         try {
-          const allYalies = await fetchYalies(1, search);
-          setYalies(sortYalies(allYalies, votes));
+          const allYalies = is50Most ? await fetchAllYalies(search) : await fetchYalies(1, search);
+          let filtered = allYalies;
+          if (is50Most) {
+            filtered = filtered.filter(y => fiftyMostNames.includes(`${y.fname} ${y.lname}`));
+          }
+          setYalies(sortYalies(filtered, votes, sortBy));
           setHasMore(false);
           setLoadingAll(false);
         } catch (error) {
@@ -134,45 +176,57 @@ export default function YaliesRankingPage() {
       };
       loadAll();
     } else if (!search) {
-      // If search cleared, reset to initial
-      setYalies([]);
-      setPage(1);
-      setHasMore(true);
-      setLoadingAll(false);
-      // Trigger initial load
-      const loadInitial = async () => {
-        setLoading(true);
-        try {
-          const [initialYalies, initialVotes] = await Promise.all([
-            fetchYalies(1, ''),
-            fetchVotes(),
-          ]);
-          setYalies(sortYalies(initialYalies, initialVotes));
-          setVotes(initialVotes);
-          setLoading(false);
-        } catch (error) {
-          console.error('Error loading initial data:', error);
-          setLoading(false);
-        }
-      };
-      loadInitial();
-    }
-  }, [search]);
-
-  useEffect(() => {
-    const interval = setInterval(async () => {
-      try {
-        const newVotes = await fetchVotes();
-        if (JSON.stringify(newVotes) !== JSON.stringify(votes)) {
-          setVotes(newVotes);
-        }
-      } catch (error) {
-        console.error('Error fetching updated votes:', error);
+      if (is50Most) {
+        setYalies([]);
+        setLoadingAll(true);
+        const loadAll = async () => {
+          try {
+            const allYalies = await fetchAllYalies('');
+            const filtered = allYalies.filter(y => fiftyMostNames.includes(`${y.fname} ${y.lname}`));
+            setYalies(sortYalies(filtered, votes, sortBy));
+            setHasMore(false);
+            setLoadingAll(false);
+          } catch (error) {
+            console.error('Error loading all Yalies:', error);
+            setLoadingAll(false);
+          }
+        };
+        loadAll();
+      } else {
+        setYalies([]);
+        setPage(1);
+        setHasMore(true);
+        setLoadingAll(false);
+        const loadInitial = async () => {
+          setLoading(true);
+          try {
+            const [initialYalies, initialVotes] = await Promise.all([
+              fetchYalies(1, ''),
+              fetchVotes(),
+            ]);
+            setYalies(sortYalies(initialYalies, initialVotes, sortBy));
+            setVotes(initialVotes);
+            setLoading(false);
+          } catch (error) {
+            console.error('Error loading initial data:', error);
+            setLoading(false);
+          }
+        };
+        loadInitial();
       }
-    }, 60000); // Poll every 1 minute
+    }
+  }, [search, is50Most, sortBy, fiftyMostNames]);
 
-    return () => clearInterval(interval);
-  }, [votes]);
+
+
+  const handleRefresh = async () => {
+    try {
+      const newVotes = await fetchVotes();
+      setVotes(newVotes);
+    } catch (error) {
+      console.error('Error refreshing votes:', error);
+    }
+  };
 
   const handleVote = (key: string, delta: number) => {
     setVotedKey(key);
@@ -183,12 +237,24 @@ export default function YaliesRankingPage() {
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-3xl font-bold mb-4">Yalies Ranking</h1>
+      <button onClick={handleRefresh} className="mb-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Refresh Votes</button>
+      <div className="mb-4">
+        <label className="mr-4">
+          <input type="checkbox" checked={is50Most} onChange={(e) => setIs50Most(e.target.checked)} /> 50 Most
+        </label>
+        <label>Sort by:</label>
+        <select value={sortBy} onChange={(e) => setSortBy(e.target.value as 'score' | 'college' | 'year')} className="ml-2 p-1 border rounded">
+          <option value="score">Score</option>
+          <option value="college">College</option>
+          <option value="year">Year</option>
+        </select>
+      </div>
       <input
         type="text"
         placeholder="Search by name, college, or year..."
         value={searchInput}
         onChange={(e) => setSearchInput(e.target.value)}
-        className="w-full p-2 mb-4 border rounded backdrop-blur bg-white bg-opacity-20 focus:bg-blue-500 focus:bg-opacity-50 transition-colors"
+        className="w-full p-2 mb-4 border rounded backdrop-blur bg-white bg-opacity-20 focus:bg-blue-500 focus:bg-opacity-50 transition-colors text-black focus:text-white"
       />
       {loading || loadingAll ? (
         <div className="text-center py-4">
