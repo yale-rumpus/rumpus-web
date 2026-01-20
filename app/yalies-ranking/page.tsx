@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import "./rankst.css";
 
 interface Yalie {
   fname: string;
@@ -234,7 +235,13 @@ export default function YaliesRankingPage() {
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-3xl font-bold mb-4">Yalies Ranking</h1>
-      <button onClick={handleRefresh} className="mb-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Refresh Votes</button>
+      <p>or the Yanking. <br />
+        there are no rules.
+      </p>
+      <h2>
+        <a href="/">return Home</a>
+      </h2>
+      <button onClick={handleRefresh} className="mb-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600" id="ref">Refresh Votes</button>
       <div className="mb-4 flex flex-wrap gap-4">
         <button
           onClick={() => setIs50Most(!is50Most)}

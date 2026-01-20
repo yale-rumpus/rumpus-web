@@ -96,6 +96,22 @@ export default async function Page() {
                     </h2>
                     <div id="blog-content">
                         <div className="blog-casing">
+                            <h3 className="blog-title">Blog 1/20/26</h3>
+                            <br />
+                            <p className="blog">
+                                Hey again! I don't even know if this post will get released, but this
+                                is intended to be part of a feature update where we introduce
+                                the yankings.
+                                The yanking is a yalie ranking where you can upvote or downvote your classmates.
+                                dystopian? strange? done before? definitely. but we at rumpus are here to spark chaos as usual. we're bringing this back.<br />
+                                You may notice some things about the yankings... like how you can upvote someone infinitely. Is this a chaotic
+                                uncontrolled mechanic? other than loading our servers with too many api requests for the poor Y/CS people to
+                                keep up with, there are not many consequences. So, we decided to include this little quirk. Why? because you can also
+                                infinitely downvote someone.
+                                <br />- Coochie Clicker
+                            </p>
+                        </div>
+                        <div className="blog-casing">
                             <h3 className="blog-title">Blog 1/10/26</h3>
                             <br />
                             <p className="blog">

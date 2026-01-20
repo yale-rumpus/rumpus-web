@@ -1,7 +1,7 @@
 // large page viewer
+import { reverseTimer } from "@/lib/reverseTimer";
 import "../globals.css";
 import "./reader.css";
-import { reverseTimer } from "@/lib/reverseTimer";
 
 // current issue info
 const reference = {
@@ -37,8 +37,8 @@ export default function reader() {
         <div className="reader-container">
             <div className="bevel-wrap">
                 <h2>
-                        <a href="/">return Home</a>
-                    </h2>
+                    <a href="/">return Home</a>
+                </h2>
                 <iframe
                     src={`${endref.issueurl}#p=${endref.pageref[0]}`}
                     className="reader-iframe"
