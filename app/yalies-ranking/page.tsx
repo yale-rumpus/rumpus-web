@@ -95,6 +95,27 @@ export default function YaliesRankingPage() {
     }
   }, [isProcessing50]);
 
+  useEffect(() => {
+    if (is50Most) return;
+    abortControllerRef.current?.abort();
+    abortControllerRef.current = new AbortController();
+    if (searchInput.trim()) {
+      setLoading(true);
+      fetch(`/api/yalies?query=${encodeURIComponent(searchInput)}`, { signal: abortControllerRef.current.signal })
+        .then(res => res.json())
+        .then(data => {
+          setYalies(sortYalies(data, votes, sortBy));
+          setHasMore(false);
+        })
+        .catch(e => {
+          if (e.name !== 'AbortError') console.error(e);
+        })
+        .finally(() => setLoading(false));
+    } else {
+      loadInitialPage();
+    }
+  }, [searchInput, is50Most, votes, sortBy]);
+
   const loadAll50Mosters = async () => {
     setIsProcessing50(true);
     setYalies([]);
@@ -171,9 +192,9 @@ export default function YaliesRankingPage() {
     });
   };
 
-  const displayedYalies = yalies.filter(y =>
+  const displayedYalies = is50Most ? yalies.filter(y =>
     normalize(`${y.fname} ${y.lname} ${y.college}`).includes(normalize(searchInput))
-  );
+  ) : yalies;
 
   const progressPercent = fiftyMostNames.length > 0
     ? (processedCount / fiftyMostNames.length) * 100
