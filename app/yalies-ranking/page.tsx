@@ -66,6 +66,7 @@ export default function YaliesRankingPage() {
     const newVotes = { ...votes };
     newVotes[key] = (newVotes[key] || 0) + delta;
     setVotes(newVotes);
+    setYalies(sortYalies(yalies, newVotes, sortBy));
     await fetch('/api/votes', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -124,12 +125,12 @@ export default function YaliesRankingPage() {
           }
         }
       },
-      { threshold: 1.0 }
+      { threshold: 0.5 }
     );
 
     if (observerTarget.current) observer.observe(observerTarget.current);
     return () => observer.disconnect();
-  }, [page, hasMore, loading, yalies, votes, sortBy]);
+  }, [page, hasMore, loading]);
 
   useEffect(() => {
     fetch('/50most.json')
@@ -221,6 +222,7 @@ export default function YaliesRankingPage() {
     try {
       const newVotes = await fetchVotes();
       setVotes(newVotes);
+      setYalies(sortYalies(yalies, newVotes, sortBy));
     } catch (error) {
       console.error('Error refreshing votes:', error);
     }
@@ -270,14 +272,18 @@ export default function YaliesRankingPage() {
         onChange={(e) => setSearchInput(e.target.value)}
         className="w-full p-2 mb-4 border rounded backdrop-blur bg-white bg-opacity-20 focus:bg-blue-500 focus:bg-opacity-50 transition-colors text-black focus:text-white"
       />
-      {loading || loadingAll ? (
+      {/* FIX: Only hide the list if we are "loadingAll" (searching) 
+         or if we are loading the very first page (yalies.length === 0 and loading).
+      */}
+      {loadingAll || (loading && yalies.length === 0) ? (
         <div className="text-center py-4">
-          {loading ? 'Loading rankings...' : 'Loading all Yalies for search...'}
+          {loadingAll ? 'Loading all Yalies for search...' : 'Loading rankings...'}
         </div>
       ) : (
         <>
           <ul className="space-y-2">
             {yalies.map((yalie) => {
+              // ... existing list item code ...
               const fullName = `${yalie.fname} ${yalie.lname}`;
               const isIn50Most = fiftyMostNames.some(name => name.toLowerCase() === fullName.toLowerCase());
               const displayName = isIn50Most ? fullName : `${yalie.fname[0]}${yalie.lname[0]}`;
@@ -288,24 +294,17 @@ export default function YaliesRankingPage() {
                   </div>
                   <div className="flex items-center space-x-2">
                     <span>Score: {votes[yalie.key] || 0}</span>
-                    <button
-                      onClick={() => handleVote(yalie.key, 1)}
-                      className="px-2 py-1 bg-green-500 text-white rounded hover:bg-green-600"
-                    >
-                      ↑
-                    </button>
-                    <button
-                      onClick={() => handleVote(yalie.key, -1)}
-                      className="px-2 py-1 bg-red-500 text-white rounded hover:bg-red-600"
-                    >
-                      ↓
-                    </button>
+                    <button onClick={() => handleVote(yalie.key, 1)} className="px-2 py-1 bg-green-500 text-white rounded hover:bg-green-600">↑</button>
+                    <button onClick={() => handleVote(yalie.key, -1)} className="px-2 py-1 bg-red-500 text-white rounded hover:bg-red-600">↓</button>
                   </div>
                 </li>
               );
-            })}          </ul>
+            })}
+          </ul>
+
+          {/* The Observer Target stays at the bottom */}
           <div ref={observerTarget} className="text-center py-4">
-            {loading && 'Loading more Yalies...'}
+            {loading && 'Loading more Yalies...'} {/* Spinner/Text appears BELOW list */}
             {!hasMore && 'No more Yalies to load.'}
           </div>
         </>
