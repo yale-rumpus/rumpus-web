@@ -38,18 +38,25 @@ export default function YaliesRankingPage() {
   const [votes, setVotes] = useState<Votes>({});
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
-  const [loading, setLoading] = useState(true);
+
+  // Loading states
+  const [loading, setLoading] = useState(false); // For pagination
+  const [loadingAll, setLoadingAll] = useState(true); // For initial load / search
+
   const [search, setSearch] = useState('');
   const [searchInput, setSearchInput] = useState('');
-  const [loadingAll, setLoadingAll] = useState(false);
   const [votedKey, setVotedKey] = useState('');
+
+  // 50 Most Logic: Default is TRUE
   const [fiftyMostNames, setFiftyMostNames] = useState<string[]>([]);
-  const [is50Most, setIs50Most] = useState(false);
+  const [is50Most, setIs50Most] = useState(true);
+
   const [sortBy, setSortBy] = useState<'score' | 'college' | 'year'>('score');
   const observerTarget = useRef<HTMLDivElement>(null);
 
-  const fetchYalies = async (pageNum: number, query: string = '') => {
-    const res = await fetch(`/api/yalies?page=${pageNum}&page_size=50&query=${encodeURIComponent(query)}`);
+  // CHANGED: Added size parameter to override the default 50 limit
+  const fetchYalies = async (pageNum: number, query: string = '', size: number = 50) => {
+    const res = await fetch(`/api/yalies?page=${pageNum}&page_size=${size}&query=${encodeURIComponent(query)}`);
     if (!res.ok) throw new Error('Failed to fetch Yalies');
     return await res.json();
   };
@@ -59,8 +66,6 @@ export default function YaliesRankingPage() {
     if (!res.ok) throw new Error('Failed to fetch votes');
     return await res.json();
   };
-
-
 
   const updateVote = async (key: string, delta: number) => {
     const newVotes = { ...votes };
@@ -75,7 +80,7 @@ export default function YaliesRankingPage() {
   };
 
   const sortYalies = (ylist: Yalie[], v: Votes, sort: 'score' | 'college' | 'year' = 'score') => {
-    return ylist.sort((a, b) => {
+    return [...ylist].sort((a, b) => {
       if (sort === 'college') {
         const collegeA = a.college.toLowerCase();
         const collegeB = b.college.toLowerCase();
@@ -99,10 +104,86 @@ export default function YaliesRankingPage() {
     });
   };
 
+  // 1. Load the 50 Most JSON first
+  useEffect(() => {
+    fetch('/50most.json')
+      .then(res => res.json())
+      .then(data => {
+        setFiftyMostNames(data);
+      })
+      .catch(console.error);
+  }, []);
 
+  // 2. Handle Search Debounce
+  useEffect(() => {
+    const timer = setTimeout(() => setSearch(searchInput), 300);
+    return () => clearTimeout(timer);
+  }, [searchInput]);
 
+  // 3. Main Data Orchestration
+  useEffect(() => {
+    // If we are in 50 Most mode but haven't loaded the names list yet, wait.
+    if (is50Most && fiftyMostNames.length === 0) return;
+
+    const loadData = async () => {
+      setLoadingAll(true);
+      setYalies([]);
+      setPage(1);
+
+      try {
+        const votesData = await fetchVotes();
+        setVotes(votesData);
+
+        let query = search;
+        let pageSize = 50; // Default size
+
+        if (is50Most) {
+          // Construct the OR query
+          const namesQuery = fiftyMostNames.join(' OR ');
+          query = search ? `${search} AND (${namesQuery})` : namesQuery;
+
+          // CRITICAL FIX: Request a much larger page size (e.g., 200) 
+          // because the search is "fuzzy". If we only ask for 50, 
+          // the API might return 48 close matches (which we filter out) 
+          // and only 2 exact matches.
+          pageSize = 200;
+        }
+
+        // Pass the calculated pageSize to the fetch function
+        const data = await fetchYalies(1, query, pageSize);
+
+        // Strict client-side filtering to clean up the "fuzzy" results
+        let filtered = data;
+        if (is50Most) {
+          filtered = data.filter((y: Yalie) =>
+            fiftyMostNames.some(name => name.toLowerCase() === `${y.fname} ${y.lname}`.toLowerCase())
+          );
+        }
+
+        setYalies(sortYalies(filtered, votesData, sortBy));
+        setHasMore(!is50Most);
+      } catch (error) {
+        console.error('Error loading data:', error);
+        if (is50Most) setIs50Most(false);
+      } finally {
+        setLoadingAll(false);
+        setLoading(false);
+      }
+    };
+
+    loadData();
+
+    // Reset infinite scroll observer if leaving 50 most mode
+    if (!is50Most) {
+      setHasMore(true);
+    }
+
+  }, [search, is50Most, fiftyMostNames, sortBy]);
+
+  // 4. Infinite Scroll (Only active if NOT 50 Most and NOT searching)
   useEffect(() => {
     if (search || is50Most) return;
+
     const observer = new IntersectionObserver(
       async (entries) => {
         if (entries[0].isIntersecting && hasMore && !loading && !loadingAll) {
@@ -113,119 +194,27 @@ export default function YaliesRankingPage() {
             if (newYalies.length === 0) {
               setHasMore(false);
             } else {
-              const updatedYalies = sortYalies([...yalies, ...newYalies], votes, sortBy);
-              setYalies(updatedYalies);
+              setYalies(prev => sortYalies([...prev, ...newYalies], votes, sortBy));
               setPage(nextPage);
             }
           } catch (error) {
-            console.error('Error loading more Yalies:', error);
             setHasMore(false);
           } finally {
             setLoading(false);
           }
         }
       },
-      { threshold: 0.5 }
+      { threshold: 0.1 }
     );
 
     if (observerTarget.current) observer.observe(observerTarget.current);
     return () => observer.disconnect();
-  }, [page, hasMore, loading]);
-
-  useEffect(() => {
-    fetch('/50most.json')
-      .then(res => res.json())
-      .then(setFiftyMostNames)
-      .catch(console.error);
-  }, []);
-
-  useEffect(() => {
-    const timer = setTimeout(() => setSearch(searchInput), 300);
-    return () => clearTimeout(timer);
-  }, [searchInput]);
-
-  useEffect(() => {
-    if (search && !loadingAll && !loading) {
-      setYalies([]);
-      setPage(1);
-      setLoadingAll(true);
-      const loadSearch = async () => {
-        try {
-          let query = search;
-          if (is50Most) {
-            query += ` ${fiftyMostNames.join(' OR ')}`;
-          }
-          const data = await fetchYalies(1, query);
-          let filtered = data;
-          if (is50Most) {
-            filtered = data.filter((y: Yalie) => fiftyMostNames.some(name => name.toLowerCase() === `${y.fname} ${y.lname}`.toLowerCase()));
-          }
-          setYalies(sortYalies(filtered, votes, sortBy));
-          setHasMore(false);
-          setLoadingAll(false);
-        } catch (error) {
-          console.error('Error loading search results:', error);
-          if (is50Most) {
-            console.error('50 most search failed, disabling 50 most filter');
-            setIs50Most(false);
-          }
-          setLoadingAll(false);
-        }
-      };
-      loadSearch();
-    } else if (!search) {
-      if (is50Most) {
-        setYalies([]);
-        setLoadingAll(true);
-        const load50 = async () => {
-          try {
-            const query = fiftyMostNames.join(' OR ');
-            const data = await fetchYalies(1, query);
-            const filtered = data.filter((y: Yalie) => fiftyMostNames.some(name => name.toLowerCase() === `${y.fname} ${y.lname}`.toLowerCase()));
-            setYalies(sortYalies(filtered, votes, sortBy));
-            setHasMore(false);
-            setLoadingAll(false);
-          } catch (error) {
-            console.error('Error loading 50 most:', error);
-            setIs50Most(false);
-          }
-        };
-        load50();
-      } else {
-        setYalies([]);
-        setPage(1);
-        setHasMore(true);
-        setLoadingAll(false);
-        const loadInitial = async () => {
-          setLoading(true);
-          try {
-            const [initialYalies, initialVotes] = await Promise.all([
-              fetchYalies(1, ''),
-              fetchVotes(),
-            ]);
-            setYalies(sortYalies(initialYalies, initialVotes, sortBy));
-            setVotes(initialVotes);
-            setLoading(false);
-          } catch (error) {
-            console.error('Error loading initial data:', error);
-            setLoading(false);
-          }
-        };
-        loadInitial();
-      }
-    }
-  }, [search, is50Most, sortBy, fiftyMostNames]);
-
-
+  }, [page, hasMore, loading, loadingAll, search, is50Most, votes, sortBy]);
 
   const handleRefresh = async () => {
-    try {
-      const newVotes = await fetchVotes();
-      setVotes(newVotes);
-      setYalies(sortYalies(yalies, newVotes, sortBy));
-    } catch (error) {
-      console.error('Error refreshing votes:', error);
-    }
+    const newVotes = await fetchVotes();
+    setVotes(newVotes);
+    setYalies(sortYalies(yalies, newVotes, sortBy));
   };
 
   const handleVote = (key: string, delta: number) => {
@@ -244,13 +233,14 @@ export default function YaliesRankingPage() {
         <a href="/">return Home</a>
       </h2>
       <button onClick={handleRefresh} className="mb-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600" id="ref">Refresh Votes</button>
+
       <div className="mb-4 flex flex-wrap gap-4">
         <button
           onClick={() => setIs50Most(!is50Most)}
           className={`px-4 py-2 rounded-lg font-semibold transition-colors ${is50Most ? 'bg-yellow-500 text-white hover:bg-yellow-600' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
             }`}
         >
-          50 Most
+          {is50Most ? 'Showing: 50 Most' : 'Show: 50 Most'}
         </button>
         <div className="flex items-center bg-white bg-opacity-20 backdrop-blur rounded-lg px-3 py-2">
           <label className="mr-2 font-semibold text-black">Sort by:</label>
@@ -265,6 +255,7 @@ export default function YaliesRankingPage() {
           </select>
         </div>
       </div>
+
       <input
         type="text"
         placeholder="Search by name, college, or year..."
@@ -272,21 +263,19 @@ export default function YaliesRankingPage() {
         onChange={(e) => setSearchInput(e.target.value)}
         className="w-full p-2 mb-4 border rounded backdrop-blur bg-white bg-opacity-20 focus:bg-blue-500 focus:bg-opacity-50 transition-colors text-black focus:text-white"
       />
-      {/* FIX: Only hide the list if we are "loadingAll" (searching) 
-         or if we are loading the very first page (yalies.length === 0 and loading).
-      */}
+
       {loadingAll || (loading && yalies.length === 0) ? (
         <div className="text-center py-4">
-          {loadingAll ? 'Loading all Yalies for search...' : 'Loading rankings...'}
+          {loadingAll ? 'Searching...' : 'Loading rankings...'}
         </div>
       ) : (
         <>
-          <ul className="space-y-2">
+          <ul className="space-y-2 min-h-[50vh]">
             {yalies.map((yalie) => {
-              // ... existing list item code ...
               const fullName = `${yalie.fname} ${yalie.lname}`;
               const isIn50Most = fiftyMostNames.some(name => name.toLowerCase() === fullName.toLowerCase());
               const displayName = isIn50Most ? fullName : `${yalie.fname[0]}${yalie.lname[0]}`;
+
               return (
                 <li key={yalie.key} className={`flex items-center justify-between p-4 border rounded text-black ${collegeColors[yalie.college] || 'bg-gray-100'}`}>
                   <div>
@@ -294,18 +283,30 @@ export default function YaliesRankingPage() {
                   </div>
                   <div className="flex items-center space-x-2">
                     <span>Score: {votes[yalie.key] || 0}</span>
-                    <button onClick={() => handleVote(yalie.key, 1)} className="px-2 py-1 bg-green-500 text-white rounded hover:bg-green-600">↑</button>
-                    <button onClick={() => handleVote(yalie.key, -1)} className="px-2 py-1 bg-red-500 text-white rounded hover:bg-red-600">↓</button>
+                    <button
+                      onClick={() => handleVote(yalie.key, 1)}
+                      className="px-2 py-1 bg-green-500 text-white rounded hover:bg-green-600"
+                    >
+                      ↑
+                    </button>
+                    <button
+                      onClick={() => handleVote(yalie.key, -1)}
+                      className="px-2 py-1 bg-red-500 text-white rounded hover:bg-red-600"
+                    >
+                      ↓
+                    </button>
                   </div>
                 </li>
               );
             })}
+            {yalies.length === 0 && !loading && (
+              <li className="text-center p-4 text-gray-500">No results found.</li>
+            )}
           </ul>
 
-          {/* The Observer Target stays at the bottom */}
-          <div ref={observerTarget} className="text-center py-4">
-            {loading && 'Loading more Yalies...'} {/* Spinner/Text appears BELOW list */}
-            {!hasMore && 'No more Yalies to load.'}
+          <div ref={observerTarget} className="text-center py-4 h-10">
+            {loading && 'Loading more Yalies...'}
+            {!hasMore && !loading && <span className="text-gray-400 text-sm">End of list</span>}
           </div>
         </>
       )}
