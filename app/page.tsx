@@ -1,3 +1,4 @@
+import { Analytics } from '@vercel/analytics/next';
 import Image from "next/image";
 import "./globals.css";
 
@@ -266,6 +267,7 @@ export default function RumpusHomePage() {
                         </article>
                     </ul>
                 </section>
+                <Analytics />
             </>
         )
     );
