@@ -209,13 +209,18 @@ export default function YaliesRankingPage() {
       <h2>
         <a href="/">return Home</a>
       </h2>
+      <br />
+      <br />
+      <h2>
+        <a href="https://yalies.io/" target='_blank'>powered by Yalies API</a>
+      </h2>
 
       <div className="mb-4 flex flex-wrap gap-4 mt-4">
         <button
           onClick={() => setIs50Most(!is50Most)}
           className={`px-4 py-2 rounded-lg font-semibold transition-colors ${is50Most ? 'bg-yellow-500 text-white hover:bg-yellow-600' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}`}
         >
-          {is50Most ? '50 Most' : 'Show All'}
+          {is50Most ? 'Showing 50 Most' : 'Showing All'}
         </button>
 
         <div className="flex items-center bg-white bg-opacity-20 backdrop-blur rounded-lg px-3 py-2">
@@ -268,7 +273,7 @@ export default function YaliesRankingPage() {
           return (
             <li key={yalie.key} className={`flex items-center justify-between p-4 border rounded text-black ${collegeColors[yalie.college] || 'bg-gray-100'}`}>
               <div>
-                <span className="font-semibold">{displayName}</span> {isIn50Most && <span className="ml-2 px-2 py-1 bg-yellow-500 text-white text-xs rounded">50 Most</span>} - {yalie.year}, {yalie.college}
+                <span className="font-semibold">{displayName}</span> {isIn50Most && <span className="ml-2 px-2 py-1 bg-yellow-500 text-white text-xs rounded inline-flex whitespace-nowrap ">50 Most</span>} - {yalie.year}, {yalie.college}
               </div>
               <div className="flex items-center space-x-2">
                 <span>Score: {votes[yalie.key] || 0}</span>
