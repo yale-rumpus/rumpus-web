@@ -481,3 +481,11 @@ section:nth-of-type(even) {
         filter: blur(12px);
     }
 }
+
+#chrim span:nth-child(odd) {
+  color: #EF5B5B; /* Color 1 */
+}
+
+#chrim span:nth-child(even) {
+  color: #4CAF50; /* Color 2 */
+}
