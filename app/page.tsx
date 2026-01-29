@@ -168,12 +168,13 @@ export default function RumpusHomePage() {
                                 <BlobButton href="https://www.dooxofyale.com/thechase" target="_blank">
                                     Explore More
                                 </BlobButton>
-                                <figure>
+<figure>
                                     <Image
                                         src="/Sexy-santa.png"
+                                        alt="Picture of the author"
                                         width={500}
                                         height={500}
-                                        alt="Picture of the author"
+                                        style={{ maxWidth: "100%", height: "auto" }}
                                     />
                                     <figcaption style={{ fontSize: '60%' }}>image credit: Jaden Lee, '29</figcaption>
                                 </figure>
