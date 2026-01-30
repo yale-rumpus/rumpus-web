@@ -1,10 +1,9 @@
 import Image from "next/image";
 import "./globals.css";
 
-import BlobButton from '@/components/BlobButton/BlobButton';
+import BlobButton from "@/components/BlobButton/BlobButton";
 
 // import Head from 'next/head';
-import Countdown from "../components/Countdown.js";
 import Sidebar from "../components/Sidebar.js";
 import { reverseTimer } from "../lib/reverseTimer";
 
@@ -134,8 +133,11 @@ export default function RumpusHomePage() {
 
                             <div className="c-rumpus__item-info">
                                 <h2 className="c-rumpus__item-title">
-                                    <a href = "https://www.dooxofyale.com/" style = {{color:'#4CAF50'}}>Doox of Yale</a> <span> </span>
-                                    <span style = {{color:'#EF5B5B'}}>present:</span>
+                                    <a href="https://www.dooxofyale.com/" style={{ color: "#4CAF50" }}>
+                                        Doox of Yale
+                                    </a>{" "}
+                                    <span> </span>
+                                    <span style={{ color: "#EF5B5B" }}>present:</span>
                                     <div id="chrim">
                                         <span>B</span>
                                         <span>O</span>
@@ -160,7 +162,7 @@ export default function RumpusHomePage() {
                                 <BlobButton href="https://www.dooxofyale.com/thechase" target="_blank">
                                     Explore More
                                 </BlobButton>
-<figure>
+                                <figure>
                                     <Image
                                         src="/Sexy-santa.png"
                                         alt="Picture of the author"
@@ -168,7 +170,7 @@ export default function RumpusHomePage() {
                                         height={500}
                                         style={{ maxWidth: "100%", height: "auto" }}
                                     />
-                                    <figcaption style={{ fontSize: '60%' }}>image credit: Jaden Lee, '29</figcaption>
+                                    <figcaption style={{ fontSize: "60%" }}>image credit: Jaden Lee, '29</figcaption>
                                 </figure>
                             </div>
                         </article>
@@ -190,10 +192,7 @@ export default function RumpusHomePage() {
                                                 <h4>
                                                     <a href="/reader">click here for large page viewer!</a>
                                                 </h4>
-                                                <p>
-                                                    Short blurb about this issue — featured article, theme, or notable
-                                                    photos.
-                                                </p>
+                                                <p>rushing isn't all it's cut out to be... click to read more!</p>
 
                                                 <p>
                                                     <a
