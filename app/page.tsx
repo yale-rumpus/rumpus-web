@@ -15,9 +15,9 @@ import DynamicGameWrapper from "@/components/DynamicGameWrapper";
 
 // current issue info
 const reference = {
-    issueurl: "https://online.fliphtml5.com/sesvj/iljc/", // link to next issue article viewer
-    pageref: [12, 1, 5], // page numbers for the three iframes
-    targetdate: "2026-01-15T15:13:30", // target date for countdown timer
+    issueurl: "https://online.fliphtml5.com/sesvj/Binder1/", // link to next issue article viewer
+    pageref: [2, 1, 14], // page numbers for the three iframes
+    targetdate: "2026-02-14T12:00:00", // target date for countdown timer
 };
 
 // IMPORTANT DEVELOPER NOTE: WHEN SPECIFYING TARGET DATE YOU MUST USE 2 DIGIT NUMBERS
@@ -32,11 +32,7 @@ const referenceNext = {
 };
 
 const timer = reverseTimer(new Date(reference.targetdate)); // check if target date has passed
-const timeZero =
-    timer.days === 0 &&
-    timer.hours === 0 &&
-    timer.minutes === 0 &&
-    timer.seconds === 0;
+const timeZero = timer.days === 0 && timer.hours === 0 && timer.minutes === 0 && timer.seconds === 0;
 
 // final reference object to use in the page
 const endref = {
@@ -52,11 +48,7 @@ export default function RumpusHomePage() {
             // console.log(timeZero),
             <>
                 {/* The main header */}
-                <div
-                    className="header"
-                    id="top"
-                    style={{ display: "flex", justifyContent: "center" }}
-                >
+                <div className="header" id="top" style={{ display: "flex", justifyContent: "center" }}>
                     <div
                         style={{
                             display: "flex",
@@ -140,15 +132,10 @@ export default function RumpusHomePage() {
                             <div className="c-rumpus__item-figure c-rumpus__gradient-top"></div>
 
                             <div className="c-rumpus__item-info">
-                                <h2 className="c-rumpus__item-title">
-                                    COUNTDOWN TO LATEST ISSUE:
-                                </h2>
+                                <h2 className="c-rumpus__item-title">COUNTDOWN TO LATEST ISSUE:</h2>
 
                                 <div className="rumpus-countdown-wrap">
-                                    <Countdown
-                                        targetDate={new Date(endref.targetdate)}
-                                        html={true}
-                                    />
+                                    <Countdown targetDate={new Date(endref.targetdate)} html={true} />
                                 </div>
                             </div>
                         </article>
@@ -158,9 +145,7 @@ export default function RumpusHomePage() {
                             <div className="c-rumpus__item-figure c-rumpus__gradient-mid"></div>
 
                             <div className="c-rumpus__item-info">
-                                <h2 className="c-rumpus__item-title">
-                                    our top issues:
-                                </h2>
+                                <h2 className="c-rumpus__item-title">our top issues:</h2>
 
                                 <div className="rumpus-top-issues">
                                     {/* LEFT COLUMN */}
@@ -170,15 +155,11 @@ export default function RumpusHomePage() {
                                             <div className="rumpus-top-blurb">
                                                 <h3>Issue Highlight</h3>
                                                 <h4>
-                                                    <a href="/reader">
-                                                        click here for large
-                                                        page viewer!
-                                                    </a>
+                                                    <a href="/reader">click here for large page viewer!</a>
                                                 </h4>
                                                 <p>
-                                                    Short blurb about this issue
-                                                    — featured article, theme,
-                                                    or notable photos.
+                                                    Short blurb about this issue — featured article, theme, or notable
+                                                    photos.
                                                 </p>
 
                                                 <p>
@@ -252,14 +233,8 @@ export default function RumpusHomePage() {
                             <div className="c-rumpus__item-figure c-rumpus__gradient-bottom"></div>
 
                             <div className="c-rumpus__item-info">
-                                <h1 className="c-rumpus__item-title">
-                                    G A M E S
-                                </h1>
-                                <p>
-                                    {" "}
-                                    brought to you with love from the Rumpus
-                                    game department (we're hiring!){" "}
-                                </p>
+                                <h1 className="c-rumpus__item-title">G A M E S</h1>
+                                <p> brought to you with love from the Rumpus game department (we're hiring!) </p>
                                 <main style={{ margin: "0 auto" }}>
                                     <DynamicGameWrapper />
                                 </main>
