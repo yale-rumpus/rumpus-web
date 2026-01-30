@@ -89,6 +89,10 @@ const WordleGame: React.FC = () => {
     const [revealingRow, setRevealingRow] = useState<number | null>(null);
     const [revealingIndex, setRevealingIndex] = useState(0);
     const [lastGameDate, setLastGameDate] = useState<string>('');
+    const [showEasterEgg, setShowEasterEgg] = useState(false);
+    const [showPeachEgg, setShowPeachEgg] = useState(false);
+    const [peachCount, setPeachCount] = useState(0);
+    const [cookieCount, setCookieCount] = useState(0);
 
     const resetGame = () => {
         const fetchYalie = async () => {
@@ -112,6 +116,10 @@ const WordleGame: React.FC = () => {
         setLetterStatuses(new Map());
         setRevealingRow(null);
         setRevealingIndex(0);
+        setShowEasterEgg(false);
+        setShowPeachEgg(false);
+        setPeachCount(0);
+        setCookieCount(0);
         const today = getTodayString();
         setLastGameDate(today);
         localStorage.setItem('yurdle-last-game', today);
@@ -135,6 +143,28 @@ const WordleGame: React.FC = () => {
             }
         }
     }, []);
+
+    useEffect(() => {
+        if (showPeachEgg) {
+            setPeachCount(0);
+            for (let i = 1; i <= 6; i++) {
+                setTimeout(() => setPeachCount(i), i * 300);
+            }
+        } else {
+            setPeachCount(0);
+        }
+    }, [showPeachEgg]);
+
+    useEffect(() => {
+        if (showEasterEgg) {
+            setCookieCount(0);
+            for (let i = 1; i <= 6; i++) {
+                setTimeout(() => setCookieCount(i), i * 300);
+            }
+        } else {
+            setCookieCount(0);
+        }
+    }, [showEasterEgg]);
 
     const checkGuess = (guess: string): Guess => {
         const result: Guess = { letters: [] };
@@ -192,6 +222,12 @@ const WordleGame: React.FC = () => {
         setCurrentGuess('');
         setRevealingRow(guesses.length);
         setRevealingIndex(0);
+        if (currentGuess.toLowerCase() === 'jl29je') {
+            setShowEasterEgg(true);
+        }
+        if (currentGuess.toLowerCase() === 'rumpus') {
+            setShowPeachEgg(true);
+        }
 
         const revealNext = (index: number) => {
             if (index < WORD_LENGTH) {
@@ -293,7 +329,21 @@ const WordleGame: React.FC = () => {
         <div className="flex flex-col items-center p-2 sm:p-4 max-w-[95%] xs:max-w-sm sm:max-w-md mx-auto">
             <h1 className="text-2xl sm:text-3xl font-bold mb-2 sm:mb-4">Yurdle</h1>
             <p className="text-xs sm:text-sm text-center mb-2">Guess the Yalie: Initials + Year + College</p>
-            <p className="text-xs sm:text-sm text-center mb-2">college abbreviation if that wasnt clear</p>
+            <div className="relative inline-block mb-2 group">
+                <span className="text-xs sm:text-sm text-center cursor-help border-b border-dashed border-gray-500">
+                    college abbreviation if that wasnt clear
+                </span>
+                <div className="hidden group-hover:block absolute top-full left-1/2 -translate-x-1/2 mt-1 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded p-2 text-xs shadow-lg z-10 min-w-max">
+                    <div className="grid grid-cols-2 gap-x-4 gap-y-1">
+                        {Object.entries(collegeAbbreviations).map(([college, abbrev]) => (
+                            <div key={college}>
+                                <span className="font-bold">{abbrev}</span>
+                                <span className="ml-1 text-gray-600 dark:text-gray-400">{college}</span>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </div>
             <p className="text-xs sm:text-sm text-center mb-2">if this doesnt work, try clearing your browser cache</p>
 
             <div className="flex mb-1 sm:mb-2 text-[10px] xs:text-xs sm:text-sm font-bold">
@@ -430,6 +480,20 @@ const WordleGame: React.FC = () => {
                             ⌫
                         </button>
                     </div>
+                </div>
+            )}
+            {showEasterEgg && (
+                <div className="text-center text-4xl mt-4">
+                    {Array.from({ length: cookieCount }, (_, i) => (
+                        <span key={i} className="inline-block animate-bounce">{i % 2 === 0 ? '🍪' : '🖱️'}</span>
+                    ))}
+                </div>
+            )}
+            {showPeachEgg && (
+                <div className="text-center text-4xl mt-4">
+                    {Array.from({ length: peachCount }, (_, i) => (
+                        <span key={i} className="inline-block animate-bounce">🍑</span>
+                    ))}
                 </div>
             )}
         </div>

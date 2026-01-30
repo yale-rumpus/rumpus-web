@@ -17,7 +17,7 @@ import DynamicGameWrapper from "@/components/DynamicGameWrapper";
 const reference = {
     issueurl: "https://online.fliphtml5.com/sesvj/iljc/", // link to next issue article viewer
     pageref: [12, 1, 5], // page numbers for the three iframes
-    targetdate: "2026-01-31T15:13:30", // target date for countdown timer
+    targetdate: "2026-01-15T15:13:30", // target date for countdown timer
 };
 
 // IMPORTANT DEVELOPER NOTE: WHEN SPECIFYING TARGET DATE YOU MUST USE 2 DIGIT NUMBERS
@@ -25,8 +25,8 @@ const reference = {
 
 // queue up next issue info
 const referenceNext = {
-    issueurl: "", // link to next issue article viewer
-    pageref: [0, 0, 0], // page numbers for the three iframes
+    issueurl: "https://online.fliphtml5.com/sesvj/Binder1/", // link to next issue article viewer
+    pageref: [2, 1, 14], // page numbers for the three iframes
     targetdate: reference.targetdate, // target date for countdown timer
     // dateform: new Date(reference.targetdate)
 };
