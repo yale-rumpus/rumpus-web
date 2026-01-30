@@ -1,191 +1,257 @@
 /* src/components/BlobButton/BlobButton.module.scss */
 
 $cyan: #ac152e;
-$white: #FFFFFF;
+$white: #ffffff;
 $borderW: 2px;
 
 // --- 1. Main Button Container ---
 .blobBtn {
-  $numOfBlobs: 4;
-  position: relative;
-  z-index: 1;
-  padding: 20px 46px;
-  margin-bottom: 30px;
-  text-align: center;
-  text-transform: uppercase;
-  color: $cyan;
-  font-size: 16px;
-  font-weight: bold;
-  background-color: transparent;
-  outline: none;
-  border: none;
-  transition: color 0.5s;
-  cursor: pointer;
-  border-radius: 30px;
-  display: inline-block; // Ensure it respects padding/margin
-  
-  // The Gooey Border
-  &:before {
-    content: "";
+    $numOfBlobs: 4;
+    position: relative;
     z-index: 1;
+    padding: 20px 46px;
+    margin-bottom: 30px;
+    text-align: center;
+    text-transform: uppercase;
+    color: $cyan;
+    font-size: 16px;
+    font-weight: bold;
+    background-color: transparent;
+    outline: none;
+    border: none;
+    transition: color 0.5s;
+    cursor: pointer;
+    border-radius: 30px;
+    display: inline-block; // Ensure it respects padding/margin
+
+    // The Gooey Border
+    &:before {
+        content: "";
+        z-index: 1;
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        border: $borderW solid $cyan;
+        border-radius: 30px;
+    }
+
+    // The Gooey Background Fill (Slides in on hover)
+    &:after {
+        content: "";
+        z-index: -2;
+        position: absolute;
+        left: $borderW * 1.5;
+        top: $borderW * 1.5;
+        width: 100%;
+        height: 100%;
+        transition: all 0.3s 0.2s;
+        border-radius: 30px;
+    }
+
+    // Hover States
+    &:hover {
+        color: $white;
+        &:after {
+            transition: all 0.3s;
+            left: 0;
+            top: 0;
+        }
+    }
+
+    // Active (Click) Squish Effect
+    &:active {
+        transform: scale(0.9);
+    }
+}
+
+// --- 2. Gooey Internals (The swimming blobs) ---
+.inner {
+    z-index: -1;
+    overflow: hidden;
     position: absolute;
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
-    border: $borderW solid $cyan;
     border-radius: 30px;
-  }
-
-  // The Gooey Background Fill (Slides in on hover)
-  &:after {
-    content: "";
-    z-index: -2;
-    position: absolute;
-    left: $borderW * 1.5;
-    top: $borderW * 1.5;
-    width: 100%;
-    height: 100%;
-    transition: all 0.3s 0.2s;
-    border-radius: 30px;
-  }
-
-  // Hover States
-  &:hover {
-    color: $white;
-    &:after {
-      transition: all 0.3s;
-      left: 0;
-      top: 0;
-    }
-  }
-
-  // Active (Click) Squish Effect
-  &:active {
-    transform: scale(0.9);
-  }
-}
-
-// --- 2. Gooey Internals (The swimming blobs) ---
-.inner {
-  z-index: -1;
-  overflow: hidden;
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  border-radius: 30px;
-  background: #ffffff;
+    background: #ffffff;
 }
 
 .blobsContainer {
-  position: relative;
-  display: block;
-  height: 100%;
-  filter: url('#goo');
+    position: relative;
+    display: block;
+    height: 100%;
+    filter: url("#goo");
 }
 
 .blob {
-  $numOfBlobs: 4;
-  position: absolute;
-  top: $borderW;
-  width: 100% / $numOfBlobs;
-  height: 100%;
-  background: $cyan;
-  border-radius: 100%;
-  transform: translate3d(0, 150%, 0) scale(1.7);
-  transition: transform 0.45s;
+    $numOfBlobs: 4;
+    position: absolute;
+    top: $borderW;
+    width: calc(100% / $numOfBlobs);
+    height: 100%;
+    background: $cyan;
+    border-radius: 100%;
+    transform: translate3d(0, 150%, 0) scale(1.7);
+    transition: transform 0.45s;
 
-  @supports (filter: url('#goo')) {
-    transform: translate3d(0, 150%, 0) scale(1.4);
-  }
-
-  @for $i from 1 through $numOfBlobs {
-    &:nth-child(#{$i}) {
-      left: ($i - 1) * (120% / $numOfBlobs);
-      transition-delay: ($i - 1) * 0.08s;
+    @supports (filter: url("#goo")) {
+        transform: translate3d(0, 150%, 0) scale(1.4);
     }
-  }
 
-  .blobBtn:hover & {
-    transform: translateZ(0) scale(1.7);
-    @supports (filter: url('#goo')) {
-      transform: translateZ(0) scale(1.4);
+    @for $i from 1 through $numOfBlobs {
+        &:nth-child(#{$i}) {
+            left: ($i - 1) * calc(120% / $numOfBlobs);
+            transition-delay: ($i - 1) * 0.08s;
+        }
     }
-  }
+
+    .blobBtn:hover & {
+        transform: translateZ(0) scale(1.7);
+        @supports (filter: url("#goo")) {
+            transform: translateZ(0) scale(1.4);
+        }
+    }
 }
 
 // --- 3. Bubbly Particle Animation ---
 // We attach this to a specific span so it doesn't conflict with the button's own pseudo-elements
 .bubbles {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: -100; // Behind everything
-
-  // Shared particle styles
-  &:before, &:after {
     position: absolute;
-    content: '';
-    display: none; // Hidden until mapped to .animate
-    width: 150%;   // Wider than button to catch particles
+    top: 0;
+    left: 0;
+    width: 100%;
     height: 100%;
-    left: -25%;
-    z-index: -100;
-    transition: all ease-in-out 0.5s;
-    background-repeat: no-repeat;
-  }
+    pointer-events: none;
+    z-index: -100; // Behind everything
+
+    // Shared particle styles
+    &:before,
+    &:after {
+        position: absolute;
+        content: "";
+        display: none; // Hidden until mapped to .animate
+        width: 150%; // Wider than button to catch particles
+        height: 100%;
+        left: -25%;
+        z-index: -100;
+        transition: all ease-in-out 0.5s;
+        background-repeat: no-repeat;
+    }
 }
 
 // The trigger class added via React
 .animate {
-  .bubbles:before {
-    display: block;
-    top: -75%;
-    background-image: 
-      radial-gradient(circle, $cyan 20%, transparent 20%),
-      radial-gradient(circle, transparent 20%, $cyan 20%, transparent 30%),
-      radial-gradient(circle, $cyan 20%, transparent 20%),
-      radial-gradient(circle, $cyan 20%, transparent 20%),
-      radial-gradient(circle, transparent 10%, $cyan 15%, transparent 20%),
-      radial-gradient(circle, $cyan 20%, transparent 20%);
-    background-size: 10% 10%, 20% 20%, 15% 15%, 20% 20%, 18% 18%, 10% 10%;
-    animation: topBubbles ease-in-out 0.75s forwards;
-  }
+    .bubbles:before {
+        display: block;
+        top: -75%;
+        background-image:
+            radial-gradient(circle, $cyan 20%, transparent 20%),
+            radial-gradient(circle, transparent 20%, $cyan 20%, transparent 30%),
+            radial-gradient(circle, $cyan 20%, transparent 20%), radial-gradient(circle, $cyan 20%, transparent 20%),
+            radial-gradient(circle, transparent 10%, $cyan 15%, transparent 20%),
+            radial-gradient(circle, $cyan 20%, transparent 20%);
+        background-size:
+            10% 10%,
+            20% 20%,
+            15% 15%,
+            20% 20%,
+            18% 18%,
+            10% 10%;
+        animation: topBubbles ease-in-out 0.75s forwards;
+    }
 
-  .bubbles:after {
-    display: block;
-    bottom: -75%;
-    background-image: 
-      radial-gradient(circle, $cyan 20%, transparent 20%), 
-      radial-gradient(circle, $cyan 20%, transparent 20%),
-      radial-gradient(circle, transparent 10%, $cyan 15%, transparent 20%),
-      radial-gradient(circle, $cyan 20%, transparent 20%),
-      radial-gradient(circle, $cyan 20%, transparent 20%),
-      radial-gradient(circle, $cyan 20%, transparent 20%);
-    background-size: 15% 15%, 20% 20%, 18% 18%, 20% 20%, 15% 15%, 10% 10%;
-    animation: bottomBubbles ease-in-out 0.75s forwards;
-  }
+    .bubbles:after {
+        display: block;
+        bottom: -75%;
+        background-image:
+            radial-gradient(circle, $cyan 20%, transparent 20%), radial-gradient(circle, $cyan 20%, transparent 20%),
+            radial-gradient(circle, transparent 10%, $cyan 15%, transparent 20%),
+            radial-gradient(circle, $cyan 20%, transparent 20%), radial-gradient(circle, $cyan 20%, transparent 20%),
+            radial-gradient(circle, $cyan 20%, transparent 20%);
+        background-size:
+            15% 15%,
+            20% 20%,
+            18% 18%,
+            20% 20%,
+            15% 15%,
+            10% 10%;
+        animation: bottomBubbles ease-in-out 0.75s forwards;
+    }
 }
 
 @keyframes topBubbles {
-  0% { background-position: 5% 90%, 10% 90%, 10% 90%, 15% 90%, 25% 90%, 25% 90%; }
-  50% { background-position: 0% 80%, 0% 20%, 10% 40%, 20% 0%, 30% 30%, 22% 50%; }
-  100% {
-    background-position: 0% 70%, 0% 10%, 10% 30%, 20% -10%, 30% 20%, 22% 40%;
-    background-size: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%;
-  }
+    0% {
+        background-position:
+            5% 90%,
+            10% 90%,
+            10% 90%,
+            15% 90%,
+            25% 90%,
+            25% 90%;
+    }
+    50% {
+        background-position:
+            0% 80%,
+            0% 20%,
+            10% 40%,
+            20% 0%,
+            30% 30%,
+            22% 50%;
+    }
+    100% {
+        background-position:
+            0% 70%,
+            0% 10%,
+            10% 30%,
+            20% -10%,
+            30% 20%,
+            22% 40%;
+        background-size:
+            0% 0%,
+            0% 0%,
+            0% 0%,
+            0% 0%,
+            0% 0%,
+            0% 0%;
+    }
 }
 
 @keyframes bottomBubbles {
-  0% { background-position: 10% -10%, 30% 10%, 55% -10%, 70% -10%, 85% -10%, 70% -10%; }
-  50% { background-position: 0% 80%, 20% 80%, 45% 60%, 60% 100%, 75% 70%, 95% 60%; }
-  100% {
-    background-position: 0% 90%, 20% 90%, 45% 70%, 60% 110%, 75% 80%, 95% 70%;
-    background-size: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%;
-  }
+    0% {
+        background-position:
+            10% -10%,
+            30% 10%,
+            55% -10%,
+            70% -10%,
+            85% -10%,
+            70% -10%;
+    }
+    50% {
+        background-position:
+            0% 80%,
+            20% 80%,
+            45% 60%,
+            60% 100%,
+            75% 70%,
+            95% 60%;
+    }
+    100% {
+        background-position:
+            0% 90%,
+            20% 90%,
+            45% 70%,
+            60% 110%,
+            75% 80%,
+            95% 70%;
+        background-size:
+            0% 0%,
+            0% 0%,
+            0% 0%,
+            0% 0%,
+            0% 0%,
+            0% 0%;
+    }
 }
