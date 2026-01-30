@@ -13,7 +13,6 @@
         --foreground: #0a0a0a;
         --background: #ededed;
     }
-
 }
 
 html {
@@ -243,7 +242,6 @@ a {
 
 /* Mobile responsive iframe adjustments */
 @media (max-width: 768px) {
-
     .rumpus-top-left iframe,
     .rumpus-top-right iframe {
         height: 250px !important;
@@ -307,11 +305,10 @@ section:nth-of-type(even) {
     -webkit-backdrop-filter: blur(12px);
 
     /* Soft bevel edges */
-    box-shadow: inset 2px 2px 6px rgba(255, 255, 255, 0.35),
-        /* light top-left highlight */
-        inset -2px -2px 6px rgba(0, 0, 0, 0.35),
-        /* dark bottom-right shade */
-        0 4px 10px rgba(0, 0, 0, 0.3);
+    box-shadow:
+        inset 2px 2px 6px rgba(255, 255, 255, 0.35),
+        /* light top-left highlight */ inset -2px -2px 6px rgba(0, 0, 0, 0.35),
+        /* dark bottom-right shade */ 0 4px 10px rgba(0, 0, 0, 0.3);
     /* outer drop shadow */
 
     /* overflow: hidden; */
@@ -333,9 +330,11 @@ section:nth-of-type(even) {
     background: #ffffff6c;
     overflow: hidden;
     border-radius: 12px;
+    margin: 20px 0;
+    /* Add margin for spacing between cards */
 }
 
-/* dark mode custom add-on */
+/* Dark mode custom add-on */
 @media (prefers-color-scheme: dark) {
     .c-rumpus__item {
         position: sticky;
@@ -346,6 +345,71 @@ section:nth-of-type(even) {
         background: #6060606c;
         overflow: hidden;
         border-radius: 12px;
+        margin: 20px 0;
+        /* Add margin for spacing between cards */
+    }
+}
+
+/* Specific styles for the "top issues" card */
+.c-rumpus__item#section2 {
+    min-height: calc(100vh - 100px);
+    /* Always full screen height */
+    height: calc(100vh - 100px);
+    /* Explicit height to prevent content overflow */
+}
+
+/* Content auto-adjustment for top issues card */
+.c-rumpus__item#section2 .c-rumpus__item-info {
+    flex: 1;
+    /* Take remaining space */
+    overflow-y: auto;
+    /* Allow scrolling if content exceeds available space */
+    padding: 40px 20px;
+}
+
+/* Ensure iframes and content scale properly */
+.c-rumpus__item#section2 .rumpus-top-issues {
+    flex: 1;
+    /* Take remaining space */
+    overflow-y: auto;
+    /* Allow scrolling if content exceeds available space */
+}
+
+/* Countdown card should not have full height */
+.c-rumpus__item#section1 {
+    min-height: auto;
+    height: auto;
+}
+
+/* Mobile responsive card adjustments */
+@media (max-width: 768px) {
+    .c-rumpus__item {
+        position: relative !important;
+        top: 0 !important;
+        margin: 10px 0;
+        /* Reduce margin on mobile */
+        min-height: auto;
+        /* Disable full height on mobile */
+        height: auto;
+        /* Allow natural height on mobile */
+    }
+
+    .c-rumpus__item#section2 {
+        min-height: auto;
+        /* Disable full height on mobile */
+        height: auto;
+        /* Allow natural height on mobile */
+    }
+
+    .c-rumpus__item#section2 .c-rumpus__item-info {
+        padding: 24px 16px;
+        overflow-y: visible;
+        /* Disable scrolling on mobile */
+    }
+
+    .c-rumpus__item#section2 .rumpus-top-issues {
+        overflow-y: visible;
+        /* Disable scrolling on mobile */
     }
 }
 
@@ -354,7 +418,9 @@ section:nth-of-type(even) {
     --fade: 0;
     opacity: calc(1 - var(--fade));
     filter: blur(calc(var(--fade) * 12px));
-    transition: opacity 120ms linear, filter 120ms linear;
+    transition:
+        opacity 120ms linear,
+        filter 120ms linear;
 }
 
 .c-rumpus__item.in-view {
@@ -373,11 +439,10 @@ section:nth-of-type(even) {
     -webkit-backdrop-filter: blur(12px);
 
     /* Soft bevel edges */
-    box-shadow: inset 2px 2px 6px rgba(255, 255, 255, 0.35),
-        /* light top-left highlight */
-        inset -2px -2px 6px rgba(0, 0, 0, 0.35),
-        /* dark bottom-right shade */
-        0 4px 10px rgba(0, 0, 0, 0.3);
+    box-shadow:
+        inset 2px 2px 6px rgba(255, 255, 255, 0.35),
+        /* light top-left highlight */ inset -2px -2px 6px rgba(0, 0, 0, 0.35),
+        /* dark bottom-right shade */ 0 4px 10px rgba(0, 0, 0, 0.3);
     /* outer drop shadow */
 
     overflow: hidden;
@@ -385,21 +450,15 @@ section:nth-of-type(even) {
 
 /* Different gradients per card */
 .c-rumpus__gradient-top {
-    background: linear-gradient(to bottom,
-            rgba(255, 255, 255, 0),
-            rgba(255, 255, 255, 0.6));
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.6));
 }
 
 .c-rumpus__gradient-mid {
-    background: linear-gradient(to bottom,
-            rgba(255, 255, 255, 0.6),
-            rgba(255, 255, 255, 0));
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0));
 }
 
 .c-rumpus__gradient-bottom {
-    background: linear-gradient(to bottom,
-            rgba(255, 255, 255, 0.5),
-            rgba(255, 255, 255, 0.1));
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.1));
 }
 
 /* Card body */
@@ -483,9 +542,9 @@ section:nth-of-type(even) {
 }
 
 #chrim span:nth-child(odd) {
-  color: #EF5B5B; /* Color 1 */
+    color: #ef5b5b; /* Color 1 */
 }
 
 #chrim span:nth-child(even) {
-  color: #4CAF50; /* Color 2 */
+    color: #4caf50; /* Color 2 */
 }
