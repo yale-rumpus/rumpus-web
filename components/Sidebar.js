@@ -45,11 +45,12 @@ export default function Sidebar() {
                 {(() => {
                     // headlines here!
                     const headlines = [
-                        "what the FUCK is a CRIMSON?!?!?",
-                        "suck my YICK",
-                        "the curse of KAO",
-                        "THE GAME is just a formality",
-                        "damn Harvard, no funding?",
+                        "DOOX OF YALE",
+                        "Borscht Belt Tour!",
+                        "DOOX OF YALE",
+                        "Borscht Belt Tour!",
+                        "DOOX OF YALE",
+                        "Borscht Belt Tour!",
                     ];
 
                     return (

@@ -1,6 +1,8 @@
 import Image from "next/image";
 import "./globals.css";
 
+import BlobButton from "@/components/BlobButton/BlobButton";
+
 // import Head from 'next/head';
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
@@ -133,11 +135,46 @@ export default function RumpusHomePage() {
                             <div className="c-rumpus__item-figure c-rumpus__gradient-top"></div>
 
                             <div className="c-rumpus__item-info">
-                                <h2 className="c-rumpus__item-title">COUNTDOWN TO LATEST ISSUE:</h2>
+                                <h2 className="c-rumpus__item-title">
+                                    <a href="https://www.dooxofyale.com/" style={{ color: "#4CAF50" }}>
+                                        Doox of Yale
+                                    </a>{" "}
+                                    <span> </span>
+                                    <span style={{ color: "#EF5B5B" }}>present:</span>
+                                    <div id="chrim">
+                                        <span>B</span>
+                                        <span>O</span>
+                                        <span>R</span>
+                                        <span>S</span>
+                                        <span>C</span>
+                                        <span>H</span>
+                                        <span>T</span>
+                                        <span> </span>
+                                        <span>B</span>
+                                        <span>E</span>
+                                        <span>L</span>
+                                        <span>T</span>
+                                        <span> </span>
+                                        <span>T</span>
+                                        <span>O</span>
+                                        <span>U</span>
+                                        <span>R</span>
+                                    </div>
+                                </h2>
 
-                                <div className="rumpus-countdown-wrap">
-                                    <Countdown targetDate={new Date(endref.targetdate)} html={true} />
-                                </div>
+                                <BlobButton href="https://www.dooxofyale.com/thechase" target="_blank">
+                                    Explore More
+                                </BlobButton>
+                                <figure>
+                                    <Image
+                                        src="/Sexy-santa.png"
+                                        alt="Picture of the author"
+                                        width={500}
+                                        height={500}
+                                        style={{ maxWidth: "100%", height: "auto" }}
+                                    />
+                                    <figcaption style={{ fontSize: "60%" }}>image credit: Jaden Lee, '29</figcaption>
+                                </figure>
                             </div>
                         </article>
 
@@ -158,10 +195,7 @@ export default function RumpusHomePage() {
                                                 <h4>
                                                     <a href="/reader">click here for large page viewer!</a>
                                                 </h4>
-                                                <p>
-                                                    Short blurb about this issue — featured article, theme, or notable
-                                                    photos.
-                                                </p>
+                                                <p>rushing isn't all it's cut out to be... click to read more!</p>
 
                                                 <p>
                                                     <a
