@@ -4,6 +4,9 @@ import "./globals.css";
 import BlobButton from "@/components/BlobButton/BlobButton";
 
 // import Head from 'next/head';
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
+import Countdown from "../components/Countdown.js";
 import Sidebar from "../components/Sidebar.js";
 import { reverseTimer } from "../lib/reverseTimer";
 
@@ -274,6 +277,8 @@ export default function RumpusHomePage() {
                         </article>
                     </ul>
                 </section>
+                <Analytics />
+                <SpeedInsights />
             </>
         )
     );
