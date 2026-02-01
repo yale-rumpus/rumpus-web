@@ -1,13 +1,27 @@
+import "./page.css";
+
 interface Props {
-    params: { id: string };
+    params: Promise<{ id: string }>;
 }
 
-export default function PDFViewer({ params }: Props) {
-    const { id } = params;
+export default async function PDFViewer({ params }: Props) {
+    const { id } = await params;
 
     return (
         <main style={{ padding: "1rem" }}>
-            <a href={`https://drive.google.com/uc?export=download&id=${id}`} target="_blank" rel="noopener noreferrer">
+            <div id="head">
+                <h2>
+                    <a href="/">return Home</a>
+                </h2>
+                <h2>
+                    <a href="/archive">back to list</a>
+                </h2>
+            </div>
+            <a
+                href={`https://drive.google.com/uc?export=download&id=${id}`}
+                target="_blank"
+                rel="noopener noreferrer"
+            >
                 Download PDF
             </a>
 
@@ -16,7 +30,6 @@ export default function PDFViewer({ params }: Props) {
                 width="100%"
                 height="900"
                 style={{ border: "none", marginTop: "1rem" }}
-                loading="lazy"
             />
         </main>
     );
