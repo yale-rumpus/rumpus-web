@@ -166,66 +166,8 @@ export default function RumpusHomePage() {
                                 </h2>
 
                                 <div className="rumpus-top-issues">
-                                    {/* LEFT COLUMN */}
-                                    <div className="rumpus-top-left">
-                                        {/* Top left row */}
-                                        <div className="rumpus-top-row">
-                                            <div className="rumpus-top-blurb">
-                                                <h3>Issue Highlight</h3>
-                                                <h4>
-                                                    <a href="/reader">
-                                                        click here for large
-                                                        page viewer!
-                                                    </a>
-                                                </h4>
-                                                <p>
-                                                    rushing isn't all it's cut
-                                                    out to be... click to read
-                                                    more!
-                                                </p>
-
-                                                <p>
-                                                    <a
-                                                        href={`${endref.issueurl}#p=${endref.pageref[0]}`}
-                                                        target="_blank"
-                                                        rel="noopener noreferrer"
-                                                    >
-                                                        Read the full issue
-                                                    </a>
-                                                </p>
-                                            </div>
-
-                                            {/* IFRAME 1 */}
-                                            <div className="bevel-wrap">
-                                                <iframe
-                                                    src={`${endref.issueurl}#p=${endref.pageref[0]}`}
-                                                    height="290"
-                                                    width="100%"
-                                                    style={{ border: "none" }}
-                                                />
-                                            </div>
-                                        </div>
-
-                                        {/* IFRAME 3 */}
-                                        <div className="bevel-wrap">
-                                            <iframe
-                                                src={`${endref.issueurl}#p=${endref.pageref[2]}`}
-                                                height="290"
-                                                width="100%"
-                                                style={{ border: "none" }}
-                                            />
-                                        </div>
-                                    </div>
-
-                                    {/* RIGHT COLUMN IFRAME */}
-                                    <div className="rumpus-top-right bevel-wrap">
-                                        <iframe
-                                            src={`${endref.issueurl}#p=${endref.pageref[1]}`}
-                                            height="600"
-                                            width="100%"
-                                            style={{ border: "none" }}
-                                        />
-                                    </div>
+                                   no online edition available for 50 most issues.
+                                   
                                 </div>
                             </div>
                         </article>

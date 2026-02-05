@@ -45,12 +45,12 @@ export default function Sidebar() {
                 {(() => {
                     // headlines here!
                     const headlines = [
-                        "DOOX OF YALE",
-                        "Borscht Belt Tour!",
-                        "DOOX OF YALE",
-                        "Borscht Belt Tour!",
-                        "DOOX OF YALE",
-                        "Borscht Belt Tour!",
+                        "50 most!",
+                        "50 most!",
+                        "50 most!",
+                        "50 most!",
+                        "50 most!",
+                        "50 most!",
                     ];
 
                     return (
