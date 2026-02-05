@@ -166,11 +166,21 @@ export default function RumpusHomePage() {
                                 </h2>
 
                                 <div >
-                                   no online edition available for 50 most issues. <br />{" "}
+                                   no online edition available for 50 most issues. <br /><br />
                                    <BlobButton href="/yalies-ranking">
-                                    who are 50 most?
+                                    see who's in 50 most
                                 </BlobButton>
                                 
+                                <figure>
+                                    <Image
+                                        src="/Sexy-santa.png"
+                                        alt="Picture of the author"
+                                        width={500}
+                                        height={500}
+                                        style={{ maxWidth: "100%", height: "auto" }}
+                                    />
+                                    <figcaption style={{ fontSize: "60%" }}>image credit: Jaden Lee, '29</figcaption>
+                                </figure>
                                 </div>
                             </div>
                         </article>
