@@ -165,9 +165,12 @@ export default function RumpusHomePage() {
                                     our top issues:
                                 </h2>
 
-                                <div className="rumpus-top-issues">
-                                   no online edition available for 50 most issues.
-                                   
+                                <div >
+                                   no online edition available for 50 most issues. <br />{" "}
+                                   <BlobButton href="/yalies-ranking">
+                                    who are 50 most?
+                                </BlobButton>
+                                
                                 </div>
                             </div>
                         </article>
