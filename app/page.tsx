@@ -35,7 +35,11 @@ const referenceNext = {
 };
 
 const timer = reverseTimer(new Date(reference.targetdate)); // check if target date has passed
-const timeZero = timer.days === 0 && timer.hours === 0 && timer.minutes === 0 && timer.seconds === 0;
+const timeZero =
+    timer.days === 0 &&
+    timer.hours === 0 &&
+    timer.minutes === 0 &&
+    timer.seconds === 0;
 
 // final reference object to use in the page
 const endref = {
@@ -51,7 +55,11 @@ export default function RumpusHomePage() {
             // console.log(timeZero),
             <>
                 {/* The main header */}
-                <div className="header" id="top" style={{ display: "flex", justifyContent: "center" }}>
+                <div
+                    className="header"
+                    id="top"
+                    style={{ display: "flex", justifyContent: "center" }}
+                >
                     <div
                         style={{
                             display: "flex",
@@ -136,45 +144,15 @@ export default function RumpusHomePage() {
 
                             <div className="c-rumpus__item-info">
                                 <h2 className="c-rumpus__item-title">
-                                    <a href="https://www.dooxofyale.com/" style={{ color: "#4CAF50" }}>
-                                        Doox of Yale
-                                    </a>{" "}
-                                    <span> </span>
-                                    <span style={{ color: "#EF5B5B" }}>present:</span>
-                                    <div id="chrim">
-                                        <span>B</span>
-                                        <span>O</span>
-                                        <span>R</span>
-                                        <span>S</span>
-                                        <span>C</span>
-                                        <span>H</span>
-                                        <span>T</span>
-                                        <span> </span>
-                                        <span>B</span>
-                                        <span>E</span>
-                                        <span>L</span>
-                                        <span>T</span>
-                                        <span> </span>
-                                        <span>T</span>
-                                        <span>O</span>
-                                        <span>U</span>
-                                        <span>R</span>
-                                    </div>
+                                    COUNTDOWN TO LATEST ISSUE:
                                 </h2>
 
-                                <BlobButton href="https://www.dooxofyale.com/thechase" target="_blank">
-                                    Explore More
-                                </BlobButton>
-                                <figure>
-                                    <Image
-                                        src="/Sexy-santa.png"
-                                        alt="Picture of the author"
-                                        width={500}
-                                        height={500}
-                                        style={{ maxWidth: "100%", height: "auto" }}
+                                <div className="rumpus-countdown-wrap">
+                                    <Countdown
+                                        targetDate={new Date(endref.targetdate)}
+                                        html={true}
                                     />
-                                    <figcaption style={{ fontSize: "60%" }}>image credit: Jaden Lee, '29</figcaption>
-                                </figure>
+                                </div>
                             </div>
                         </article>
 
@@ -183,7 +161,9 @@ export default function RumpusHomePage() {
                             <div className="c-rumpus__item-figure c-rumpus__gradient-mid"></div>
 
                             <div className="c-rumpus__item-info">
-                                <h2 className="c-rumpus__item-title">our top issues:</h2>
+                                <h2 className="c-rumpus__item-title">
+                                    our top issues:
+                                </h2>
 
                                 <div className="rumpus-top-issues">
                                     {/* LEFT COLUMN */}
@@ -193,9 +173,16 @@ export default function RumpusHomePage() {
                                             <div className="rumpus-top-blurb">
                                                 <h3>Issue Highlight</h3>
                                                 <h4>
-                                                    <a href="/reader">click here for large page viewer!</a>
+                                                    <a href="/reader">
+                                                        click here for large
+                                                        page viewer!
+                                                    </a>
                                                 </h4>
-                                                <p>rushing isn't all it's cut out to be... click to read more!</p>
+                                                <p>
+                                                    rushing isn't all it's cut
+                                                    out to be... click to read
+                                                    more!
+                                                </p>
 
                                                 <p>
                                                     <a
@@ -268,8 +255,14 @@ export default function RumpusHomePage() {
                             <div className="c-rumpus__item-figure c-rumpus__gradient-bottom"></div>
 
                             <div className="c-rumpus__item-info">
-                                <h1 className="c-rumpus__item-title">G A M E S</h1>
-                                <p> brought to you with love from the Rumpus game department (we're hiring!) </p>
+                                <h1 className="c-rumpus__item-title">
+                                    G A M E S
+                                </h1>
+                                <p>
+                                    {" "}
+                                    brought to you with love from the Rumpus
+                                    game department (we're hiring!){" "}
+                                </p>
                                 <main style={{ margin: "0 auto" }}>
                                     <DynamicGameWrapper />
                                 </main>
