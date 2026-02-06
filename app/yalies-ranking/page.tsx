@@ -291,12 +291,14 @@ export default function YaliesRankingPage() {
 
     return (
         <div className="container mx-auto p-4">
-            <h1 className="text-3xl font-bold mb-4">Yalies Ranking</h1>
-            <p>
-                or the Yanking. <br />
-                Note: for security and privacy reasons, only people in 50 most have their full names displayed. Everyone
-                else only displays initials, year, and college (just like on fizz)
-            </p>
+            <div id="header">
+                <h1 className="text-3xl font-bold mb-4">Yalies Ranking</h1>
+                <p>
+                    or the Yanking. <br />
+                    Note: for security and privacy reasons, only people in 50 most have their full names displayed.
+                    Everyone else only displays initials, year, and college (just like on fizz)
+                </p>
+            </div>
             <h2>
                 <a href="/">return Home</a>
             </h2>
