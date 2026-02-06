@@ -196,20 +196,28 @@ export default function YaliesRankingPage() {
         // Get all people who have scores (votes)
         const peopleWithVotes = Object.keys(votes).filter(key => votes[key] !== 0);
 
-        // For each person with votes, search for them by name
+        // For each person with votes, extract first and last name from the key and search
         for (const key of peopleWithVotes) {
             try {
-                // We need to search by name, but we only have the key
-                // Let's make a request to get the person's details first
-                const res = await fetch(`/api/yalies?page=1&page_size=1&query=${encodeURIComponent(key)}`);
-                if (!res.ok) continue;
+                // Extract first and last name from the key format: "first_last_year_college%20college"
+                // The key format is: first_last_year_college%20college
+                // We need to extract just the first and last name parts
+                const nameParts = key.split("_");
+                if (nameParts.length >= 2) {
+                    const firstName = nameParts[0];
+                    const lastName = nameParts[1];
+                    const searchQuery = `${firstName} ${lastName}`;
 
-                const data: Yalie[] = await res.json();
-                if (data.length > 0) {
-                    const person = data[0];
-                    if (!foundKeys.has(person.key)) {
-                        foundKeys.add(person.key);
-                        peopleWithScores.push(person);
+                    const res = await fetch(`/api/yalies?page=1&page_size=1&query=${encodeURIComponent(searchQuery)}`);
+                    if (!res.ok) continue;
+
+                    const data: Yalie[] = await res.json();
+                    if (data.length > 0) {
+                        const person = data[0];
+                        if (!foundKeys.has(person.key)) {
+                            foundKeys.add(person.key);
+                            peopleWithScores.push(person);
+                        }
                     }
                 }
             } catch (e) {
