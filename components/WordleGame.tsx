@@ -228,6 +228,9 @@ const WordleGame: React.FC = () => {
         if (currentGuess.toLowerCase() === 'rumpus') {
             setShowPeachEgg(true);
         }
+        if (currentGuess.toLowerCase() === '50most') {
+            setShowPeachEgg(true);
+        }
 
         const revealNext = (index: number) => {
             if (index < WORD_LENGTH) {

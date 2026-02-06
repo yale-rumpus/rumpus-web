@@ -96,6 +96,19 @@ export default async function Page() {
                     </h2>
                     <div id="blog-content">
                         <div className="blog-casing">
+                            <h3 className="blog-title">Blog 1/20/26</h3>
+                            <br />
+                            <p className="blog">
+                                Hey again! I don't even know if this post will get released, but this
+                                is intended to be part of a feature update where we introduce
+                                the yankings.
+                                The yanking is a yalie ranking where you can upvote or downvote your classmates.<br />
+                                You may notice some things about the yankings... like how you can upvote someone infinitely. Is this a chaotic
+                                uncontrolled mechanic? Yes. Is it intentional? also yes.
+                                <br />- Coochie Clicker
+                            </p>
+                        </div>
+                        <div className="blog-casing">
                             <h3 className="blog-title">Blog 1/10/26</h3>
                             <br />
                             <p className="blog">
@@ -103,13 +116,9 @@ export default async function Page() {
                                 yurdle.
                                 yurdle is the wordle by Rumpus. every day the server picks one lucky lucky student to bestow the honor of
                                 being the yurdle answer. We will display their full name graduation year and college.
-                                this person has been chosen.
-                                by yurdle rump-law we hereby declare their deepest darkest dirtiest sexual fantasies to be fulfilled.
-                                bonus points if you send us pictures (they will be posted).
                                 <br />
-                                additional notes. there is NO repetition prevention. you may get chosen twice (you lucky perv).
-                                ts is managed by the Y/CS yalies api. if there be something wrong (ie misspelling, not updating, randomly placed peach emoji
-                                smack dab in the middle of your name)... it is hashtag not my problem. I will say on a real note it is a well managed project.
+                                additional notes. there is NO repetition prevention. 
+                                ts is managed by the Y/CS yalies api. 
                                 <br /> there are no easter eggs ! ! ! !
                                 <br />- Coochie Clicker
                             </p>

@@ -4,6 +4,9 @@ import "./globals.css";
 import BlobButton from "@/components/BlobButton/BlobButton";
 
 // import Head from 'next/head';
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
+import Countdown from "../components/Countdown.js";
 import Sidebar from "../components/Sidebar.js";
 import { reverseTimer } from "../lib/reverseTimer";
 
@@ -32,7 +35,11 @@ const referenceNext = {
 };
 
 const timer = reverseTimer(new Date(reference.targetdate)); // check if target date has passed
-const timeZero = timer.days === 0 && timer.hours === 0 && timer.minutes === 0 && timer.seconds === 0;
+const timeZero =
+    timer.days === 0 &&
+    timer.hours === 0 &&
+    timer.minutes === 0 &&
+    timer.seconds === 0;
 
 // final reference object to use in the page
 const endref = {
@@ -48,7 +55,11 @@ export default function RumpusHomePage() {
             // console.log(timeZero),
             <>
                 {/* The main header */}
-                <div className="header" id="top" style={{ display: "flex", justifyContent: "center" }}>
+                <div
+                    className="header"
+                    id="top"
+                    style={{ display: "flex", justifyContent: "center" }}
+                >
                     <div
                         style={{
                             display: "flex",
@@ -133,35 +144,33 @@ export default function RumpusHomePage() {
 
                             <div className="c-rumpus__item-info">
                                 <h2 className="c-rumpus__item-title">
-                                    <a href="https://www.dooxofyale.com/" style={{ color: "#4CAF50" }}>
-                                        Doox of Yale
-                                    </a>{" "}
-                                    <span> </span>
-                                    <span style={{ color: "#EF5B5B" }}>present:</span>
-                                    <div id="chrim">
-                                        <span>B</span>
-                                        <span>O</span>
-                                        <span>R</span>
-                                        <span>S</span>
-                                        <span>C</span>
-                                        <span>H</span>
-                                        <span>T</span>
-                                        <span> </span>
-                                        <span>B</span>
-                                        <span>E</span>
-                                        <span>L</span>
-                                        <span>T</span>
-                                        <span> </span>
-                                        <span>T</span>
-                                        <span>O</span>
-                                        <span>U</span>
-                                        <span>R</span>
-                                    </div>
+                                    COUNTDOWN TO LATEST ISSUE:
                                 </h2>
 
-                                <BlobButton href="https://www.dooxofyale.com/thechase" target="_blank">
-                                    Explore More
+                                <div className="rumpus-countdown-wrap">
+                                    <Countdown
+                                        targetDate={new Date(endref.targetdate)}
+                                        html={true}
+                                    />
+                                </div>
+                            </div>
+                        </article>
+
+                        {/* ----------------- CARD 2: TOP ISSUES ----------------- */}
+                        <article className="c-rumpus__item" id="section2">
+                            <div className="c-rumpus__item-figure c-rumpus__gradient-mid"></div>
+
+                            <div className="c-rumpus__item-info">
+                                <h2 className="c-rumpus__item-title">
+                                    our top issues:
+                                </h2>
+
+                                <div >
+                                   no online edition available for 50 most issues. <br /><br />
+                                   <BlobButton href="/yalies-ranking">
+                                    see who's in 50 most
                                 </BlobButton>
+                                
                                 <figure>
                                     <Image
                                         src="/Sexy-santa.png"
@@ -172,70 +181,6 @@ export default function RumpusHomePage() {
                                     />
                                     <figcaption style={{ fontSize: "60%" }}>image credit: Jaden Lee, '29</figcaption>
                                 </figure>
-                            </div>
-                        </article>
-
-                        {/* ----------------- CARD 2: TOP ISSUES ----------------- */}
-                        <article className="c-rumpus__item" id="section2">
-                            <div className="c-rumpus__item-figure c-rumpus__gradient-mid"></div>
-
-                            <div className="c-rumpus__item-info">
-                                <h2 className="c-rumpus__item-title">our top issues:</h2>
-
-                                <div className="rumpus-top-issues">
-                                    {/* LEFT COLUMN */}
-                                    <div className="rumpus-top-left">
-                                        {/* Top left row */}
-                                        <div className="rumpus-top-row">
-                                            <div className="rumpus-top-blurb">
-                                                <h3>Issue Highlight</h3>
-                                                <h4>
-                                                    <a href="/reader">click here for large page viewer!</a>
-                                                </h4>
-                                                <p>rushing isn't all it's cut out to be... click to read more!</p>
-
-                                                <p>
-                                                    <a
-                                                        href={`${endref.issueurl}#p=${endref.pageref[0]}`}
-                                                        target="_blank"
-                                                        rel="noopener noreferrer"
-                                                    >
-                                                        Read the full issue
-                                                    </a>
-                                                </p>
-                                            </div>
-
-                                            {/* IFRAME 1 */}
-                                            <div className="bevel-wrap">
-                                                <iframe
-                                                    src={`${endref.issueurl}#p=${endref.pageref[0]}`}
-                                                    height="290"
-                                                    width="100%"
-                                                    style={{ border: "none" }}
-                                                />
-                                            </div>
-                                        </div>
-
-                                        {/* IFRAME 3 */}
-                                        <div className="bevel-wrap">
-                                            <iframe
-                                                src={`${endref.issueurl}#p=${endref.pageref[2]}`}
-                                                height="290"
-                                                width="100%"
-                                                style={{ border: "none" }}
-                                            />
-                                        </div>
-                                    </div>
-
-                                    {/* RIGHT COLUMN IFRAME */}
-                                    <div className="rumpus-top-right bevel-wrap">
-                                        <iframe
-                                            src={`${endref.issueurl}#p=${endref.pageref[1]}`}
-                                            height="600"
-                                            width="100%"
-                                            style={{ border: "none" }}
-                                        />
-                                    </div>
                                 </div>
                             </div>
                         </article>
@@ -265,8 +210,14 @@ export default function RumpusHomePage() {
                             <div className="c-rumpus__item-figure c-rumpus__gradient-bottom"></div>
 
                             <div className="c-rumpus__item-info">
-                                <h1 className="c-rumpus__item-title">G A M E S</h1>
-                                <p> brought to you with love from the Rumpus game department (we're hiring!) </p>
+                                <h1 className="c-rumpus__item-title">
+                                    G A M E S
+                                </h1>
+                                <p>
+                                    {" "}
+                                    brought to you with love from the Rumpus
+                                    game department (we're hiring!){" "}
+                                </p>
                                 <main style={{ margin: "0 auto" }}>
                                     <DynamicGameWrapper />
                                 </main>
@@ -274,6 +225,8 @@ export default function RumpusHomePage() {
                         </article>
                     </ul>
                 </section>
+                <Analytics />
+                <SpeedInsights />
             </>
         )
     );
