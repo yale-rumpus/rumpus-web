@@ -77,6 +77,7 @@ export default function YaliesRankingPage() {
                 const nData = await nRes.json();
                 setVotes(vData);
                 setFiftyMostNames(nData);
+                console.log("✅ Votes loaded from gist:", Object.keys(vData).length, "entries");
             } catch (e) {
                 console.error("Init error", e);
             }
@@ -160,14 +161,82 @@ export default function YaliesRankingPage() {
     const loadInitialPage = async () => {
         setLoading(true);
         try {
-            const res = await fetch(`/api/yalies?page=1&page_size=50`);
-            const data = await res.json();
-            setYalies(sortYalies(data, votes, sortBy));
+            // Wait for votes to be loaded (with a reasonable timeout)
+            let attempts = 0;
+            const maxAttempts = 10;
+            while (Object.keys(votes).length === 0 && attempts < maxAttempts) {
+                await new Promise(resolve => setTimeout(resolve, 100));
+                attempts++;
+            }
+
+            // First, load people with scores by searching for their names
+            const peopleWithScores = await loadPeopleWithScores();
+
+            // Fill the rest of the page with normal loading
+            const remainingSlots = 50 - peopleWithScores.length;
+            let allYalies = peopleWithScores;
+
+            if (remainingSlots > 0) {
+                const normalPeople = await loadNormalPeople(remainingSlots);
+                allYalies = [...peopleWithScores, ...normalPeople];
+            }
+
+            setYalies(sortYalies(allYalies, votes, sortBy));
             setPage(1);
             setHasMore(true);
         } finally {
             setLoading(false);
         }
+    };
+
+    const loadPeopleWithScores = async () => {
+        const peopleWithScores: Yalie[] = [];
+        const foundKeys = new Set<string>();
+
+        // Get all people who have scores (votes)
+        const peopleWithVotes = Object.keys(votes).filter(key => votes[key] !== 0);
+
+        // For each person with votes, search for them by name
+        for (const key of peopleWithVotes) {
+            try {
+                // We need to search by name, but we only have the key
+                // Let's make a request to get the person's details first
+                const res = await fetch(`/api/yalies?page=1&page_size=1&query=${encodeURIComponent(key)}`);
+                if (!res.ok) continue;
+
+                const data: Yalie[] = await res.json();
+                if (data.length > 0) {
+                    const person = data[0];
+                    if (!foundKeys.has(person.key)) {
+                        foundKeys.add(person.key);
+                        peopleWithScores.push(person);
+                    }
+                }
+            } catch (e) {
+                console.error(`Error finding person with key ${key}`, e);
+            }
+        }
+
+        return peopleWithScores.slice(0, 50);
+    };
+
+    const loadNormalPeople = async (count: number) => {
+        const normalPeople: Yalie[] = [];
+        let currentPage = 1;
+        const pageSize = 50;
+
+        // Load people normally until we have enough
+        while (normalPeople.length < count) {
+            const res = await fetch(`/api/yalies?page=${currentPage}&page_size=${pageSize}`);
+            const data: Yalie[] = await res.json();
+
+            if (data.length === 0) break;
+
+            normalPeople.push(...data);
+            currentPage++;
+        }
+
+        return normalPeople.slice(0, count);
     };
 
     useEffect(() => {
