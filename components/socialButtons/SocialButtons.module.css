@@ -1,0 +1,104 @@
+.backdrop {
+    display: flex;
+    padding: 12px;
+    z-index: 9999; /* Higher priority */
+
+    /* Position */
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+
+    /* Glassmorphism */
+    background: rgba(25, 25, 25, 0.8); /* Darker fallback */
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+
+    /* Shape & Border */
+    border-radius: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+
+    /* Depth */
+    box-shadow:
+        inset 0 1px 1px rgba(255, 255, 255, 0.1),
+        0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+/* Mobile override */
+@media (max-width: 768px) {
+    .backdrop {
+        position: relative;
+        bottom: auto;
+        right: auto;
+        margin: 20px auto;
+        width: fit-content;
+        display: flex;
+        justify-content: center;
+    }
+}
+
+.fixedSocials {
+    display: flex;
+    flex-direction: column; /* Stacked on desktop */
+    gap: 10px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+@media (max-width: 768px) {
+    .fixedSocials {
+        flex-direction: row; /* Horizontal on mobile */
+    }
+}
+
+/* Icons and Hover Effects */
+.li {
+    list-style: none;
+}
+
+.li a {
+    position: relative;
+    width: 55px;
+    height: 55px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    color: #888;
+    font-size: 2rem;
+    transition: 0.3s;
+}
+
+/* The colored version that slides up */
+.li a::before {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 0;
+    overflow: hidden;
+    transition: 0.4s ease-in-out;
+    font-family: "Font Awesome 6 Brands"; /* Default for social */
+}
+
+.insta::before {
+    content: "\f16d";
+    background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+.x::before {
+    content: "\e61b";
+    color: #fff;
+}
+.gmail::before {
+    content: "\f0e0";
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+    color: #db4437;
+}
+
+.li:hover a::before {
+    height: 100%;
+}

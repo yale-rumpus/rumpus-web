@@ -2,6 +2,7 @@ import Image from "next/image";
 import "./globals.css";
 
 import BlobButton from "@/components/BlobButton/BlobButton";
+import SocialButtons from "../components/socialButtons/SocialButtons";
 
 // import Head from 'next/head';
 import { Analytics } from "@vercel/analytics/next";
@@ -35,11 +36,7 @@ const referenceNext = {
 };
 
 const timer = reverseTimer(new Date(reference.targetdate)); // check if target date has passed
-const timeZero =
-    timer.days === 0 &&
-    timer.hours === 0 &&
-    timer.minutes === 0 &&
-    timer.seconds === 0;
+const timeZero = timer.days === 0 && timer.hours === 0 && timer.minutes === 0 && timer.seconds === 0;
 
 // final reference object to use in the page
 const endref = {
@@ -55,11 +52,7 @@ export default function RumpusHomePage() {
             // console.log(timeZero),
             <>
                 {/* The main header */}
-                <div
-                    className="header"
-                    id="top"
-                    style={{ display: "flex", justifyContent: "center" }}
-                >
+                <div className="header" id="top" style={{ display: "flex", justifyContent: "center" }}>
                     <div
                         style={{
                             display: "flex",
@@ -143,15 +136,10 @@ export default function RumpusHomePage() {
                             <div className="c-rumpus__item-figure c-rumpus__gradient-top"></div>
 
                             <div className="c-rumpus__item-info">
-                                <h2 className="c-rumpus__item-title">
-                                    COUNTDOWN TO LATEST ISSUE:
-                                </h2>
+                                <h2 className="c-rumpus__item-title">COUNTDOWN TO LATEST ISSUE:</h2>
 
                                 <div className="rumpus-countdown-wrap">
-                                    <Countdown
-                                        targetDate={new Date(endref.targetdate)}
-                                        html={true}
-                                    />
+                                    <Countdown targetDate={new Date(endref.targetdate)} html={true} />
                                 </div>
                             </div>
                         </article>
@@ -161,26 +149,24 @@ export default function RumpusHomePage() {
                             <div className="c-rumpus__item-figure c-rumpus__gradient-mid"></div>
 
                             <div className="c-rumpus__item-info">
-                                <h2 className="c-rumpus__item-title">
-                                    our top issues:
-                                </h2>
+                                <h2 className="c-rumpus__item-title">our top issues:</h2>
 
-                                <div >
-                                   no online edition available for 50 most issues. <br /><br />
-                                   <BlobButton href="/yalies-ranking">
-                                    see who's in 50 most
-                                </BlobButton>
-                                
-                                <figure>
-                                    <Image
-                                        src="/Sexy-santa.png"
-                                        alt="Picture of the author"
-                                        width={500}
-                                        height={500}
-                                        style={{ maxWidth: "100%", height: "auto" }}
-                                    />
-                                    <figcaption style={{ fontSize: "60%" }}>image credit: Jaden Lee, '29</figcaption>
-                                </figure>
+                                <div>
+                                    no online edition available for 50 most issues. <br />
+                                    <br />
+                                    <BlobButton href="/yalies-ranking">see who's in 50 most</BlobButton>
+                                    <figure>
+                                        <Image
+                                            src="/Sexy-santa.png"
+                                            alt="Picture of the author"
+                                            width={500}
+                                            height={500}
+                                            style={{ maxWidth: "100%", height: "auto" }}
+                                        />
+                                        <figcaption style={{ fontSize: "60%" }}>
+                                            image credit: Jaden Lee, '29
+                                        </figcaption>
+                                    </figure>
                                 </div>
                             </div>
                         </article>
@@ -210,14 +196,8 @@ export default function RumpusHomePage() {
                             <div className="c-rumpus__item-figure c-rumpus__gradient-bottom"></div>
 
                             <div className="c-rumpus__item-info">
-                                <h1 className="c-rumpus__item-title">
-                                    G A M E S
-                                </h1>
-                                <p>
-                                    {" "}
-                                    brought to you with love from the Rumpus
-                                    game department (we're hiring!){" "}
-                                </p>
+                                <h1 className="c-rumpus__item-title">G A M E S</h1>
+                                <p> brought to you with love from the Rumpus game department (we're hiring!) </p>
                                 <main style={{ margin: "0 auto" }}>
                                     <DynamicGameWrapper />
                                 </main>
@@ -225,6 +205,11 @@ export default function RumpusHomePage() {
                         </article>
                     </ul>
                 </section>
+                {/* bottom right buttons (social media) */}
+                {/* KEEP THIS HERE so that it appears at bottom on mobile */}
+                <SocialButtons />
+
+                {/* vercel analytics */}
                 <Analytics />
                 <SpeedInsights />
             </>
