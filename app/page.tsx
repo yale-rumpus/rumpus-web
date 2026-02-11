@@ -1,9 +1,10 @@
 import Image from "next/image";
 import "./globals.css";
 
-import BlobButton from "@/components/BlobButton/BlobButton";
+// import BlobButton from "@/components/BlobButton/BlobButton";
 
 // import Head from 'next/head';
+import Countdown from "../components/Countdown.js";
 import Sidebar from "../components/Sidebar.js";
 import { reverseTimer } from "../lib/reverseTimer";
 
@@ -17,7 +18,7 @@ import DynamicGameWrapper from "@/components/DynamicGameWrapper";
 const reference = {
     issueurl: "https://online.fliphtml5.com/sesvj/Binder1/", // link to next issue article viewer
     pageref: [2, 1, 14], // page numbers for the three iframes
-    targetdate: "2026-02-14T12:00:00", // target date for countdown timer
+    targetdate: "2026-02-14T20:00:00", // target date for countdown timer
 };
 
 // IMPORTANT DEVELOPER NOTE: WHEN SPECIFYING TARGET DATE YOU MUST USE 2 DIGIT NUMBERS
@@ -132,46 +133,10 @@ export default function RumpusHomePage() {
                             <div className="c-rumpus__item-figure c-rumpus__gradient-top"></div>
 
                             <div className="c-rumpus__item-info">
-                                <h2 className="c-rumpus__item-title">
-                                    <a href="https://www.dooxofyale.com/" style={{ color: "#4CAF50" }}>
-                                        Doox of Yale
-                                    </a>{" "}
-                                    <span> </span>
-                                    <span style={{ color: "#EF5B5B" }}>present:</span>
-                                    <div id="chrim">
-                                        <span>B</span>
-                                        <span>O</span>
-                                        <span>R</span>
-                                        <span>S</span>
-                                        <span>C</span>
-                                        <span>H</span>
-                                        <span>T</span>
-                                        <span> </span>
-                                        <span>B</span>
-                                        <span>E</span>
-                                        <span>L</span>
-                                        <span>T</span>
-                                        <span> </span>
-                                        <span>T</span>
-                                        <span>O</span>
-                                        <span>U</span>
-                                        <span>R</span>
-                                    </div>
-                                </h2>
-
-                                <BlobButton href="https://www.dooxofyale.com/thechase" target="_blank">
-                                    Explore More
-                                </BlobButton>
-                                <figure>
-                                    <Image
-                                        src="/Sexy-santa.png"
-                                        alt="Picture of the author"
-                                        width={500}
-                                        height={500}
-                                        style={{ maxWidth: "100%", height: "auto" }}
-                                    />
-                                    <figcaption style={{ fontSize: "60%" }}>image credit: Jaden Lee, '29</figcaption>
-                                </figure>
+                                <h2 className="c-rumpus__item-title">COUNTDOWN TO LATEST ISSUE:</h2>
+                                    <div className="rumpus-countdown-wrap">
+                                    <Countdown targetDate={new Date(endref.targetdate)} html={true} />
+                                </div>
                             </div>
                         </article>
 
