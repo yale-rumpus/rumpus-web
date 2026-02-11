@@ -133,7 +133,7 @@ export default function RumpusHomePage() {
                             <div className="c-rumpus__item-figure c-rumpus__gradient-top"></div>
 
                             <div className="c-rumpus__item-info">
-                                <h2 className="c-rumpus__item-title">COUNTDOWN TO LATEST ISSUE:</h2>
+                                <h2 className="c-rumpus__item-title">COUNTDOWN TO 50 MOST:</h2>
                                     <div className="rumpus-countdown-wrap">
                                     <Countdown targetDate={new Date(endref.targetdate)} html={true} />
                                 </div>

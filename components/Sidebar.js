@@ -44,12 +44,12 @@ export default function Sidebar() {
             <nav className="topbar">
                 {(() => {
                     const headlines = [
-                        "DOOX OF YALE",
-                        "Borscht Belt Tour!",
-                        "DOOX OF YALE",
-                        "Borscht Belt Tour!",
-                        "DOOX OF YALE",
-                        "Borscht Belt Tour!",
+                        "YALE",
+                        "get ready for...",
+                        "50 MOST!!",
+                        "YALE",
+                        "get ready for...",
+                        "50 MOST!!",
                     ];
 
                     return (
