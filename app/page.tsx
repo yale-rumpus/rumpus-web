@@ -18,7 +18,7 @@ import DynamicGameWrapper from "@/components/DynamicGameWrapper";
 const reference = {
     issueurl: "https://online.fliphtml5.com/sesvj/Binder1/", // link to next issue article viewer
     pageref: [2, 1, 14], // page numbers for the three iframes
-    targetdate: "2026-02-13T20:00:00", // target date for countdown timer
+    targetdate: "2026-02-14T01:00:00", // target date for countdown timer
 };
 
 // IMPORTANT DEVELOPER NOTE: WHEN SPECIFYING TARGET DATE YOU MUST USE 2 DIGIT NUMBERS
