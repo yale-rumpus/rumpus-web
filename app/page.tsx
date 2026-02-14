@@ -1,9 +1,12 @@
 import Image from "next/image";
 import "./globals.css";
 
-// import BlobButton from "@/components/BlobButton/BlobButton";
+import BlobButton from "@/components/BlobButton/BlobButton";
+import SocialButtons from "../components/socialButtons/SocialButtons";
 
 // import Head from 'next/head';
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import Countdown from "../components/Countdown.js";
 import Sidebar from "../components/Sidebar.js";
 import { reverseTimer } from "../lib/reverseTimer";
@@ -147,60 +150,22 @@ export default function RumpusHomePage() {
                             <div className="c-rumpus__item-info">
                                 <h2 className="c-rumpus__item-title">our top issues:</h2>
 
-                                <div className="rumpus-top-issues">
-                                    {/* LEFT COLUMN */}
-                                    <div className="rumpus-top-left">
-                                        {/* Top left row */}
-                                        <div className="rumpus-top-row">
-                                            <div className="rumpus-top-blurb">
-                                                <h3>Issue Highlight</h3>
-                                                <h4>
-                                                    <a href="/reader">click here for large page viewer!</a>
-                                                </h4>
-                                                <p>rushing isn't all it's cut out to be... click to read more!</p>
-
-                                                <p>
-                                                    <a
-                                                        href={`${endref.issueurl}#p=${endref.pageref[0]}`}
-                                                        target="_blank"
-                                                        rel="noopener noreferrer"
-                                                    >
-                                                        Read the full issue
-                                                    </a>
-                                                </p>
-                                            </div>
-
-                                            {/* IFRAME 1 */}
-                                            <div className="bevel-wrap">
-                                                <iframe
-                                                    src={`${endref.issueurl}#p=${endref.pageref[0]}`}
-                                                    height="290"
-                                                    width="100%"
-                                                    style={{ border: "none" }}
-                                                />
-                                            </div>
-                                        </div>
-
-                                        {/* IFRAME 3 */}
-                                        <div className="bevel-wrap">
-                                            <iframe
-                                                src={`${endref.issueurl}#p=${endref.pageref[2]}`}
-                                                height="290"
-                                                width="100%"
-                                                style={{ border: "none" }}
-                                            />
-                                        </div>
-                                    </div>
-
-                                    {/* RIGHT COLUMN IFRAME */}
-                                    <div className="rumpus-top-right bevel-wrap">
-                                        <iframe
-                                            src={`${endref.issueurl}#p=${endref.pageref[1]}`}
-                                            height="600"
-                                            width="100%"
-                                            style={{ border: "none" }}
+                                <div>
+                                    no online edition available for 50 most issues. <br />
+                                    <br />
+                                    <BlobButton href="/yalies-ranking">see who's in 50 most</BlobButton>
+                                    <figure>
+                                        <Image
+                                            src="/Sexy-santa.png"
+                                            alt="Picture of the author"
+                                            width={500}
+                                            height={500}
+                                            style={{ maxWidth: "100%", height: "auto" }}
                                         />
-                                    </div>
+                                        <figcaption style={{ fontSize: "60%" }}>
+                                            image credit: Jaden Lee, '29
+                                        </figcaption>
+                                    </figure>
                                 </div>
                             </div>
                         </article>
@@ -239,6 +204,13 @@ export default function RumpusHomePage() {
                         </article>
                     </ul>
                 </section>
+                {/* bottom right buttons (social media) */}
+                {/* KEEP THIS HERE so that it appears at bottom on mobile */}
+                <SocialButtons />
+
+                {/* vercel analytics */}
+                <Analytics />
+                <SpeedInsights />
             </>
         )
     );

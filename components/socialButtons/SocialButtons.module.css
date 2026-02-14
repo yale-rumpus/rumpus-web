@@ -1,0 +1,141 @@
+/* --- Container & Backdrop --- */
+.backdrop {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    z-index: 1000;
+
+    display: flex;
+    padding: 12px;
+
+    /* Frosted Glass */
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow:
+        inset 0 1px 1px rgba(255, 255, 255, 0.12),
+        inset 0 -1px 1px rgba(0, 0, 0, 0.6),
+        0 16px 40px rgba(0, 0, 0, 0.7);
+}
+
+.fixedSocials {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+/* --- Mobile Responsive --- */
+@media (max-width: 768px) {
+    .backdrop {
+        position: relative;
+        bottom: auto;
+        right: auto;
+        margin: 20px auto;
+        width: fit-content;
+    }
+    .fixedSocials {
+        flex-direction: row;
+        gap: 20px;
+    }
+}
+
+/* --- The Button Logic --- */
+.li {
+    opacity: 0;
+    animation: slideIn 0.5s ease forwards;
+}
+
+.li a {
+    position: relative;
+    width: 50px;
+    height: 50px;
+    display: block;
+}
+
+/* 1. Base Grey Icon Styles */
+.iconContainer {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.greyIcon {
+    font-size: 2rem;
+    color: #767676; /* The inactive color */
+    transition: 0.3s;
+}
+
+/* 2. The Mask (The Container that slides down/up) */
+.mask {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 0; /* Starts empty */
+    overflow: hidden; /* Clips the icon inside */
+    transition: 0.4s ease-in-out;
+
+    /* Ensure flex centering so icon inside aligns with base */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* 3. The Colored Icon Inside the Mask */
+.coloredIcon {
+    font-size: 2rem;
+    /* IMPORTANT: Fixed position relative to the 'a' tag so it doesn't move while mask grows */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    white-space: nowrap;
+}
+
+/* --- Specific Colors --- */
+
+/* Instagram Gradient */
+.insta .coloredIcon {
+    background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* X (Twitter) White */
+.x .coloredIcon {
+    color: #fff;
+}
+
+/* Gmail Red */
+/* Gmail / Google Red */
+.gmail .coloredIcon {
+    color: #db4437; /* Official Gmail Red */
+    /* Optional: If you want the multi-color Google G look, use this instead: */
+    /* background: linear-gradient(45deg, #4285F4, #DB4437, #F4B400, #0F9D58);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    */
+}
+
+/* --- Hover Trigger --- */
+.li:hover .mask {
+    height: 100%;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
