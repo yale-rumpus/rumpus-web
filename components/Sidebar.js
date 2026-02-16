@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import { useEffect, useRef, useState } from "react";
 
 export default function Sidebar() {
     const [open, setOpen] = useState(false);
@@ -43,12 +43,14 @@ export default function Sidebar() {
             {/* Top bar (visible when header is visible) */}
             <nav className="topbar">
                 {(() => {
+                    // headlines here!
                     const headlines = [
-                        "what the FUCK is a CRIMSON?!?!?",
-                        "suck my YICK",
-                        "the curse of KAO",
-                        "THE GAME is just a formality",
-                        "damn Harvard, no funding?",
+                        "50 most!",
+                        "50 most!",
+                        "50 most!",
+                        "50 most!",
+                        "50 most!",
+                        "50 most!",
                     ];
 
                     return (
@@ -123,6 +125,9 @@ export default function Sidebar() {
                     <li>
                         <Link href="/blog">Blog</Link>
                     </li>
+                    <li>
+                        <Link href="/yalies-ranking">the Yankings</Link>
+                    </li>
                 </ul>
             </nav>
 
@@ -183,6 +188,9 @@ export default function Sidebar() {
                             </li>
                             <li>
                                 <Link href="/blog">Blog</Link>
+                            </li>
+                            <li>
+                                <Link href="/yalies-ranking">the Yankings</Link>
                             </li>
                         </ul>
                     </aside>
