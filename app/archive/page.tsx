@@ -5,21 +5,24 @@ import Link from "next/link";
 
 export default function Home() {
     return (
-        <main style={{ padding: "2rem", maxWidth: 800 }} className="archive-main">
-            <h1>PDF Archive</h1>
+        <main className="archive-main">
+            <div className="archive-header">
+                <h1>PDF Archive</h1>
+                <p>Explore our collection of past publications</p>
+            </div>
 
             {Object.entries(archive)
                 .sort(([a], [b]) => Number(b) - Number(a))
                 .map(([year, files]) => (
-                    <section key={year} style={{ marginTop: "2rem" }} className="archive-main ">
-                        <h2 className="archive-header">{year}</h2>
-                        <ul className="issue-card">
+                    <section key={year} className="issue-card">
+                        <h2>{year}</h2>
+                        <div className="link-grid">
                             {files.map((file: any) => (
-                                <li key={file.id} className="linkto">
+                                <div key={file.id} className="link-box">
                                     <Link href={`/pdf/${file.id}`}>{file.title}</Link>
-                                </li>
+                                </div>
                             ))}
-                        </ul>
+                        </div>
                     </section>
                 ))}
         </main>

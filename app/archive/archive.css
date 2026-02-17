@@ -38,7 +38,7 @@
 
 .issue-card h2 {
     font-size: 1.5rem;
-    color: #333;
+    color: #626161;
     margin-bottom: 1rem;
     font-family: "Playfair Display", serif;
 }
@@ -54,15 +54,61 @@
 }
 
 .issue-card a {
-    color: #666;
+    color: #333;
     text-decoration: none;
     font-family: "Merriweather", serif;
     transition: color 0.3s ease;
 }
 
 .issue-card a:hover {
-    color: #333;
+    color: #666;
     text-decoration: underline;
+}
+
+.link-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.link-box {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    padding: 0;
+    box-shadow:
+        0 4px 16px rgba(0, 0, 0, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.link-box:hover {
+    transform: translateY(-2px);
+    box-shadow:
+        0 6px 20px rgba(0, 0, 0, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.link-box a {
+    color: #350a0a;
+    text-decoration: none;
+    font-family: "Merriweather", serif;
+    transition:
+        color 0.3s ease,
+        background-color 0.2s ease;
+    display: block;
+    padding: 1rem;
+    border-radius: 8px;
+}
+
+.link-box a:hover {
+    color: #6b1414;
+    text-decoration: underline;
+    background-color: rgba(255, 255, 255, 0.1);
 }
 
 @media (max-width: 768px) {
