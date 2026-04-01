@@ -1,5 +1,5 @@
 import { fetchCommits, fetchRepoDetails } from "./actions";
-import BlogSidebar from "./BlogSidebar";
+// import BlogSidebar from "./BlogSidebar";
 import "./blogstyle.css";
 import CommitList from "./CommitList"; // looks like an error but DON'T TOUCH IT it works fine.
 import RefreshButton from "./RefreshButton"; // Small client component for the button
@@ -96,57 +96,19 @@ export default async function Page() {
                     </h2>
                     <div id="blog-content">
                         <div className="blog-casing">
-                            <h3 className="blog-title">Blog 1/20/26</h3>
+                            <h3 className="blog-title">bug fixes</h3>
                             <br />
                             <p className="blog">
-                                Hey again! I don't even know if this post will get released, but this
-                                is intended to be part of a feature update where we introduce
-                                the yankings.
-                                The yanking is a yalie ranking where you can upvote or downvote your classmates.<br />
-                                You may notice some things about the yankings... like how you can upvote someone infinitely. Is this a chaotic
-                                uncontrolled mechanic? Yes. Is it intentional? also yes.
-                                <br />- Coochie Clicker
-                            </p>
-                        </div>
-                        <div className="blog-casing">
-                            <h3 className="blog-title">Blog 1/10/26</h3>
-                            <br />
-                            <p className="blog">
-                                greetings rumpasauruses. After another bitchless showerless 5 hours of coding I bring you
-                                yurdle.
-                                yurdle is the wordle by Rumpus. every day the server picks one lucky lucky student to bestow the honor of
-                                being the yurdle answer. We will display their full name graduation year and college.
+                                No current bugs we're investigating.
                                 <br />
-                                additional notes. there is NO repetition prevention. 
-                                ts is managed by the Y/CS yalies api. 
-                                <br /> there are no easter eggs ! ! ! !
-                                <br />- Coochie Clicker
                             </p>
                         </div>
-
                         <div className="blog-casing">
-                            <h3 className="blog-title">Blog 12/30/25</h3>
+                            <h3 className="blog-title">future incoming features</h3>
                             <br />
                             <p className="blog">
-                                Well-cum to my awesome blog.
-                                <br />- Coochie Clicker
-                            </p>
-                        </div>
-
-                        <div className="blog-casing">
-                            <h3 className="blog-title">Blog 12/24/25</h3>
-                            <br />
-                            <p className="blog">
-                                Merry Christmas! We are excited to announce the
-                                launch of our new website for the Yale Rumpus.
-                                Our team has been working hard to create a
-                                platform that showcases our passion and drive
-                                and dedication to the bit. we will keep working
-                                on this project and keep you updated with new
-                                features and content. Thank you for your
-                                support, and we look forward to sharing our
-                                journey with you!
-                                <br />- Coochie Clicker
+                                Archives
+                                <br />
                             </p>
                         </div>
                     </div>
@@ -177,7 +139,7 @@ export default async function Page() {
 
                 <CommitList initialCommits={initialCommits} />
             </main>
-            <BlogSidebar />
+            {/* <BlogSidebar /> */}
         </>
     );
 }
