@@ -13,7 +13,7 @@ aside {
     padding: 20px;
     background-color: #070c1838;
     color: #ffffff71;
-    border-radius: 8px;
+    border-radius: 0 8px 8px 0;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     position: fixed;
     left: 0;
@@ -28,6 +28,14 @@ aside {
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
     /* For Safari support */
+
+    /* Hidden by default */
+    transform: translateX(-100%);
+}
+
+/* Show sidebar when open class is applied */
+aside.open {
+    transform: translateX(0);
 }
 
 /* Main blog layout */
@@ -65,8 +73,8 @@ aside:hover {
         z-index: 1000;
     }
 
-    /* Show sidebar when it has mobile-open class */
-    aside.mobile-open {
+    /* Show sidebar when it has open class */
+    aside.open {
         transform: translateY(0);
     }
 
@@ -105,61 +113,78 @@ aside:hover {
     }
 }
 
-/* BlogSidebar mobile styles */
+/* BlogSidebar toggle button - visible on all screen sizes */
 .blog-sidebar-toggle {
-    display: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    left: 0;
+    top: 10px;
+    z-index: 1001;
+    width: 50px;
+    height: 50px;
+    background: #333;
+    color: #fff;
+    border: none;
+    border-radius: 0 6px 6px 0;
+    cursor: pointer;
+    font-size: 30px;
+    padding: 0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.blog-sidebar-toggle:hover {
+    background: #444;
+}
+
+.blog-sidebar-toggle.hidden {
+    opacity: 0;
+    pointer-events: none;
 }
 
 .blog-sidebar-close {
-    display: none;
+    display: block;
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 32px;
+    cursor: pointer;
+    line-height: 1;
+    padding: 0;
+    width: 32px;
+    height: 32px;
 }
 
 .blog-sidebar-overlay {
-    display: none;
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
 }
 
 @media (max-width: 768px) {
     .blog-sidebar-toggle {
-        display: block;
-        position: fixed;
         bottom: 20px;
         right: 20px;
-        z-index: 1001;
+        left: auto;
+        top: auto;
+        width: auto;
+        height: auto;
         padding: 12px 20px;
-        background: #070c18;
-        color: white;
-        border: none;
         border-radius: 8px;
-        cursor: pointer;
         font-size: 16px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
     }
 
-    .blog-sidebar-overlay {
-        display: block;
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: rgba(0, 0, 0, 0.5);
-        z-index: 999;
-    }
-
-    .blog-sidebar-close {
-        display: block;
-        position: absolute;
-        top: 12px;
-        right: 12px;
-        background: transparent;
-        border: none;
-        color: white;
-        font-size: 32px;
-        cursor: pointer;
-        line-height: 1;
-        padding: 0;
-        width: 32px;
-        height: 32px;
+    aside.open {
+        transform: translateY(0);
     }
 }
 
@@ -180,7 +205,7 @@ h3 {
 
 /* Frosted glass beveled card */
 .frosted-card {
-    background-color: rgba(29, 61, 101, 0.75);
+    background-color: rgba(29, 73, 101, 0.75);
 
     border-radius: 12px;
     border: 1px solid rgba(255, 255, 255, 0.1);

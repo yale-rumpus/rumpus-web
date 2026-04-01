@@ -2,8 +2,6 @@
 
 import { useState } from "react";
 
-
-
 export default function BlogSidebar() {
     const [isOpen, setIsOpen] = useState(false);
     const [open, setOpen] = useState(false);
@@ -16,20 +14,21 @@ export default function BlogSidebar() {
             el.scrollIntoView({ behavior: "smooth", block: "start" });
         }
         setOpen(false);
+        setIsOpen(false);
     };
 
     return (
         <>
-            {/* Mobile toggle button */}
+            {/* Toggle button - visible on all screen sizes */}
             <button
-                className="blog-sidebar-toggle"
+                className={`blog-sidebar-toggle ${isOpen ? "hidden" : ""}`}
                 onClick={() => setIsOpen(!isOpen)}
                 aria-label="Toggle navigation menu"
             >
-                ☰ Menu
+                ☰
             </button>
 
-            {/* Overlay for mobile */}
+            {/* Overlay when sidebar is open */}
             {isOpen && (
                 <div
                     className="blog-sidebar-overlay"
@@ -37,7 +36,7 @@ export default function BlogSidebar() {
                 />
             )}
 
-            <aside className={isOpen ? "mobile-open" : ""}>
+            <aside className={isOpen ? "open" : ""}>
                 <button
                     className="blog-sidebar-close"
                     onClick={() => setIsOpen(false)}

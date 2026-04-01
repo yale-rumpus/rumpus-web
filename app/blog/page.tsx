@@ -1,5 +1,5 @@
 import { fetchCommits, fetchRepoDetails } from "./actions";
-// import BlogSidebar from "./BlogSidebar";
+import BlogSidebar from "./BlogSidebar";
 import "./blogstyle.css";
 import CommitList from "./CommitList"; // looks like an error but DON'T TOUCH IT it works fine.
 import RefreshButton from "./RefreshButton"; // Small client component for the button
@@ -139,7 +139,7 @@ export default async function Page() {
 
                 <CommitList initialCommits={initialCommits} />
             </main>
-            {/* <BlogSidebar /> */}
+            <BlogSidebar />
         </>
     );
 }
