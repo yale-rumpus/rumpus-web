@@ -45,13 +45,23 @@ export default function Sidebar() {
                 {(() => {
                     // headlines here!
                     const headlines = [
-                        "50 most!",
-                        "50 most!",
-                        "50 most!",
-                        "50 most!",
-                        "50 most!",
-                        "50 most!",
+                        "Zara Larsson at Spring Fling btw",
+                        "\"own less stuff\" - pericles lewis",
+                        "breaking: another 14 deans resign - more at 11",
+                        "find epstein files at jmail.world",
+                        "who even reads these??",
+                        "\"I killed the performance and then you killed it after the performance purrrrrr.\"-zara larsson",
+                        "",
                     ];
+                    const links = [
+                        "",
+                        "https://yaledailynews.com/articles/yale-college-ending-summer-storage-funding-for-low-income-students",
+                        "https://yaledailynews.com/articles/three-more-residential-college-deans-to-leave-roles-amid-reshuffling",
+                        "https://jmail.world/",
+                        "",
+                        "https://www.syracuse.com/celebrity-news/2026/04/popular-singer-loses-3-million-brand-deal-over-abortion-joke.html",
+                        "",
+                    ]
 
                     return (
                         <div
@@ -63,7 +73,9 @@ export default function Sidebar() {
                                 <div className="ticker-track">
                                     {headlines.concat(headlines).map((h, i) => (
                                         <span className="ticker-item" key={i}>
+                                            <a>
                                             {h}
+                                            </a>
                                         </span>
                                     ))}
                                 </div>
@@ -77,7 +89,7 @@ export default function Sidebar() {
                 .ticker-item:hover { text-decoration: underline; }
                 @keyframes ticker-scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
                 /* Pause on hover */
-                // .scrolling-headlines:hover .ticker-track { animation-play-state: paused; }
+                .scrolling-headlines:hover .ticker-track { animation-play-state: paused; }
               `}</style>
                         </div>
                     );

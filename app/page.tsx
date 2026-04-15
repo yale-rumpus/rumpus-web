@@ -145,7 +145,7 @@ export default function RumpusHomePage() {
                                 </h2>
                                 
                                     <div className="rumpus-countdown-wrap">
-                                    <Countdown targetDate={new Date(endref.targetdate)} html={true} colorOne="#3c62bc" colorTwo="#FFD700" colorThree="#ff69b4" />
+                                    <Countdown targetDate={new Date(endref.targetdate)} html={true} colorZero="#ff69b4" colorOne="#3c62bc" colorTwo="#FFD700" colorThree="#ff69b4" />
                                 </div>
                             </div>
                         </article>

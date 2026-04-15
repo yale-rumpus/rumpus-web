@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
-export default function Countdown({ targetDate, html, colorOne, colorTwo, colorThree}) {
+export default function Countdown({ targetDate, html, colorZero, colorOne, colorTwo, colorThree}) {
     const [timeLeft, setTimeLeft] = useState({
         days: 0,
         hours: 0,
@@ -87,26 +87,26 @@ export default function Countdown({ targetDate, html, colorOne, colorTwo, colorT
                 <>
                     <div className="rumpus-countdown">
                         {timeLeft.days > 0 && (
-                            <div className="countdown-item">
+                            <div className="countdown-item" style={{ color: colorZero }}>
                                 <span className="countdown-value">
                                     {timeLeft.days}
                                 </span>
                                 <span className="countdown-label">Days</span>
                             </div>
                         )}
-                        <div className="countdown-item" style={{colorOne}}>
+                        <div className="countdown-item" style={{ color: colorOne }}>
                             <span className="countdown-value">
                                 {timeLeft.hours}
                             </span>
                             <span className="countdown-label">Hours</span>
                         </div>
-                        <div className="countdown-item">
+                        <div className="countdown-item" style={{ color: colorTwo }}>
                             <span className="countdown-value">
                                 {timeLeft.minutes}
                             </span>
                             <span className="countdown-label">Minutes</span>
                         </div>
-                        <div className="countdown-item">
+                        <div className="countdown-item" style={{ color: colorThree }}>
                             <span className="countdown-value">
                                 {timeLeft.seconds}
                             </span>
