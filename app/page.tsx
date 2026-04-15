@@ -21,7 +21,7 @@ import DynamicGameWrapper from "@/components/DynamicGameWrapper";
 const reference = {
     issueurl: "https://online.fliphtml5.com/sesvj/Binder1/", // link to next issue article viewer
     pageref: [2, 1, 14], // page numbers for the three iframes
-    targetdate: "2026-02-14T01:00:00", // target date for countdown timer
+    targetdate: "2026-04-25T20:00:00", // target date for countdown timer
 };
 
 // IMPORTANT DEVELOPER NOTE: WHEN SPECIFYING TARGET DATE YOU MUST USE 2 DIGIT NUMBERS
@@ -136,9 +136,16 @@ export default function RumpusHomePage() {
                             <div className="c-rumpus__item-figure c-rumpus__gradient-top"></div>
 
                             <div className="c-rumpus__item-info">
-                                <h2 className="c-rumpus__item-title">COUNTDOWN TO 50 MOST:</h2>
+                                <h2 className="c-rumpus__item-title">  
+                                    <span style={{color: "#3c62bc"}}>COUNTDOWN</span> &nbsp;
+
+                                    <span style={{color: "#FFD700"}}>TO</span> &nbsp;
+                                    
+                                    <span style={{color: "#ff69b4"}}>SPRING FLING:</span> &nbsp;
+                                </h2>
+                                
                                     <div className="rumpus-countdown-wrap">
-                                    <Countdown targetDate={new Date(endref.targetdate)} html={true} />
+                                    <Countdown targetDate={new Date(endref.targetdate)} html={true} colorOne="#3c62bc" colorTwo="#FFD700" colorThree="#ff69b4" />
                                 </div>
                             </div>
                         </article>

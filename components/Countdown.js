@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
-export default function Countdown({ targetDate, html }) {
+export default function Countdown({ targetDate, html, colorOne, colorTwo, colorThree}) {
     const [timeLeft, setTimeLeft] = useState({
         days: 0,
         hours: 0,
@@ -94,7 +94,7 @@ export default function Countdown({ targetDate, html }) {
                                 <span className="countdown-label">Days</span>
                             </div>
                         )}
-                        <div className="countdown-item">
+                        <div className="countdown-item" style={{colorOne}}>
                             <span className="countdown-value">
                                 {timeLeft.hours}
                             </span>
