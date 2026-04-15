@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 
-export default function Sidebar(linkColor) {
+export default function Sidebar({ linkColor }) {
     const [open, setOpen] = useState(false);
     const [headerVisible, setHeaderVisible] = useState(true);
     const headerRef = useRef(null);
@@ -88,7 +88,7 @@ export default function Sidebar(linkColor) {
                 .scrolling-headlines { width: 100%; overflow: hidden; box-sizing: border-box; }
                 .ticker { display: block; width: 100%; overflow: hidden; }
                 .ticker-track { display: inline-flex; gap: 48px; white-space: nowrap; animation: ticker-scroll 18s linear infinite; }
-                .ticker-item { color: #000000ff; font-size: 16px; display: inline-block; padding: 8px 0; }
+                .ticker-item { font-size: 16px; display: inline-block; padding: 8px 0; }
                 .ticker-item:hover { text-decoration: underline; }
                 @keyframes ticker-scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
                 /* Pause on hover */
