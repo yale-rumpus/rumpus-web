@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 
-export default function Sidebar() {
+export default function Sidebar(linkColor) {
     const [open, setOpen] = useState(false);
     const [headerVisible, setHeaderVisible] = useState(true);
     const headerRef = useRef(null);
@@ -71,13 +71,16 @@ export default function Sidebar() {
                         >
                             <div className="ticker">
                                 <div className="ticker-track">
-                                    {headlines.concat(headlines).map((h, i) => (
-                                        <span className="ticker-item" key={i}>
-                                            <a>
-                                            {h}
-                                            </a>
-                                        </span>
-                                    ))}
+                                    {headlines.concat(headlines).map((h, i) => {
+                                        const url = links[i % links.length];
+                                        return (
+                                            <span className="ticker-item" key={i}>
+                                                <a href={url || undefined} target={url ? "_blank" : undefined} rel={url ? "noopener noreferrer" : undefined} style={{color:linkColor}}>
+                                                {h}
+                                                </a>
+                                            </span>
+                                        );
+                                    })}
                                 </div>
                             </div>
 

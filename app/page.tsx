@@ -124,7 +124,7 @@ export default function RumpusHomePage() {
                         </figure>
 
                         {/* The sidebar component */}
-                        <Sidebar />
+                        <Sidebar linkColor ="#ff69b4"/>
                     </div>
                 </div>
 
