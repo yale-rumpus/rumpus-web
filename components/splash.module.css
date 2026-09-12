@@ -8,6 +8,11 @@
   background: #0a0a0a;
   opacity: 1;
   transition: opacity 0.4s ease;
+  cursor: none;
+}
+
+.overlay * {
+  cursor: none;
 }
 
 .hide {

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import styles from "./splash.module.css";
-
+import FlameCursor from "@/components/FlameCursor";
 
 export default function Splash() {
   const [visible, setVisible] = useState(false);
@@ -30,6 +30,7 @@ export default function Splash() {
       className={`${styles.overlay} ${hiding ? styles.hide : ""}`}
       onClick={dismiss}
     >
+      <FlameCursor />
       <div className={styles.logo}>YourLogo</div>
     </div>
   );
