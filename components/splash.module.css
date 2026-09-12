@@ -93,21 +93,15 @@
   font-size: 0.9rem;
   font-style: italic;
 
-  color: rgba(255, 255, 255, 0.6);
+  color: rgba(255, 255, 255, 0.75);
 
-  opacity: 0;
-
-  transition: opacity 0.4s ease 0.1s;
+  animation: captionFade 1s ease 0.8s backwards;
 }
 
-/* The caption only appears once every candle is lit */
+/* The caption's text flips to "holy unc" once every candle is lit */
 
 .hoverCake .cakeTitle,
 .litCake .cakeTitle {
-  opacity: 1;
-}
-
-.litCake .cakeCaption {
   opacity: 1;
 }
 
@@ -174,6 +168,18 @@
 
   50% {
     opacity: 0.4;
+  }
+}
+
+@keyframes captionFade {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 

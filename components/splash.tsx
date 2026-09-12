@@ -138,7 +138,9 @@ export default function Splash() {
         <span className={styles.cakeTitle}>
           Rumpus is celebrating our 50th birthday
         </span>
-        <span className={styles.cakeCaption}>holy unc</span>
+        <span className={styles.cakeCaption}>
+          {allCandlesLit ? "holy unc" : "click to skip"}
+        </span>
         {allCandlesLit && !exploding && (
           <div className={styles.blowWrap}>
             <span className={styles.blowPrompt}>
