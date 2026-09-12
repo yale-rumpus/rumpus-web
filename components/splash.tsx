@@ -56,6 +56,18 @@ export default function Splash() {
   const allCandlesLit =
     isMobile || litCandles.size === candles.length;
 
+  /* During the blow-out phase, the candles are driven purely by blow
+     pressure (more pressure → less candles lit), ignoring the cursor. */
+
+  const blowing = !isMobile && allCandlesLit && !exploding;
+
+  const litCount = blowing
+    ? Math.round(candles.length * (1 - blowPressure / 70))
+    : litCandles.size;
+
+  const isCandleLit = (candleId: number) =>
+    blowing ? candleId < litCount : litCandles.has(candleId);
+
   const igniteCandle = (id: number) => {
     setLitCandles((prev) => {
       if (prev.has(id)) return prev;
@@ -224,13 +236,15 @@ export default function Splash() {
           <div
             key={candle.id}
             className={`${styles.candle} ${
-              litCandles.has(candle.id) ? styles.lit : ""
+              isCandleLit(candle.id) ? styles.lit : ""
             }`}
             style={{
               left: `${candle.x}%`,
               top: `${candle.y}%`,
             }}
-            onMouseEnter={() => igniteCandle(candle.id)}
+            onMouseEnter={
+              blowing ? undefined : () => igniteCandle(candle.id)
+            }
           >
             <div className={styles.flame}>
               <div className={styles.flameInner} />
