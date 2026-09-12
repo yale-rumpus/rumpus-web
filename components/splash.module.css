@@ -25,13 +25,106 @@
 }
 
 /* =========================
-   LOGO
+   LOGO (PORTAL CAKE)
    ========================= */
 
 .logo {
-  color: white;
-  font-size: 2rem;
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  text-align: center;
+
   animation: pop 1s ease forwards;
+}
+
+/* The cake sits in the dark like a candle in a dark room; only a
+   small illuminated area around the cursor reveals it */
+
+.cake {
+  width: 240px;
+  height: auto;
+
+  filter: brightness(0.08);
+
+  opacity: 0.9;
+
+  transition:
+    filter 0.35s ease;
+
+  pointer-events: none;
+
+  user-select: none;
+}
+
+.hoverCake .cake {
+  filter: brightness(1);
+}
+
+/* When every candle is lit, the cake glows on its own, no cursor needed */
+
+.litCake .cake {
+  filter: brightness(1);
+
+  filter:
+    brightness(1.05)
+    drop-shadow(0 0 18px rgba(255, 170, 60, 0.55));
+}
+
+.cakeTitle {
+  margin-top: 10px;
+
+  font-family: inherit;
+  font-size: 1.1rem;
+  font-weight: 600;
+
+  color: #fff;
+
+  opacity: 0;
+
+  transition: opacity 0.4s ease;
+}
+
+.cakeCaption {
+  margin-top: 4px;
+
+  font-size: 0.9rem;
+  font-style: italic;
+
+  color: rgba(255, 255, 255, 0.6);
+
+  opacity: 0;
+
+  transition: opacity 0.4s ease 0.1s;
+}
+
+.hoverCake .cakeTitle,
+.hoverCake .cakeCaption,
+.litCake .cakeTitle,
+.litCake .cakeCaption {
+  opacity: 1;
+}
+
+/* Soft warm pool of light following the cursor while over the cake */
+
+.spotlight {
+  position: absolute;
+  inset: 0;
+
+  background: radial-gradient(
+    circle at var(--mx, 50%) var(--my, 50%),
+    rgba(255, 190, 90, 0.32) 0%,
+    rgba(255, 150, 40, 0.14) 40%,
+    transparent 70%
+  );
+
+  opacity: 0;
+
+  transition: opacity 0.3s ease;
+
+  pointer-events: none;
 }
 
 /* =========================

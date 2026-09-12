@@ -8,6 +8,8 @@ export default function Splash() {
   const [visible, setVisible] = useState(false);
   const [hiding, setHiding] = useState(false);
   const [litCandles, setLitCandles] = useState<Set<number>>(new Set());
+  const [cursorPos, setCursorPos] = useState({ x: -999, y: -999 });
+  const [hoveringCake, setHoveringCake] = useState(false);
 
   const igniteCandle = (id: number) => {
     setLitCandles((prev) => {
@@ -34,6 +36,10 @@ export default function Splash() {
     setTimeout(() => setVisible(false), 400);
   };
 
+  const onOverlayMouseMove = (e: React.MouseEvent) => {
+    setCursorPos({ x: e.clientX, y: e.clientY });
+  };
+
   const candles = Array.from({ length: 50 }, (_, i) => {
     const angle = (i / 50) * Math.PI * 2;
 
@@ -46,13 +52,45 @@ export default function Splash() {
 
   if (!visible) return null;
 
+  const allCandlesLit = litCandles.size === candles.length;
+
   return (
     <div
       className={`${styles.overlay} ${hiding ? styles.hide : ""}`}
       onClick={dismiss}
+      onMouseMove={onOverlayMouseMove}
     >
       
       <FlameCursor />
+      <div
+        className={styles.spotlight}
+        style={
+          {
+            "--mx": `${cursorPos.x}px`,
+            "--my": `${cursorPos.y}px`,
+            opacity: hoveringCake ? 1 : 0,
+          } as React.CSSProperties
+        }
+      />
+      <div
+        className={`${styles.logo} ${
+          hoveringCake ? styles.hoverCake : ""
+        } ${allCandlesLit ? styles.litCake : ""}`}
+        onMouseEnter={() => setHoveringCake(true)}
+        onMouseLeave={() => setHoveringCake(false)}
+      >
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          className={styles.cake}
+          src="/portal cake.png"
+          alt="Portal Cake"
+          draggable={false}
+        />
+        <span className={styles.cakeTitle}>
+          Rumpus is celebrating our 50th birthday
+        </span>
+        <span className={styles.cakeCaption}>holy unc</span>
+      </div>
       <div className={styles.candleCircle}>
         {candles.map((candle) => (
           <div
@@ -82,8 +120,6 @@ export default function Splash() {
           </div>
         ))}
       </div>
-
-      <div className={styles.logo}>YourLogo</div>
     </div>
   );
 }
