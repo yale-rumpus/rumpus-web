@@ -4,6 +4,35 @@ import { useEffect, useRef, useState } from "react";
 import styles from "./splash.module.css";
 import FlameCursor from "@/components/FlameCursor";
 
+const CANDLE_SPACING = 150;
+const CAKE_RADIUS = 190;
+
+/* One candle per evenly spaced grid cell, scaled to the viewport.
+   Cells that would land underneath the cake are skipped so every
+   candle stays reachable. */
+
+const computeCandles = (w: number, h: number) => {
+  const cols = Math.max(1, Math.round(w / CANDLE_SPACING));
+  const rows = Math.max(1, Math.round(h / CANDLE_SPACING));
+  const out: { id: number; x: number; y: number }[] = [];
+
+  for (let r = 0; r < rows; r++) {
+    for (let c = 0; c < cols; c++) {
+      const x = ((c + 0.5) / cols) * 100;
+      const y = ((r + 0.5) / rows) * 100;
+
+      const px = (x / 100) * w;
+      const py = (y / 100) * h;
+
+      if (Math.hypot(px - w / 2, py - h / 2) < CAKE_RADIUS) continue;
+
+      out.push({ id: out.length, x, y });
+    }
+  }
+
+  return out;
+};
+
 export default function Splash() {
   const [visible, setVisible] = useState(false);
   const [hiding, setHiding] = useState(false);
@@ -12,19 +41,20 @@ export default function Splash() {
   const [hoveringCake, setHoveringCake] = useState(false);
   const [blowPressure, setBlowPressure] = useState(0);
   const [exploding, setExploding] = useState(false);
+  const [isMobile] = useState(() => {
+    if (typeof window === "undefined") return false;
+    return window.matchMedia("(orientation: portrait)").matches;
+  });
+  const [grid, setGrid] = useState(() => {
+    if (typeof window === "undefined") return computeCandles(1600, 900);
+    return computeCandles(window.innerWidth, window.innerHeight);
+  });
   const blowPressureRef = useRef(0);
 
-  const candles = Array.from({ length: 50 }, (_, i) => {
-    const angle = (i / 50) * Math.PI * 2;
+  const candles = isMobile ? [] : grid;
 
-    return {
-      id: i,
-      x: 50 + Math.cos(angle) * 42,
-      y: 50 + Math.sin(angle) * 42,
-    };
-  });
-
-  const allCandlesLit = litCandles.size === candles.length;
+  const allCandlesLit =
+    isMobile || litCandles.size === candles.length;
 
   const igniteCandle = (id: number) => {
     setLitCandles((prev) => {
@@ -43,6 +73,16 @@ export default function Splash() {
     sessionStorage.setItem("intro-seen", "true");
   }, []);
 
+  useEffect(() => {
+    const onResize = () => {
+      setGrid(computeCandles(window.innerWidth, window.innerHeight));
+    };
+
+    window.addEventListener("resize", onResize);
+
+    return () => window.removeEventListener("resize", onResize);
+  }, []);
+
   const dismiss = () => {
     if (hiding) return;
 
@@ -51,15 +91,36 @@ export default function Splash() {
     setTimeout(() => setVisible(false), 400);
   };
 
+  const handleOverlayClick = () => {
+    if (isMobile) {
+      if (exploding || hiding) return;
+      setExploding(true);
+      return;
+    }
+
+    dismiss();
+  };
+
   const onOverlayMouseMove = (e: React.MouseEvent) => {
-    setCursorPos({ x: e.clientX, y: e.clientY });
+    const x = e.clientX;
+    const y = e.clientY;
+
+    setCursorPos({ x, y });
+
+    /* The cake sits at screen center; detect "hovering" by distance so
+       the logo never has to swallow pointer events (candles under the
+       cake stay reachable). */
+    const cx = window.innerWidth / 2;
+    const cy = window.innerHeight / 2;
+
+    setHoveringCake(Math.hypot(x - cx, y - cy) < 180);
   };
 
   /* Blow-out: once every candle is lit, space adds +10 pressure, which
      decays by 5/sec (floor 0). 70 pressure → boom, then exit overlay. */
 
   useEffect(() => {
-    if (!allCandlesLit || exploding) return;
+    if (!allCandlesLit || exploding || isMobile) return;
 
     const onSpace = (e: KeyboardEvent) => {
       if (e.code !== "Space" && e.key !== " ") return;
@@ -77,10 +138,10 @@ export default function Splash() {
     window.addEventListener("keydown", onSpace);
 
     return () => window.removeEventListener("keydown", onSpace);
-  }, [allCandlesLit, exploding]);
+  }, [allCandlesLit, exploding, isMobile]);
 
   useEffect(() => {
-    if (!allCandlesLit || exploding) return;
+    if (!allCandlesLit || exploding || isMobile) return;
 
     const tick = setInterval(() => {
       blowPressureRef.current = Math.max(0, blowPressureRef.current - 5);
@@ -88,7 +149,7 @@ export default function Splash() {
     }, 1000);
 
     return () => clearInterval(tick);
-  }, [allCandlesLit, exploding]);
+  }, [allCandlesLit, exploding, isMobile]);
 
   useEffect(() => {
     if (!exploding) return;
@@ -106,10 +167,9 @@ export default function Splash() {
   return (
     <div
       className={`${styles.overlay} ${hiding ? styles.hide : ""}`}
-      onClick={dismiss}
+      onClick={handleOverlayClick}
       onMouseMove={onOverlayMouseMove}
     >
-      
       <FlameCursor />
       <div
         className={styles.spotlight}
@@ -125,8 +185,6 @@ export default function Splash() {
         className={`${styles.logo} ${
           hoveringCake ? styles.hoverCake : ""
         } ${allCandlesLit ? styles.litCake : ""}`}
-        onMouseEnter={() => setHoveringCake(true)}
-        onMouseLeave={() => setHoveringCake(false)}
       >
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
@@ -139,9 +197,13 @@ export default function Splash() {
           Rumpus is celebrating our 50th birthday
         </span>
         <span className={styles.cakeCaption}>
-          {allCandlesLit ? "holy unc" : "click to skip"}
+          {isMobile
+            ? "click to continue"
+            : allCandlesLit
+              ? "holy unc"
+              : "click to skip"}
         </span>
-        {allCandlesLit && !exploding && (
+        {!isMobile && allCandlesLit && !exploding && (
           <div className={styles.blowWrap}>
             <span className={styles.blowPrompt}>
               rapidly press space to blow out all candles
