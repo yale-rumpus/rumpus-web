@@ -100,11 +100,81 @@
   transition: opacity 0.4s ease 0.1s;
 }
 
+/* The caption only appears once every candle is lit */
+
 .hoverCake .cakeTitle,
-.hoverCake .cakeCaption,
-.litCake .cakeTitle,
+.litCake .cakeTitle {
+  opacity: 1;
+}
+
 .litCake .cakeCaption {
   opacity: 1;
+}
+
+/* =========================
+   BLOW-OUT PROMPT + METER
+   ========================= */
+
+.blowWrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+
+  margin-top: 14px;
+}
+
+.blowPrompt {
+  font-family: inherit;
+  font-size: 0.9rem;
+  letter-spacing: 0.02em;
+
+  color: rgba(255, 220, 160, 0.9);
+
+  animation: blowPulse 1.2s ease-in-out infinite;
+}
+
+.blowMeter {
+  width: 200px;
+  height: 6px;
+
+  border-radius: 999px;
+
+  background: rgba(255, 255, 255, 0.12);
+
+  overflow: hidden;
+}
+
+.blowFill {
+  height: 100%;
+
+  border-radius: 999px;
+
+  background: linear-gradient(90deg, #ff9d00, #ff3b00);
+
+  transition: width 0.08s linear;
+}
+
+/* Blown-up cake */
+
+.boom {
+  width: 380px;
+  height: 380px;
+
+  object-fit: contain;
+
+  filter: brightness(1);
+}
+
+@keyframes blowPulse {
+  0%,
+  100% {
+    opacity: 0.85;
+  }
+
+  50% {
+    opacity: 0.4;
+  }
 }
 
 /* Soft warm pool of light following the cursor while over the cake */
