@@ -48,6 +48,11 @@
   height: 150px;
 
   transform: translate(-50%, -50%);
+
+  /* candleCircle (parent) disables pointer-events so it doesn't block
+     the flame cursor; each candle re-enables it so hover can be
+     detected individually */
+  pointer-events: auto;
 }
 
 /* Candle body */

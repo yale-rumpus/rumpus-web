@@ -7,7 +7,16 @@ import FlameCursor from "@/components/FlameCursor";
 export default function Splash() {
   const [visible, setVisible] = useState(false);
   const [hiding, setHiding] = useState(false);
-  const [lit, setLit] = useState(false);
+  const [litCandles, setLitCandles] = useState<Set<number>>(new Set());
+
+  const igniteCandle = (id: number) => {
+    setLitCandles((prev) => {
+      if (prev.has(id)) return prev;
+      const next = new Set(prev);
+      next.add(id);
+      return next;
+    });
+  };
 
   useEffect(() => {
     const seen = sessionStorage.getItem("intro-seen");
@@ -48,11 +57,14 @@ export default function Splash() {
         {candles.map((candle) => (
           <div
             key={candle.id}
-            className={styles.candle}
+            className={`${styles.candle} ${
+              litCandles.has(candle.id) ? styles.lit : ""
+            }`}
             style={{
               left: `${candle.x}%`,
               top: `${candle.y}%`,
             }}
+            onMouseEnter={() => igniteCandle(candle.id)}
           >
             <div className={styles.flame}>
               <div className={styles.flameInner} />
