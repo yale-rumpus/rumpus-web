@@ -72,11 +72,13 @@ export default function Splash() {
 
             <div className={styles.wick} />
 
-            <div className={styles.candleBody}>
-              <div className={styles.waxDrip} />
-            </div>
-
-            <div className={styles.candleBase} />
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              className={styles.candleImage}
+              src="/candle.png"
+              alt=""
+              draggable={false}
+            />
           </div>
         ))}
       </div>
