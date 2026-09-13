@@ -21,7 +21,7 @@ import DynamicGameWrapper from "@/components/DynamicGameWrapper";
 const reference = {
     issueurl: "https://online.fliphtml5.com/sesvj/Rumpus-Yale-Man-Issue/", // link to next issue article viewer
     pageref: [2, 1, 7], // page numbers for the three iframes
-    targetdate: "2026-09-13T20:00:00", // target date for countdown timer
+    targetdate: "2026-09-13T15:00:00", // target date for countdown timer
 };
 
 // IMPORTANT DEVELOPER NOTE: WHEN SPECIFYING TARGET DATE YOU MUST USE 2 DIGIT NUMBERS
