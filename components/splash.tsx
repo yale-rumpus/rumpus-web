@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import styles from "./splash.module.css";
 import FlameCursor from "@/components/FlameCursor";
 
@@ -43,7 +43,11 @@ export default function Splash() {
   const [exploding, setExploding] = useState(false);
   const [isMobile] = useState(() => {
     if (typeof window === "undefined") return false;
-    return window.matchMedia("(orientation: portrait)").matches;
+    return (
+      window.matchMedia("(orientation: portrait)").matches ||
+      window.matchMedia("(pointer: coarse)").matches ||
+      window.innerWidth < 768
+    );
   });
   const [grid, setGrid] = useState(() => {
     if (typeof window === "undefined") return computeCandles(1600, 900);
@@ -53,13 +57,14 @@ export default function Splash() {
 
   const candles = isMobile ? [] : grid;
 
-  const allCandlesLit =
-    isMobile || litCandles.size === candles.length;
+  const allCandlesLit = litCandles.size === candles.length;
 
   /* During the blow-out phase, the candles are driven purely by blow
-     pressure (more pressure → less candles lit), ignoring the cursor. */
+     pressure (more pressure → less candles lit), ignoring the cursor.
+     Mobile has no candle grid, so it's immediately in the blow phase:
+     rapid taps build the same pressure that space does on desktop. */
 
-  const blowing = !isMobile && allCandlesLit && !exploding;
+  const blowing = allCandlesLit && !exploding;
 
   const litCount = blowing
     ? Math.round(candles.length * (1 - blowPressure / 70))
@@ -103,10 +108,22 @@ export default function Splash() {
     setTimeout(() => setVisible(false), 400);
   };
 
+  /* Shared blow logic: +10 pressure per press/tap, 70 → boom. */
+  const addBlowPressure = useCallback(() => {
+    if (exploding || hiding) return;
+
+    blowPressureRef.current = Math.min(70, blowPressureRef.current + 10);
+    setBlowPressure(blowPressureRef.current);
+
+    if (blowPressureRef.current >= 70) {
+      setExploding(true);
+    }
+  }, [exploding, hiding]);
+
   const handleOverlayClick = () => {
     if (isMobile) {
-      if (exploding || hiding) return;
-      setExploding(true);
+      /* Mobile: taps blow out the candles, same as space on desktop. */
+      addBlowPressure();
       return;
     }
 
@@ -132,28 +149,22 @@ export default function Splash() {
      decays by 5/sec (floor 0). 70 pressure → boom, then exit overlay. */
 
   useEffect(() => {
-    if (!allCandlesLit || exploding || isMobile) return;
+    if (!allCandlesLit || exploding) return;
 
     const onSpace = (e: KeyboardEvent) => {
       if (e.code !== "Space" && e.key !== " ") return;
 
       e.preventDefault();
-
-      blowPressureRef.current = Math.min(70, blowPressureRef.current + 10);
-      setBlowPressure(blowPressureRef.current);
-
-      if (blowPressureRef.current >= 70) {
-        setExploding(true);
-      }
+      addBlowPressure();
     };
 
     window.addEventListener("keydown", onSpace);
 
     return () => window.removeEventListener("keydown", onSpace);
-  }, [allCandlesLit, exploding, isMobile]);
+  }, [allCandlesLit, exploding, addBlowPressure]);
 
   useEffect(() => {
-    if (!allCandlesLit || exploding || isMobile) return;
+    if (!allCandlesLit || exploding) return;
 
     const tick = setInterval(() => {
       blowPressureRef.current = Math.max(0, blowPressureRef.current - 5);
@@ -161,7 +172,7 @@ export default function Splash() {
     }, 1000);
 
     return () => clearInterval(tick);
-  }, [allCandlesLit, exploding, isMobile]);
+  }, [allCandlesLit, exploding]);
 
   useEffect(() => {
     if (!exploding) return;
@@ -182,7 +193,19 @@ export default function Splash() {
       onClick={handleOverlayClick}
       onMouseMove={onOverlayMouseMove}
     >
-      <FlameCursor />
+      <button
+        type="button"
+        aria-label="Skip intro"
+        className={styles.skip}
+        onClick={(e) => {
+          e.stopPropagation();
+          dismiss();
+        }}
+        onTouchStart={(e) => e.stopPropagation()}
+      >
+        skip ›
+      </button>
+      {!isMobile && <FlameCursor />}
       <div
         className={styles.spotlight}
         style={
@@ -209,16 +232,18 @@ export default function Splash() {
           Rumpus is celebrating our 50th birthday
         </span>
         <span className={styles.cakeCaption}>
-          {isMobile
-            ? "click to continue"
+          {exploding
+            ? ""
             : allCandlesLit
               ? "holy unc"
               : "click to skip"}
         </span>
-        {!isMobile && allCandlesLit && !exploding && (
+        {allCandlesLit && !exploding && (
           <div className={styles.blowWrap}>
             <span className={styles.blowPrompt}>
-              rapidly press space to blow out all candles
+              {isMobile
+                ? "rapidly tap to blow out the candles"
+                : "rapidly press space to blow out all candles"}
             </span>
             <div className={styles.blowMeter}>
               <div

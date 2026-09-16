@@ -13,10 +13,67 @@
   transition: opacity 0.4s ease;
 
   cursor: none;
+
+  /* Rapid taps on mobile: no double-tap zoom, no text selection. */
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .overlay * {
   cursor: none;
+}
+
+/* Subtle skip for alums/seniors: easy 44px touch target, visually quiet
+   in the top-right safe area so it never covers the cake. */
+.skip {
+  position: absolute;
+  top: calc(env(safe-area-inset-top, 0px) + 12px);
+  right: calc(env(safe-area-inset-right, 0px) + 12px);
+  z-index: 10;
+
+  min-width: 44px;
+  min-height: 44px;
+  padding: 10px 14px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 0.85rem;
+  font-style: italic;
+
+  color: rgba(255, 255, 255, 0.55);
+  background: transparent;
+  border: none;
+  border-radius: 999px;
+
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.skip:hover,
+.skip:active {
+  color: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.skip:focus-visible {
+  outline: 1px solid rgba(255, 255, 255, 0.6);
+  outline-offset: 2px;
+}
+
+/* Touch devices have no cursor: restore native tap behavior. */
+@media (pointer: coarse) {
+  .overlay,
+  .overlay * {
+    cursor: auto;
+  }
+
+  .skip {
+    cursor: pointer;
+  }
 }
 
 .hide {
@@ -52,7 +109,7 @@
    small illuminated area around the cursor reveals it */
 
 .cake {
-  width: 240px;
+  width: min(240px, 68vw);
   height: auto;
 
   filter: brightness(0.08);
@@ -137,7 +194,7 @@
 }
 
 .blowMeter {
-  width: 200px;
+  width: min(200px, 60vw);
   height: 6px;
 
   border-radius: 999px;
@@ -160,8 +217,8 @@
 /* Blown-up cake */
 
 .boom {
-  width: 380px;
-  height: 380px;
+  width: min(380px, 84vw);
+  height: min(380px, 60vh);
 
   object-fit: contain;
 
