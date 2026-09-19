@@ -757,3 +757,14 @@ section:nth-of-type(even) {
     transform: translate(0);
     box-shadow: none;
 }
+
+#confetti-again-btn {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 1s;
+}
+#confetti-again-btn.revealed,
+#confetti-again-btn[data-revealed] {
+    opacity: 1;
+    pointer-events: auto;
+}

@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import styles from "./splash.module.css";
 import FlameCursor from "@/components/FlameCursor";
+import { fireConfetti, markCelebrated } from "@/lib/confetti";
 
 const CANDLE_SPACING = 150;
 const CAKE_RADIUS = 190;
@@ -176,6 +177,22 @@ export default function Splash() {
 
   useEffect(() => {
     if (!exploding) return;
+
+    // Birthday boom: confetti + reveal the "confetti again" button.
+    // Retry once in case the CDN script hasn't finished loading yet.
+    if (!fireConfetti()) {
+      const retry = window.setTimeout(() => fireConfetti(), 800);
+      const t = setTimeout(() => {
+        setHiding(true);
+        setTimeout(() => setVisible(false), 400);
+      }, 1600);
+      markCelebrated();
+      return () => {
+        clearTimeout(retry);
+        clearTimeout(t);
+      };
+    }
+    markCelebrated();
 
     const t = setTimeout(() => {
       setHiding(true);

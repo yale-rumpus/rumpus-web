@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import { Geist, Geist_Mono } from "next/font/google";
 import ScrollFallback from "../components/ScrollFallback";
+import Splash from "../components/splash";
 import "./globals.css";
-import Splash from "../components/splash"
 
 const geistSans = Geist({
     variable: "--font-geist-sans",
@@ -40,6 +41,10 @@ export default function RootLayout({
                 <link
                     rel="stylesheet"
                     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+                />
+                <Script
+                    src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"
+                    strategy="beforeInteractive"
                 />
             </head>
             <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
