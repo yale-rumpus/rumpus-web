@@ -20,9 +20,9 @@ import DynamicGameWrapper from "@/components/DynamicGameWrapper";
 
 // current issue info
 const reference = {
-    issueurl: "https://online.fliphtml5.com/sesvj/Spring-Issue-2026", // link to next issue article viewer
-    pageref: [2, 1, 14], // page numbers for the three iframes
-    targetdate: "2026-09-25T20:00:00", // target date for countdown timer
+    issueurl: "https://online.fliphtml5.com/sesvj/Rumpus-Yale-Man-Issue/", // link to next issue article viewer
+    pageref: [2, 1, 7], // page numbers for the three iframes
+    targetdate: "2026-09-13T15:00:00", // target date for countdown timer
 };
 
 // IMPORTANT DEVELOPER NOTE: WHEN SPECIFYING TARGET DATE YOU MUST USE 2 DIGIT NUMBERS
@@ -30,8 +30,8 @@ const reference = {
 
 // queue up next issue info
 const referenceNext = {
-    issueurl: "https://online.fliphtml5.com/sesvj/Spring-Issue-2026", // link to next issue article viewer
-    pageref: [2, 1, 14], // page numbers for the three iframes
+    issueurl: "https://online.fliphtml5.com/sesvj/Rumpus-Yale-Man-Issue/", // link to next issue article viewer
+    pageref: [2, 1, 7], // page numbers for the three iframes
     targetdate: reference.targetdate, // target date for countdown timer
     // dateform: new Date(reference.targetdate)
 };
