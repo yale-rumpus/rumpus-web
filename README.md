@@ -76,3 +76,4 @@ again, a lot of this was taken from the README.md.old file, but you can read the
 This website was developed by the following developers:
 
 - Coochie Clicker, aka Jaden Lee, @CrankyTitanO7, 2025-
+- Penismonger, aka Jaewon Cha, @keifnao, 2026-
