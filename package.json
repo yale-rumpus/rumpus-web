@@ -7,7 +7,7 @@
         "dev": "next dev",
         "build": "next build",
         "start": "next start",
-        "lint": "eslint"
+        "lint": "oxlint"
     },
     "dependencies": {
         "@vercel/analytics": "^1.6.1",
@@ -23,8 +23,7 @@
         "@types/react": "^19.3.0",
         "@types/react-dom": "^19.3.0",
         "baseline-browser-mapping": "^2.11.32",
-        "eslint": "^9.39.5",
-        "eslint-config-next": "16.0.4",
+        "oxlint": "^1.89.0",
         "tailwindcss": "^4.3.3",
         "typescript": "^5.9.3"
     },

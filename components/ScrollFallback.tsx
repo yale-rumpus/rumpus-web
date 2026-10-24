@@ -79,7 +79,6 @@ export default function ScrollFallback() {
 
         // Debug: log first two items' progress so it's easy to validate in Firefox console
         if (i < 2) {
-          // eslint-disable-next-line no-console
           console.debug(`ScrollFallback fade for index ${i}: ${progress.toFixed(3)} (threshold ${threshold}, nextTop ${nextRect.top}, sticky ${stickyOffset})`)
         }
       }

@@ -238,7 +238,7 @@ export default function Splash() {
           hoveringCake ? styles.hoverCake : ""
         } ${allCandlesLit ? styles.litCake : ""}`}
       >
-        {/* eslint-disable-next-line @next/next/no-img-element */}
+        {/* oxlint-disable-next-line nextjs/no-img-element */}
         <img
           className={`${styles.cake} ${exploding ? styles.boom : ""}`}
           src={exploding ? "/explode.gif" : "/portal cake.png"}
@@ -294,7 +294,7 @@ export default function Splash() {
 
             <div className={styles.wick} />
 
-            {/* eslint-disable-next-line @next/next/no-img-element */}
+            {/* oxlint-disable-next-line nextjs/no-img-element */}
             <img
               className={styles.candleImage}
               src="/candle.png"
