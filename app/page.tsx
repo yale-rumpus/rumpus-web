@@ -3,6 +3,7 @@ import Link from "next/link";
 import "./globals.css";
 
 import SocialButtons from "../components/socialButtons/SocialButtons";
+import ConfettiAgainButton from "../components/ConfettiAgainButton";
 
 // import Head from 'next/head';
 import { Analytics } from "@vercel/analytics/next";
@@ -170,6 +171,7 @@ export default function RumpusHomePage() {
                                         follow us on instagram
                                     </a>
                                 </div>
+                                <ConfettiAgainButton />
                             </div>
                         </article>
                         {/* ----------------- CARD 1: COUNTDOWN ----------------- */}

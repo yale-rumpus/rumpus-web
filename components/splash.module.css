@@ -1,0 +1,502 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: #0a0a0a;
+
+  opacity: 1;
+  transition: opacity 0.4s ease;
+
+  cursor: none;
+
+  /* Rapid taps on mobile: no double-tap zoom, no text selection. */
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.overlay * {
+  cursor: none;
+}
+
+/* Subtle skip for alums/seniors: easy 44px touch target, visually quiet
+   in the top-right safe area so it never covers the cake. */
+.skip {
+  position: absolute;
+  top: calc(env(safe-area-inset-top, 0px) + 12px);
+  right: calc(env(safe-area-inset-right, 0px) + 12px);
+  z-index: 10;
+
+  min-width: 44px;
+  min-height: 44px;
+  padding: 10px 14px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 0.85rem;
+  font-style: italic;
+
+  color: rgba(255, 255, 255, 0.55);
+  background: transparent;
+  border: none;
+  border-radius: 999px;
+
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.skip:hover,
+.skip:active {
+  color: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.skip:focus-visible {
+  outline: 1px solid rgba(255, 255, 255, 0.6);
+  outline-offset: 2px;
+}
+
+/* Touch devices have no cursor: restore native tap behavior. */
+@media (pointer: coarse) {
+  .overlay,
+  .overlay * {
+    cursor: auto;
+  }
+
+  .skip {
+    cursor: pointer;
+  }
+}
+
+.hide {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* =========================
+   LOGO (PORTAL CAKE)
+   ========================= */
+
+.logo {
+  position: relative;
+
+  z-index: 3;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  text-align: center;
+
+  padding: 16px;
+
+  /* Never block the cursor: candles underneath the cake must stay
+     hoverable */
+  pointer-events: none;
+
+  animation: pop 1s ease forwards;
+}
+
+/* The cake sits in the dark like a candle in a dark room; only a
+   small illuminated area around the cursor reveals it */
+
+.cake {
+  width: min(240px, 68vw);
+  height: auto;
+
+  filter: brightness(0.08);
+
+  opacity: 0.9;
+
+  transition:
+    filter 0.35s ease;
+
+  pointer-events: none;
+
+  user-select: none;
+}
+
+.hoverCake .cake {
+  filter: brightness(1);
+}
+
+/* When every candle is lit, the cake glows on its own, no cursor needed */
+
+.litCake .cake {
+  filter: brightness(1);
+
+  filter:
+    brightness(1.05)
+    drop-shadow(0 0 18px rgba(255, 170, 60, 0.55));
+}
+
+.cakeTitle {
+  margin-top: 10px;
+
+  font-family: inherit;
+  font-size: 1.1rem;
+  font-weight: 600;
+
+  color: #fff;
+
+  opacity: 0;
+
+  transition: opacity 0.4s ease;
+}
+
+.cakeCaption {
+  margin-top: 4px;
+
+  font-size: 0.9rem;
+  font-style: italic;
+
+  color: rgba(255, 255, 255, 0.75);
+
+  animation: captionFade 1s ease 0.8s backwards;
+}
+
+/* The caption's text flips to "holy unc" once every candle is lit */
+
+.hoverCake .cakeTitle,
+.litCake .cakeTitle {
+  opacity: 1;
+}
+
+/* =========================
+   BLOW-OUT PROMPT + METER
+   ========================= */
+
+.blowWrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+
+  margin-top: 14px;
+}
+
+.blowPrompt {
+  font-family: inherit;
+  font-size: 0.9rem;
+  letter-spacing: 0.02em;
+
+  color: rgba(255, 220, 160, 0.9);
+
+  animation: blowPulse 1.2s ease-in-out infinite;
+}
+
+.blowMeter {
+  width: min(200px, 60vw);
+  height: 6px;
+
+  border-radius: 999px;
+
+  background: rgba(255, 255, 255, 0.12);
+
+  overflow: hidden;
+}
+
+.blowFill {
+  height: 100%;
+
+  border-radius: 999px;
+
+  background: linear-gradient(90deg, #ff9d00, #ff3b00);
+
+  transition: width 0.08s linear;
+}
+
+/* Blown-up cake */
+
+.boom {
+  width: min(380px, 84vw);
+  height: min(380px, 60vh);
+
+  object-fit: contain;
+
+  filter: brightness(1);
+}
+
+@keyframes blowPulse {
+  0%,
+  100% {
+    opacity: 0.85;
+  }
+
+  50% {
+    opacity: 0.4;
+  }
+}
+
+@keyframes captionFade {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Soft warm pool of light following the cursor while over the cake */
+
+.spotlight {
+  position: absolute;
+  inset: 0;
+
+  background: radial-gradient(
+    circle at var(--mx, 50%) var(--my, 50%),
+    rgba(255, 190, 90, 0.32) 0%,
+    rgba(255, 150, 40, 0.14) 40%,
+    transparent 70%
+  );
+
+  opacity: 0;
+
+  transition: opacity 0.3s ease;
+
+  pointer-events: none;
+}
+
+/* =========================
+   CANDLE
+   ========================= */
+
+.candle {
+  position: absolute;
+
+  /* left: 50%;
+  top: 70%; */
+
+  width: 70px;
+  height: 150px;
+
+  transform: translate(-50%, -50%);
+
+  /* candleCircle (parent) disables pointer-events so it doesn't block
+     the flame cursor; each candle re-enables it so hover can be
+     detected individually */
+  pointer-events: auto;
+}
+
+/* Candle image */
+
+.candleImage {
+  position: absolute;
+
+  left: 50%;
+  bottom: 0;
+
+  width: 70px;
+  height: 150px;
+
+  transform: translateX(-50%);
+
+  object-fit: contain;
+
+  pointer-events: none;
+
+  user-select: none;
+}
+
+/* =========================
+   WICK
+   ========================= */
+
+.wick {
+  position: absolute;
+
+  left: 50%;
+  top: 25px;
+
+  width: 3px;
+  height: 25px;
+
+  transform: translateX(-50%);
+
+  background: #242424;
+
+  border-radius: 50%;
+}
+
+/* =========================
+   FLAME
+   ========================= */
+
+.flame {
+  position: absolute;
+
+  left: 50%;
+  top: -15px;
+
+  width: 25px;
+  height: 42px;
+
+  transform:
+    translateX(-50%)
+    scale(0);
+
+  opacity: 0;
+
+  transform-origin: bottom center;
+
+  background:
+    radial-gradient(
+      ellipse at center bottom,
+      #fffbd1 0%,
+      #fff200 25%,
+      #ff9d00 50%,
+      #ff3b00 75%,
+      transparent 76%
+    );
+
+  border-radius: 50% 50% 45% 45%;
+
+  filter: blur(1px);
+
+  transition:
+    transform 0.25s ease,
+    opacity 0.25s ease;
+}
+
+/* Flame inner core */
+
+.flameInner {
+  position: absolute;
+
+  left: 50%;
+  bottom: 3px;
+
+  width: 9px;
+  height: 20px;
+
+  transform: translateX(-50%);
+
+  background: #ffffff;
+
+  border-radius: 50% 50% 45% 45%;
+
+  filter: blur(1px);
+}
+
+/* =========================
+   IGNITED STATE
+   ========================= */
+
+.lit .flame {
+  opacity: 1;
+
+  transform:
+    translateX(-50%)
+    scale(1);
+
+  animation: candleFlicker 0.12s infinite alternate;
+}
+
+.lit .wick {
+  background: #111;
+
+  box-shadow:
+    0 0 5px #ff7b00;
+}
+
+/* Glow around flame */
+
+.lit::before {
+  content: "";
+
+  position: absolute;
+
+  left: 50%;
+  top: -30px;
+
+  width: 90px;
+  height: 90px;
+
+  transform: translateX(-50%);
+
+  background: radial-gradient(
+    circle,
+    rgba(255, 150, 20, 0.18),
+    transparent 70%
+  );
+
+  pointer-events: none;
+
+  animation: glow 1s ease-in-out infinite alternate;
+}
+
+/* =========================
+   ANIMATIONS
+   ========================= */
+
+@keyframes candleFlicker {
+  0% {
+    transform:
+      translateX(-50%)
+      scale(1)
+      rotate(-3deg);
+  }
+
+  50% {
+    transform:
+      translateX(-50%)
+      scale(1.08)
+      rotate(3deg);
+  }
+
+  100% {
+    transform:
+      translateX(-50%)
+      scale(0.94)
+      rotate(-2deg);
+  }
+}
+
+@keyframes glow {
+  from {
+    opacity: 0.5;
+    transform: translateX(-50%) scale(0.9);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(-50%) scale(1.1);
+  }
+}
+
+@keyframes pop {
+  0% {
+    transform: scale(0.85);
+    opacity: 0;
+  }
+
+  60% {
+    transform: scale(1.05);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.candleCircle {
+  position: absolute;
+  inset: 0;
+
+  /* Candle positions are computed per-screen in the component; cells
+     under the cake are skipped so every candle is reachable */
+  pointer-events: none;
+}
