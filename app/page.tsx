@@ -30,7 +30,9 @@ const reference = {
 
 // queue up next issue info
 const referenceNext = {
-    issueurl: "https://online.fliphtml5.com/sesvj/Rumpus-Halloween-2026/", // link to next issue article viewer
+    //issueurl: "https://online.fliphtml5.com/sesvj/Rumpus-Halloween-2026/", // link to next issue article viewer
+    issueurl: "https://online.fliphtml5.com/sesvj/Rumpus-Yale-Man-Issue/",
+    // TODO: AWAIT EDITED NEW ISSUE
     pageref: [2, 1, 7], // page numbers for the three iframes
     targetdate: reference.targetdate, // target date for countdown timer
     // dateform: new Date(reference.targetdate)
