@@ -307,9 +307,10 @@ export default function YaliesRankingPage() {
             <div id="header">
                 <h1 className="text-3xl font-bold mb-4">Yalies Ranking</h1>
                 <p>
-                    or the Yanking. <br />
-                    Note: for security and privacy reasons, only people in the 50 most have their names displayed
-                    (as their pen names). Everyone else only displays initials, year, and college (just like on fizz)
+            or the Yanking. <br />
+            this page shows off our asstastic staff.
+<br />
+                    Note: for security and privacy reasons most people only display initials, year, and college (just like on fizz)
                 </p>
             </div>
             <h2>
@@ -328,7 +329,7 @@ export default function YaliesRankingPage() {
                     onClick={() => setIs50Most(!is50Most)}
                     className={`px-4 py-2 rounded-lg font-semibold transition-colors ${is50Most ? "bg-yellow-500 text-white hover:bg-yellow-600" : "bg-gray-200 text-gray-700 hover:bg-gray-300"}`}
                 >
-                    {is50Most ? "Showing 50 Most" : "Showing All"}
+                    {is50Most ? "Showing staff members" : "Showing All"}
                 </button>
 
                 <div className="flex items-center bg-white bg-opacity-20 backdrop-blur rounded-lg px-3 py-2">
