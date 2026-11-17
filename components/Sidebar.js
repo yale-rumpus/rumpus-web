@@ -121,9 +121,9 @@ export default function Sidebar({ linkColor }) {
                     <li>
                         <Link href="/surveys">Surveys</Link>
                     </li>
-                    {/* <li>
+                    <li>
                         <Link href="/yalies-ranking">the Yankings</Link>
-                    </li> */}
+                    </li>
                 </ul>
             </nav>
 
@@ -177,7 +177,7 @@ export default function Sidebar({ linkColor }) {
             )}
 
             <style>{`
-        
+
       `}</style>
         </>
     );
