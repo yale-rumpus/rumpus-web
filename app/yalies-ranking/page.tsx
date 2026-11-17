@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { type FiftyMostEntry, normalizeName, parseFiftyMostList } from "@/lib/fiftyMost";
 import "./rankst.css";
 
 interface Yalie {
@@ -10,6 +11,9 @@ interface Yalie {
     college: string;
     profile: string;
     key: string;
+    penName?: string | null;
+    displayName?: string | null;
+    isFiftyMost?: boolean;
 }
 
 interface Votes {
@@ -44,19 +48,16 @@ export default function YaliesRankingPage() {
     const [processedCount, setProcessedCount] = useState(0);
 
     const [searchInput, setSearchInput] = useState("");
-    const [fiftyMostNames, setFiftyMostNames] = useState<string[]>([]);
+    const [fiftyMostEntries, setFiftyMostEntries] = useState<FiftyMostEntry[]>([]);
     const [is50Most, setIs50Most] = useState(true);
     const [sortBy, setSortBy] = useState<"score" | "college" | "year">("score");
 
     const observerTarget = useRef<HTMLDivElement>(null);
     const abortControllerRef = useRef<AbortController | null>(null);
 
-    const normalize = (str: string) =>
-        str
-            .normalize("NFD")
-            .replace(/[\u0300-\u036f]/g, "")
-            .toLowerCase()
-            .trim();
+    const fiftyMostByName = new Map(
+        fiftyMostEntries.map(entry => [normalizeName(entry.searchName), entry]),
+    );
 
     const sortYalies = (ylist: Yalie[], v: Votes, sort: string) => {
         return [...ylist].sort((a, b) => {
@@ -76,7 +77,7 @@ export default function YaliesRankingPage() {
                 const vData = await vRes.json();
                 const nData = await nRes.json();
                 setVotes(vData);
-                setFiftyMostNames(nData);
+                setFiftyMostEntries(parseFiftyMostList(nData));
                 console.log("✅ Votes loaded from gist:", Object.keys(vData).length, "entries");
             } catch (e) {
                 console.error("Init error", e);
@@ -86,19 +87,21 @@ export default function YaliesRankingPage() {
     }, []);
 
     useEffect(() => {
-        if (is50Most && fiftyMostNames.length > 0) {
+        if (is50Most && fiftyMostEntries.length > 0) {
             loadAll50Mosters();
         } else if (!is50Most) {
             loadInitialPage();
         }
         return () => abortControllerRef.current?.abort();
-    }, [is50Most, fiftyMostNames]);
+    }, [is50Most, fiftyMostEntries]);
 
     // Log missing names when processing finishes
     useEffect(() => {
-        if (!isProcessing50 && fiftyMostNames.length > 0 && is50Most) {
-            const foundNames = yalies.map(y => normalize(`${y.fname} ${y.lname}`));
-            const missing = fiftyMostNames.filter(name => !foundNames.includes(normalize(name)));
+        if (!isProcessing50 && fiftyMostEntries.length > 0 && is50Most) {
+            const foundNames = yalies.map(y => normalizeName(`${y.fname} ${y.lname}`));
+            const missing = fiftyMostEntries
+                .filter(entry => !foundNames.includes(normalizeName(entry.searchName)))
+                .map(entry => entry.searchName);
             if (missing.length > 0) {
                 console.log("⚠️ The following names from 50most.json were not found in the database:", missing);
             } else {
@@ -135,20 +138,24 @@ export default function YaliesRankingPage() {
         const foundKeys = new Set<string>();
 
         await Promise.all(
-            fiftyMostNames.map(async name => {
+            fiftyMostEntries.map(async entry => {
                 try {
-                    const res = await fetch(`/api/yalies?page=1&page_size=10&query=${encodeURIComponent(name)}`);
+                    const res = await fetch(
+                        `/api/yalies?page=1&page_size=10&query=${encodeURIComponent(entry.searchName)}`,
+                    );
                     if (!res.ok) return;
                     const data: Yalie[] = await res.json();
 
-                    const match = data.find(y => normalize(`${y.fname} ${y.lname}`) === normalize(name));
+                    const match = data.find(
+                        y => normalizeName(`${y.fname} ${y.lname}`) === normalizeName(entry.searchName),
+                    );
 
                     if (match && !foundKeys.has(match.key)) {
                         foundKeys.add(match.key);
                         setYalies(prev => sortYalies([...prev, match], votes, sortBy));
                     }
                 } catch (e) {
-                    console.error(`Error finding ${name}`, e);
+                    console.error(`Error finding ${entry.searchName}`, e);
                 } finally {
                     setProcessedCount(prev => prev + 1);
                 }
@@ -284,19 +291,26 @@ export default function YaliesRankingPage() {
     };
 
     const displayedYalies = is50Most
-        ? yalies.filter(y => normalize(`${y.fname} ${y.lname} ${y.college}`).includes(normalize(searchInput)))
+        ? yalies.filter(y => {
+              const entry = fiftyMostByName.get(normalizeName(`${y.fname} ${y.lname}`));
+              return normalizeName(
+                  `${y.fname} ${y.lname} ${y.college} ${entry?.penName ?? ""}`,
+              ).includes(normalizeName(searchInput));
+          })
         : yalies;
 
-    const progressPercent = fiftyMostNames.length > 0 ? (processedCount / fiftyMostNames.length) * 100 : 0;
+    const progressPercent =
+        fiftyMostEntries.length > 0 ? (processedCount / fiftyMostEntries.length) * 100 : 0;
 
     return (
         <div className="container mx-auto p-4">
             <div id="header">
                 <h1 className="text-3xl font-bold mb-4">Yalies Ranking</h1>
                 <p>
-                    or the Yanking. <br />
-                    Note: for security and privacy reasons, only people in 50 most have their full names displayed.
-                    Everyone else only displays initials, year, and college (just like on fizz)
+            or the Yanking. <br />
+            this page shows off our asstastic staff.
+<br />
+                    Note: for security and privacy reasons most people only display initials, year, and college (just like on fizz)
                 </p>
             </div>
             <h2>
@@ -315,7 +329,7 @@ export default function YaliesRankingPage() {
                     onClick={() => setIs50Most(!is50Most)}
                     className={`px-4 py-2 rounded-lg font-semibold transition-colors ${is50Most ? "bg-yellow-500 text-white hover:bg-yellow-600" : "bg-gray-200 text-gray-700 hover:bg-gray-300"}`}
                 >
-                    {is50Most ? "Showing 50 Most" : "Showing All"}
+                    {is50Most ? "Showing staff members" : "Showing All"}
                 </button>
 
                 <div className="flex items-center bg-white bg-opacity-20 backdrop-blur rounded-lg px-3 py-2">
@@ -362,8 +376,12 @@ export default function YaliesRankingPage() {
             <ul className="space-y-2">
                 {displayedYalies.map(yalie => {
                     const fullName = `${yalie.fname} ${yalie.lname}`;
-                    const isIn50Most = fiftyMostNames.some(name => normalize(name) === normalize(fullName));
-                    const displayName = isIn50Most ? fullName : `${yalie.fname[0]}${yalie.lname[0]}`;
+                    const fiftyMostEntry = fiftyMostByName.get(normalizeName(fullName));
+                    const isIn50Most = Boolean(fiftyMostEntry) || Boolean(yalie.isFiftyMost);
+                    const displayName =
+                        fiftyMostEntry?.displayName ??
+                        yalie.displayName ??
+                        `${yalie.fname[0]}${yalie.lname[0]}`;
 
                     return (
                         <li
